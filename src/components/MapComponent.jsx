@@ -13,27 +13,25 @@ const customIcon = new L.Icon({
 });
 
 const MapComponent = () => {
-  const position = [25.642399, 85.103569]; 
+  const position = [25.642399, 85.103569];
 
   return (
-    <div className="w-full h-[300px] rounded-lg overflow-hidden shadow">
-      <MapContainer
-        center={position}
-        zoom={10}
-        scrollWheelZoom={false}
-        className="h-full w-full"
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        <Marker position={position} icon={customIcon}>
-          <Popup>
-            <h6>Alomonx</h6>
-          </Popup>
-        </Marker>
-      </MapContainer>
-    </div>
+    <MapContainer
+      center={position}
+      zoom={10}
+      scrollWheelZoom={false}
+      className="h-full w-full"
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
+      <Marker position={position} icon={customIcon}>
+        <Popup>
+          <h6>Alomonx</h6>
+        </Popup>
+      </Marker>
+    </MapContainer>
   );
 };
 

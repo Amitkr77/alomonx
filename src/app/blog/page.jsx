@@ -182,10 +182,7 @@ const Blog = () => {
     setTimeout(() => setNewsletterSubmitted(false), 5000);
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle("dark", !darkMode);
-  };
+  
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },

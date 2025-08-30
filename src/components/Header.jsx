@@ -32,7 +32,7 @@ export default function Header() {
 
   const NavItem = ({ children, href, index }) => (
     <Link href={href}>
-      <motion.a
+      <motion.div
         ref={(el) => (navItemsRef.current[index] = el)}
         className={`relative  font-medium px-5 py-2 rounded-full transition-all duration-300  ${
           isScrolled ? "text-white" : "text-black"
@@ -46,7 +46,7 @@ export default function Header() {
           whileHover={{ width: "80%" }}
           transition={{ duration: 0.3 }}
         />
-      </motion.a>
+      </motion.div>
     </Link>
   );
 
@@ -108,7 +108,7 @@ export default function Header() {
       <div className="container mx-auto p-3 flex justify-between items-center">
         {/* Logo */}
         <Link href="/">
-          <motion.a
+          <motion.div
             className="flex items-center space-x-3"
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.95 }}
@@ -123,7 +123,7 @@ export default function Header() {
             <span className={`text-3xl font-bold  tracking-tight text-black`}>
               Alomonx
             </span>
-          </motion.a>
+          </motion.div>
         </Link>
 
         {/* Desktop Navigation */}

@@ -1,18 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import dynamic from "next/dynamic";
 
-// Custom marker icon
-const customIcon = new L.Icon({
-  iconUrl:
-    "https://alomonx.com/wp-content/plugins/wp-map-block/assets/dist/images/marker-icon.2b3e1faf.png",
-  iconSize: [25, 40],
-  iconAnchor: [12, 41],
-  popupAnchor: [0, -40],
+// Prevent SSR for map
+const DynamicMap = dynamic(() => import("@/components/MapComponent"), {
+  ssr: false,
 });
+
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Mail,
@@ -21,6 +16,11 @@ import {
   MessageCircle,
   ChevronDown,
   ChevronUp,
+  AlertCircle,
+  CheckCircle,
+  Instagram,
+  Twitter,
+  Linkedin,
 } from "lucide-react";
 import {
   Card,
@@ -32,15 +32,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  AlertCircle,
-  CheckCircle,
-  Instagram,
-  Twitter,
-  Linkedin,
-} from "lucide-react";
 import ConsultationCard from "@/components/ConsultationCard";
-import MapComponent from "@/components/MapComponent";
 
 const Contact = () => {
   const [formValues, setFormValues] = useState({
@@ -413,22 +405,7 @@ const Contact = () => {
           <Card className="border border-gray-200 rounded-lg shadow-sm">
             <CardContent className="p-6">
               <div className="bg-gray-200 h-64 rounded-md flex items-center justify-center">
-                <MapContainer
-                  center={position}
-                  zoom={10}
-                  scrollWheelZoom={false}
-                  className="h-full w-full"
-                >
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  />
-                  <Marker position={position} icon={customIcon}>
-                    <Popup>
-                      <h6>Alomonx</h6>
-                    </Popup>
-                  </Marker>
-                </MapContainer>
+                <DynamicMap />{" "}
               </div>
               <p className="text-center font-medium text-sm text-gray-600 mt-4">
                 Alomonx, Kurji, Digha, Patna Bihar
