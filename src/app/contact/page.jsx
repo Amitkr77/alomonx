@@ -46,7 +46,6 @@ const Contact = () => {
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [faqOpen, setFaqOpen] = useState(null);
-  const position = [25.642399, 85.103569];
 
   const faqs = [
     {
@@ -92,7 +91,7 @@ const Contact = () => {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
-  const handleContactSubmit = (e) => {
+  const handleContactSubmit = async (e) => {
     e.preventDefault();
     if (validateForm("contact")) {
       console.log("Contact form submitted:", formValues);
@@ -100,15 +99,54 @@ const Contact = () => {
       setFormValues({ ...formValues, name: "", email: "", message: "" });
       setTimeout(() => setSubmitted(false), 5000);
     }
+    try {
+      const response = await fetch("/api/sheet/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formValues,
+        }),
+      });
+
+      if (response.ok) {
+        setStep(4);
+        setErrors(null);
+      } else {
+        const { message } = await response.json();
+        setErrors(message || "Failed to save data");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setErrors("An error occurred while saving your data");
+    }
   };
 
-  const handleNewsletterSubmit = (e) => {
+  const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
     if (validateForm("newsletter")) {
       console.log("Newsletter subscription:", formValues.newsletter);
       setNewsletterSubmitted(true);
       setFormValues({ ...formValues, newsletter: "" });
       setTimeout(() => setNewsletterSubmitted(false), 5000);
+    }
+    try {
+      const response = await fetch("/api/sheet/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formValues.newsletter,
+        }),
+      });
+
+      if (response.ok) {
+        setErrors(null);
+      } else {
+        const { message } = await response.json();
+        setErrors(message || "Failed to save data");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setErrors("An error occurred while saving your data");
     }
   };
 
@@ -151,10 +189,10 @@ const Contact = () => {
           className="container mx-auto px-6 h-full flex items-center justify-center relative z-10"
         >
           <div className="text-center max-w-2xl">
-            <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-4 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-light text-gray-100 mb-4 leading-tight">
               Get in Touch
             </h1>
-            <p className="text-lg text-gray-700">
+            <p className="text-lg text-gray-100">
               We're here to answer your questions and explore how we can bring
               your ideas to life.
             </p>

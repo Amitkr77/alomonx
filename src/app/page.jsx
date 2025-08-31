@@ -2,6 +2,7 @@
 import CarouselCard from "@/components/CarouselCard";
 import { ComparisonSection } from "@/components/ComparisonSection";
 import Services from "@/components/Services";
+import Testimonials from "@/components/Testimonials";
 
 export default function Home() {
   return (
@@ -126,6 +127,7 @@ export default function Home() {
       <Services />
       <ComparisonSection />
       <CarouselCard />
+      <Testimonials/>
     </div>
   );
 }

@@ -63,16 +63,32 @@ const ConsultationCard = () => {
     setErrors({ ...errors, [e.target.name]: "" }); // Clear error on input change
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Booking confirmed:", {
-        date,
-        selectedTime,
-        selectedTimeZone,
-        ...formValues,
-      });
-      setStep(4);
+      try {
+        const response = await fetch("/api/sheet/appointment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            date: date?.toLocaleDateString(),
+            time: selectedTime,
+            timeZone: selectedTimeZone,
+            ...formValues,
+          }),
+        });
+
+        if (response.ok) {
+          setStep(4);
+          setErrors(null);
+        } else {
+          const { message } = await response.json();
+          setErrors(message || "Failed to save data");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        setErrors("An error occurred while saving your data");
+      }
     }
   };
 

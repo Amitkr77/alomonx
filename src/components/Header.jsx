@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import VanillaTilt from "vanilla-tilt";
 import Link from "next/link";
+import { ContactModel } from "./ContactModel";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -34,9 +35,7 @@ export default function Header() {
     <Link href={href}>
       <motion.div
         ref={(el) => (navItemsRef.current[index] = el)}
-        className={`relative  font-medium px-5 py-2 rounded-full transition-all duration-300  ${
-          isScrolled ? "text-white" : "text-black"
-        }`}
+        className={`relative  font-medium px-5 py-2 rounded-full transition-all duration-300 text-black`}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -52,11 +51,32 @@ export default function Header() {
 
   const Dropdown = ({ trigger, children, index }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
+    const navItemsRef = useRef([]); // if used elsewhere, otherwise remove
+    const isScrolled = false; // replace with your logic or prop
+
+    // Close dropdown on outside click
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target)
+        ) {
+          setIsOpen(false);
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+
     return (
-      <div className="relative">
+      <div className="relative" ref={dropdownRef}>
         <motion.button
           ref={(el) => (navItemsRef.current[index] = el)}
-          className={`flex items-center  font-medium px-5 py-2 rounded-full ${
+          className={`flex items-center font-medium px-5 py-2 rounded-full ${
             isScrolled ? "text-white" : "text-black"
           }`}
           onClick={() => setIsOpen(!isOpen)}
@@ -79,10 +99,11 @@ export default function Header() {
             />
           </motion.svg>
         </motion.button>
+
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 w-80  rounded-2xl shadow-2xl p-6 z-50 border border-white/10"
+              className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 w-80 rounded-2xl shadow-2xl p-6 z-50 border border-white/10 backdrop-blur-2xl backdrop-saturate-200 bg-black/50"
               initial={{ opacity: 0, scale: 0.9, y: -20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: -20 }}
@@ -120,7 +141,11 @@ export default function Header() {
             >
               <span className="text-white font-extrabold text-2xl">A</span>
             </motion.div>
-            <span className={`text-3xl font-bold  tracking-tight text-black`}>
+            <span
+              className={`text-3xl font-bold  tracking-tight text-black ${
+                isScrolled ? "text-black" : "text-white"
+              }`}
+            >
               Alomonx
             </span>
           </motion.div>
@@ -217,16 +242,7 @@ export default function Header() {
 
         {/* CTA */}
         <div className="hidden lg:block">
-          <motion.button
-            className="px-8 py-3 font-semibold rounded-full bg-gradient-to-r from-cyan-400 to-blue-400 text-white hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 shadow-lg"
-            whileHover={{
-              scale: 1.1,
-              boxShadow: "0 0 25px rgba(0,255,255,0.5)",
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Get Quote
-          </motion.button>
+          <ContactModel />
         </div>
 
         {/* Mobile Menu Button */}

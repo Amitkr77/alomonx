@@ -35,7 +35,7 @@ const blogPosts = [
     date: "August 20, 2025",
     category: "Technology",
     image:
-      "https://images.unsplash.com/photo-1516321310763-383e99499987?q=80&w=1170&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1669023414162-8b0573b9c6b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHdlYiUyMGRldmVsb3BtZW50fGVufDB8MHwwfHx8MA%3D%3D",
     author: {
       name: "Jane Doe",
       avatar:
@@ -72,8 +72,9 @@ const blogPosts = [
     content: "Full content here...",
     date: "August 10, 2025",
     category: "Design",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5241f4a3d63?q=80&w=1170&auto=format&fit=crop",
+    
+       image:
+      "https://images.unsplash.com/photo-1605606722649-39761c5a3397?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGRlc2lnbmluZyUyMHRvb2x8ZW58MHwwfDB8fHww",
     author: {
       name: "Emily Brown",
       avatar:
@@ -109,8 +110,8 @@ const blogPosts = [
     content: "Full content here...",
     date: "July 30, 2025",
     category: "Design",
-    image:
-      "https://images.unsplash.com/photo-1542744173-8e7f7175bbaf?q=80&w=1170&auto=format&fit=crop",
+   image:
+      "https://images.unsplash.com/photo-1724638197367-1bab34842f90?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGRlc2lnbmluZyUyMHRvb2x8ZW58MHwwfDB8fHww",
     author: {
       name: "Sarah Davis",
       avatar:
@@ -181,8 +182,6 @@ const Blog = () => {
     setNewsletterEmail("");
     setTimeout(() => setNewsletterSubmitted(false), 5000);
   };
-
-  
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
