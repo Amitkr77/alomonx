@@ -6,68 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const Testimonials = () => {
-  const timelineRef = useRef(null);
-  const testimonialRefs = useRef([]);
-
-  // useEffect(() => {
-  //   const timeline = timelineRef.current;
-  //   const testimonials = testimonialRefs.current;
-
-  //   // Animate the timeline container
-  //   gsap.fromTo(
-  //     timeline,
-  //     { opacity: 0 },
-  //     {
-  //       opacity: 1,
-  //       duration: 1,
-  //       ease: "power2.out",
-  //       scrollTrigger: {
-  //         trigger: timeline,
-  //         start: "top 80%",
-  //         toggleActions: "play none none reverse",
-  //       },
-  //     }
-  //   );
-
-  //   // Animate each testimonial
-  //   testimonials.forEach((testimonial, index) => {
-  //     gsap.fromTo(
-  //       testimonial,
-  //       { opacity: 0, x: 100 },
-  //       {
-  //         opacity: 1,
-  //         x: 0,
-  //         duration: 0.8,
-  //         ease: "power3.out",
-  //         scrollTrigger: {
-  //           trigger: testimonial,
-  //           start: "left 80%",
-  //           toggleActions: "play none none reverse",
-  //         },
-  //         delay: index * 0.3,
-  //       }
-  //     );
-  //   });
-
-  //   // Horizontal scroll animation
-  //   // gsap.to(timeline, {
-  //   //   x: () => -(timeline.scrollWidth - window.innerWidth + 100),
-  //   //   ease: "none",
-  //   //   scrollTrigger: {
-  //   //     trigger: timeline,
-  //   //     start: "top 20%",
-  //   //     end: () => `+=${timeline.scrollWidth - window.innerWidth}`,
-  //   //     scrub: 1,
-  //   //     pin: true,
-  //   //     anticipatePin: 1,
-  //   //     invalidateOnRefresh: true,
-  //   //   },
-  //   // });
-
-  //   return () => {
-  //     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  //   };
-  // }, []);
 
   const testimonialsData = [
     {
@@ -113,16 +51,13 @@ const Testimonials = () => {
         </div>
         <div className="relative">
           {/* Timeline Line */}
-          {/* <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 transform -translate-y-1/2" /> */}
           <div
-            // ref={timelineRef}
             className="flex space-x-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide justify-center items-center p-4"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {testimonialsData.map((testimonial, index) => (
               <div
                 key={index}
-                // ref={(el) => (testimonialRefs.current[index] = el)}
                 className="flex-shrink-0 w-80 snap-center relative group "
                 role="article"
                 aria-labelledby={`testimonial-${index}-name`}

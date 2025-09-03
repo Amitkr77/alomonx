@@ -104,7 +104,7 @@ const Services = () => {
             <Link
               key={service.id}
               href={`/services/${service.slug}`}
-              className="group relative transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              className=""
             >
               <ServiceCard {...service} />
             </Link>

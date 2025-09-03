@@ -1,18 +1,10 @@
-import {
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
-  Phone,
-  Dock,
-  Mail,
-} from "lucide-react";
+import { Phone, Mail } from "lucide-react";
+import Link from "next/link";
 import {
   FaWhatsapp,
-  FaTwitter,
   FaInstagram,
-  FaYoutube,
   FaFacebook,
+  FaLinkedin,
 } from "react-icons/fa";
 
 export default function Footer() {
@@ -36,24 +28,24 @@ export default function Footer() {
           <h3 className="font-semibold mb-4">Quick Links</h3>
           <ul className="space-y-2">
             <li>
-              <a href="#" className="hover:text-blue-600">
+              <Link href="/" className="hover:text-blue-600">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-blue-600">
+              <Link href="/service" className="hover:text-blue-600">
                 Services
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-blue-600">
+              <Link href="/portfolio" className="hover:text-blue-600">
                 Portfolio
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-blue-600">
+              <Link href="/contact" className="hover:text-blue-600">
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -62,14 +54,20 @@ export default function Footer() {
           <h3 className="font-semibold mb-4">Services</h3>
           <ul className="space-y-2">
             <li>
-              <a href="#" className="hover:text-blue-600">
+              <Link
+                href="/services/web-development"
+                className="hover:text-blue-600"
+              >
                 Web development
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-blue-600">
+              <Link
+                href="/services/digital-marketing"
+                className="hover:text-blue-600"
+              >
                 Digital marketing
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -77,18 +75,18 @@ export default function Footer() {
         {/* Right - Search + Social */}
         <div>
           <div className="flex space-x-4 text-gray-600 text-lg">
-            <a href="#">
+            <Link href="https://www.facebook.com/share/19funaxch4/?mibextid=wwXIfr">
               <FaFacebook className="hover:text-blue-600" />
-            </a>
-            <a href="#">
+            </Link>
+            {/* <Link href="#">
               <FaTwitter className="hover:text-blue-400" />
-            </a>
-            <a href="#">
+            </Link> */}
+            <Link href="https://www.instagram.com/alomonx?igsh=MW1ndW03c2R0aHBvNw==">
               <FaInstagram className="hover:text-pink-500" />
-            </a>
-            <a href="#">
-              <FaYoutube className="hover:text-red-500" />
-            </a>
+            </Link>
+            <Link href="https://www.linkedin.com/company/alomonx-technology/">
+              <FaLinkedin className="hover:text-blue-500" />
+            </Link>
           </div>
           <div className="mt-4">
             <h1>Kurji, Digha, Patna Bihar</h1>
@@ -104,21 +102,21 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-sm">
           <p className="font-semibold">Need Help?</p>
           <div className="flex items-center gap-2">
-            <Phone size={16} /> 1-800-555-4321
+            <Phone size={16} /> +91 92346 25064
           </div>
           <div className="flex items-center gap-2">
             <FaWhatsapp size={16} />
-            1-800-555-4321
+            +91 92346 25064
           </div>
           <div className="flex items-center gap-2">
-            <Mail size={16} /> hello@alomonx.com
+            <Mail size={16} /> info@alomonx.com
           </div>
         </div>
       </div>
 
       {/* Bottom */}
       <div className="text-center text-xs py-4 border-t border-gray-200">
-        © 2023. All rights reserved. Designed by{" "}
+        © 2025. All rights reserved. Designed by Amit kumar{" "}
         <span className="text-blue-600">Alomonx Technology</span>
       </div>
     </footer>

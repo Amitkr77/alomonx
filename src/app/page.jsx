@@ -3,6 +3,7 @@ import CarouselCard from "@/components/CarouselCard";
 import { ComparisonSection } from "@/components/ComparisonSection";
 import Services from "@/components/Services";
 import Testimonials from "@/components/Testimonials";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -55,18 +56,18 @@ export default function Home() {
             className="flex flex-col sm:flex-row gap-4 justify-center animate-rise"
             style={{ animationDelay: "0.7s" }}
           >
-            <a
-              href="#contact"
+            <Link
+              href="/contact"
               className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 shadow-sm hover:shadow-md"
             >
               Begin Your Transformation
-            </a>
-            <a
-              href="#services"
+            </Link>
+            <Link
+              href=""
               className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-blue-600 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
             >
               Our Expertise
-            </a>
+            </Link>
           </div>
         </div>
 
