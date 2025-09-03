@@ -142,9 +142,7 @@ export default function Header() {
               <span className="text-white font-extrabold text-2xl">A</span>
             </motion.div>
             <span
-              className={`text-3xl font-bold  tracking-tight text-black ${
-                isScrolled ? "text-black" : "text-white"
-              }`}
+              className={`text-3xl font-bold  tracking-tight bg-gradient-to-br from-cyan-400 to-blue-400  bg-clip-text text-transparent`}
             >
               Alomonx
             </span>
@@ -154,7 +152,7 @@ export default function Header() {
         {/* Desktop Navigation */}
         <nav
           className={`hidden lg:flex items-center space-x-8  backdrop-blur-lg rounded-full px-10 py-2 border border-white/10 
-          ${isScrolled ? "bg-black/20" : "bg-white border-2 border-black"}`}
+          bg-gradient-to-br from-cyan-400/20 to-blue-400/20 `}
         >
           <Dropdown trigger="Services" index={0}>
             {/* Dropdown Content */}

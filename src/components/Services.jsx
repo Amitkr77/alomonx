@@ -78,11 +78,11 @@ const Services = () => {
             </p>
           </div>
 
-          <div className="mt-6 md:mt-0">
+          {/* <div className="mt-6 md:mt-0">
             <Button size="lg" className=" text-blue-700 bg-blue-100 font-semibold transition hover:bg-blue-200">
               Get Free Consultation
             </Button>
-          </div>
+          </div> */}
         </div>
 
         {/* Service Cards */}
