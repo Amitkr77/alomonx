@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -24,14 +23,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 
 const blogPosts = [
   {
     id: 1,
     title: "The Future of Web Development in 2025",
-    excerpt:
-      "Explore emerging trends and technologies shaping the web development landscape.",
-    content: "Full content here...", // For reading time calculation
+    slug: "the-future-of-web-development-in-2025",
+    excerpt: "Explore emerging trends and technologies shaping the web development landscape.",
+    content: "Web development in 2025 is set to be a transformative year with advancements in AI-driven development, Web3 integration, and enhanced performance optimization. Developers are leveraging tools like Next.js, AI code assistants, and serverless architectures to build faster, more secure, and scalable applications. The rise of low-code platforms is also empowering businesses to create custom solutions with minimal coding expertise. In this article, we dive into the key trends, including progressive web apps, real-time data processing, and the impact of 5G on web experiences.",
     date: "August 20, 2025",
     category: "Technology",
     image:
@@ -48,9 +48,9 @@ const blogPosts = [
   {
     id: 2,
     title: "Boosting Your Brand with Digital Marketing",
-    excerpt:
-      "Learn strategies to enhance your online presence and engage your audience.",
-    content: "Full content here...",
+    slug: "boosting-your-brand-with-digital-marketing",
+    excerpt: "Learn strategies to enhance your online presence and engage your audience.",
+    content: "Digital marketing in 2025 is all about personalization and data-driven strategies. From AI-powered ad targeting to immersive storytelling through video content, brands are finding new ways to connect with their audiences. This article explores the latest trends in social media marketing, SEO optimization, and email campaigns, providing actionable insights to boost your brand’s visibility and engagement. Learn how to leverage analytics and automation to maximize ROI and build lasting customer relationships.",
     date: "August 15, 2025",
     category: "Marketing",
     image:
@@ -67,13 +67,12 @@ const blogPosts = [
   {
     id: 3,
     title: "Designing User-Centric Web Applications",
-    excerpt:
-      "Discover best practices for creating intuitive and engaging web experiences.",
-    content: "Full content here...",
+    slug: "designing-user-centric-web-applications",
+    excerpt: "Discover best practices for creating intuitive and engaging web experiences.",
+    content: "User-centric design is at the heart of successful web applications. This article covers best practices for creating intuitive interfaces, including user research, wireframing, and iterative testing. We explore tools like Figma and Adobe XD, discuss accessibility standards, and highlight the importance of responsive design. With real-world examples, learn how to create web applications that delight users and drive engagement through seamless UX and visually appealing UI.",
     date: "August 10, 2025",
     category: "Design",
-    
-       image:
+    image:
       "https://images.unsplash.com/photo-1605606722649-39761c5a3397?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGRlc2lnbmluZyUyMHRvb2x8ZW58MHwwfDB8fHww",
     author: {
       name: "Emily Brown",
@@ -87,8 +86,9 @@ const blogPosts = [
   {
     id: 4,
     title: "Scaling Your Business with Cloud Solutions",
+    slug: "scaling-your-business-with-cloud-solutions",
     excerpt: "Understand how cloud technology can drive efficiency and growth.",
-    content: "Full content here...",
+    content: "Cloud solutions are revolutionizing how businesses scale and operate. This article dives into the benefits of cloud computing, including cost efficiency, scalability, and enhanced collaboration. We explore platforms like AWS, Azure, and Google Cloud, discussing use cases such as serverless computing, data storage, and disaster recovery. Learn how to implement cloud solutions to streamline operations and support business growth in a competitive landscape.",
     date: "August 5, 2025",
     category: "Technology",
     image:
@@ -102,15 +102,15 @@ const blogPosts = [
     comments: 10,
     relatedPosts: [1, 3],
   },
-  // Add more posts for pagination
   {
     id: 5,
     title: "AI in Everyday Design Tools",
+    slug: "ai-in-everyday-design-tools",
     excerpt: "How AI is revolutionizing the design process for creators.",
-    content: "Full content here...",
+    content: "Artificial intelligence is transforming design workflows, enabling creators to work smarter and faster. This article explores how AI-powered tools like Canva, Adobe Sensei, and Figma plugins are streamlining design tasks, from generating layouts to suggesting color palettes. We discuss the benefits of AI in design, including automation, personalization, and enhanced creativity, while addressing ethical considerations and the future of AI-driven design.",
     date: "July 30, 2025",
     category: "Design",
-   image:
+    image:
       "https://images.unsplash.com/photo-1724638197367-1bab34842f90?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGRlc2lnbmluZyUyMHRvb2x8ZW58MHwwfDB8fHww",
     author: {
       name: "Sarah Davis",
@@ -121,7 +121,6 @@ const blogPosts = [
     comments: 5,
     relatedPosts: [3, 1],
   },
-  // ... add even more if needed
 ];
 
 const categories = ["All", "Technology", "Marketing", "Design"];
@@ -222,8 +221,7 @@ const Blog = () => {
               Insights & Innovations
             </h1>
             <p className="text-lg text-gray-200">
-              Explore expert articles on technology, design, and marketing
-              trends.
+              Explore expert articles on technology, design, and marketing trends.
             </p>
           </div>
         </motion.div>
@@ -231,99 +229,6 @@ const Blog = () => {
 
       {/* Blog Content */}
       <section className="container mx-auto px-6 py-20 max-w-7xl">
-        {/* Dark Mode Toggle
-        <div className="flex justify-end mb-6">
-          <Button
-            onClick={toggleDarkMode}
-            className="bg-indigo-600 text-white hover:bg-indigo-700 text-sm"
-            aria-label={
-              darkMode ? "Switch to light mode" : "Switch to dark mode"
-            }
-          >
-            {darkMode ? "Light Mode" : "Dark Mode"}
-          </Button>
-        </div> */}
-
-        {/* Featured Post */}
-        {featuredPost && (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <h2 className="text-2xl font-light mb-4">Featured Post</h2>
-            <Card
-              className={`border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow ${
-                darkMode ? "bg-gray-800 border-gray-700" : "bg-white"
-              }`}
-            >
-              <CardContent className="p-0">
-                <img
-                  src={featuredPost.image}
-                  alt={featuredPost.title}
-                  className="w-full h-64 object-cover rounded-t-lg"
-                />
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Tag className="h-4 w-4 text-indigo-600" />
-                    <span className="text-sm text-indigo-600">
-                      {featuredPost.category}
-                    </span>
-                  </div>
-                  <CardTitle className="text-2xl font-medium mb-2">
-                    {featuredPost.title}
-                  </CardTitle>
-                  <CardDescription
-                    className={`text-sm mb-4 ${
-                      darkMode ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
-                    {featuredPost.excerpt}
-                  </CardDescription>
-                  <div className="flex items-center gap-4 mb-4">
-                    <Avatar>
-                      <AvatarImage
-                        src={featuredPost.author.avatar}
-                        alt={featuredPost.author.name}
-                      />
-                      <AvatarFallback>
-                        {featuredPost.author.name[0]}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-medium">
-                        {featuredPost.author.name}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {featuredPost.date}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      {featuredPost.readingTime} min read
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MessageSquare className="h-4 w-4" />
-                      {featuredPost.comments} comments
-                    </div>
-                  </div>
-                  <Button
-                    variant="outline"
-                    className="w-full border-indigo-600 text-indigo-600 hover:bg-indigo-50"
-                    aria-label={`Read more about ${featuredPost.title}`}
-                  >
-                    Read More
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-
         {/* Filters */}
         <motion.div
           variants={containerVariants}
@@ -347,9 +252,7 @@ const Blog = () => {
               {categories.map((category) => (
                 <Button
                   key={category}
-                  variant={
-                    selectedCategory === category ? "default" : "outline"
-                  }
+                  variant={selectedCategory === category ? "default" : "outline"}
                   className={`text-sm ${
                     selectedCategory === category
                       ? "bg-indigo-600 text-white hover:bg-indigo-700"
@@ -369,6 +272,81 @@ const Blog = () => {
           </div>
         </motion.div>
 
+        {/* Featured Post */}
+        {featuredPost && (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-light mb-4">Featured Post</h2>
+            <Link href={`/blog/${featuredPost.slug}`}>
+              <Card
+                className={`border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer ${
+                  darkMode ? "bg-gray-800 border-gray-700" : "bg-white"
+                }`}
+              >
+                <CardContent className="p-0">
+                  <img
+                    src={featuredPost.image}
+                    alt={featuredPost.title}
+                    className="w-full h-64 object-cover rounded-t-lg"
+                  />
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Tag className="h-4 w-4 text-indigo-600" />
+                      <span className="text-sm text-indigo-600">
+                        {featuredPost.category}
+                      </span>
+                    </div>
+                    <CardTitle className="text-2xl font-medium mb-2">
+                      {featuredPost.title}
+                    </CardTitle>
+                    <CardDescription
+                      className={`text-sm mb-4 ${
+                        darkMode ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    >
+                      {featuredPost.excerpt}
+                    </CardDescription>
+                    <div className="flex items-center gap-4 mb-4">
+                      <Avatar>
+                        <AvatarImage
+                          src={featuredPost.author.avatar}
+                          alt={featuredPost.author.name}
+                        />
+                        <AvatarFallback>
+                          {featuredPost.author.name[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-sm font-medium">
+                          {featuredPost.author.name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {featuredPost.date}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        {featuredPost.readingTime} min read
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <MessageSquare className="h-4 w-4" />
+                        {featuredPost.comments} comments
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </motion.div>
+        )}
+
         {/* Posts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {currentPosts.map((post) => (
@@ -379,88 +357,83 @@ const Blog = () => {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <Card
-                className={`border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow ${
-                  darkMode ? "bg-gray-800 border-gray-700" : "bg-white"
-                }`}
-              >
-                <CardContent className="p-0">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
-                  />
-                  <div className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Tag className="h-4 w-4 text-indigo-600" />
-                      <span className="text-sm text-indigo-600">
-                        {post.category}
-                      </span>
-                    </div>
-                    <CardTitle className="text-lg font-medium mb-2">
-                      {post.title}
-                    </CardTitle>
-                    <CardDescription
-                      className={`text-sm mb-3 ${
-                        darkMode ? "text-gray-400" : "text-gray-600"
-                      }`}
-                    >
-                      {post.excerpt}
-                    </CardDescription>
-                    <div className="flex items-center gap-3 mb-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage
-                          src={post.author.avatar}
-                          alt={post.author.name}
-                        />
-                        <AvatarFallback>{post.author.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-sm font-medium">
-                          {post.author.name}
-                        </p>
-                        <p className="text-xs text-gray-500">{post.date}</p>
+              <Link href={`/blog/${post.slug}`}>
+                <Card
+                  className={`border border-gray-200 routed-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
+                    darkMode ? "bg-gray-800 border-gray-700" : "bg-white"
+                  }`}
+                >
+                  <CardContent className="p-0">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Tag className="h-4 w-4 text-indigo-600" />
+                        <span className="text-sm text-indigo-600">
+                          {post.category}
+                        </span>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        {post.readingTime} min
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <MessageSquare className="h-4 w-4" />
-                        {post.comments}
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      className="w-full border-gray-200 text-indigo-600 hover:bg-indigo-50"
-                      aria-label={`Read more about ${post.title}`}
-                    >
-                      Read More
-                    </Button>
-                    <div className="flex justify-center gap-4 mt-3">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        aria-label="Share on Twitter"
+                      <CardTitle className="text-lg font-medium mb-2">
+                        {post.title}
+                      </CardTitle>
+                      <CardDescription
+                        className={`text-sm mb-3 ${
+                          darkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
                       >
-                        <Twitter className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        aria-label="Share on LinkedIn"
-                      >
-                        <Linkedin className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm" aria-label="Share">
-                        <Share2 className="h-4 w-4" />
-                      </Button>
+                        {post.excerpt}
+                      </CardDescription>
+                      <div className="flex items-center gap-3 mb-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage
+                            src={post.author.avatar}
+                            alt={post.author.name}
+                          />
+                          <AvatarFallback>{post.author.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium">
+                            {post.author.name}
+                          </p>
+                          <p className="text-xs text-gray-500">{post.date}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          {post.readingTime} min
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <MessageSquare className="h-4 w-4" />
+                          {post.comments}
+                        </div>
+                      </div>
+                      <div className="flex justify-center gap-4 mt-3">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          aria-label="Share on Twitter"
+                        >
+                          <Twitter className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          aria-label="Share on LinkedIn"
+                        >
+                          <Linkedin className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" aria-label="Share">
+                          <Share2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -498,26 +471,25 @@ const Blog = () => {
                 const relatedPost = blogPosts.find((p) => p.id === id);
                 if (!relatedPost) return null;
                 return (
-                  <Card
-                    key={id}
-                    className="border border-gray-200 rounded-lg shadow-sm"
-                  >
-                    <CardContent className="p-0">
-                      <img
-                        src={relatedPost.image}
-                        alt={relatedPost.title}
-                        className="w-full h-32 object-cover rounded-t-lg"
-                      />
-                      <div className="p-4">
-                        <CardTitle className="text-sm font-medium mb-1">
-                          {relatedPost.title}
-                        </CardTitle>
-                        <CardDescription className="text-xs text-gray-600">
-                          {relatedPost.excerpt.substring(0, 50)}...
-                        </CardDescription>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <Link key={id} href={`/blog/${relatedPost.slug}`}>
+                    <Card className="border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                      <CardContent className="p-0">
+                        <img
+                          src={relatedPost.image}
+                          alt={relatedPost.title}
+                          className="w-full h-32 object-cover rounded-t-lg"
+                        />
+                        <div className="p-4">
+                          <CardTitle className="text-sm font-medium mb-1">
+                            {relatedPost.title}
+                          </CardTitle>
+                          <CardDescription className="text-xs text-gray-600">
+                            {relatedPost.excerpt.substring(0, 50)}...
+                          </CardDescription>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 );
               })}
             </div>
@@ -567,9 +539,7 @@ const Blog = () => {
                       newsletterError ? "border-red-500" : ""
                     }`}
                     aria-invalid={!!newsletterError}
-                    aria-describedby={
-                      newsletterError ? "newsletter-error" : undefined
-                    }
+                    aria-describedby={newsletterError ? "newsletter-error" : undefined}
                   />
                   {newsletterError && (
                     <p
@@ -645,10 +615,7 @@ const Blog = () => {
               <span className="sr-only">LinkedIn</span>
             </a>
           </div>
-          <a
-            href="/rss.xml"
-            className="text-sm text-indigo-600 hover:underline"
-          >
+          <a href="/rss.xml" className="text-sm text-indigo-600 hover:underline">
             Subscribe via RSS
           </a>
         </motion.div>

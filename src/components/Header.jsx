@@ -173,24 +173,24 @@ export default function Header() {
                 </svg>
                 Digital Growth
               </div>
-              <a
-                href="#"
+              <Link
+                href="/services/seo-mastery"
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
               >
                 SEO Mastery
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="/services/content-strategy"
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
               >
                 Content Strategy
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="/services/ad-campaigns"
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
               >
                 Ad Campaigns
-              </a>
+              </Link>
             </div>
           </Dropdown>
 
@@ -212,18 +212,18 @@ export default function Header() {
                 </svg>
                 Analytics
               </div>
-              <a
-                href="#"
+              <Link
+                href="/services/real-time-insights"
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
               >
                 Real-Time Insights
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="/services/data-dashboard"
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
               >
                 Data Dashboards
-              </a>
+              </Link>
             </div>
           </Dropdown>
 
