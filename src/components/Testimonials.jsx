@@ -1,112 +1,101 @@
-import React, { useEffect, useRef } from "react";
-import { MessageCircle } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { Quote } from "lucide-react";
 
 const Testimonials = () => {
-
   const testimonialsData = [
     {
-      name: "Alice Johnson",
-      role: "Marketing Director",
-      quote:
-        "Their innovative solutions transformed our business, boosting engagement by 40%!",
+      name: "Emma Carter",
+      role: "Chief Marketing Officer",
+      quote: "Their innovative approach skyrocketed our engagement by 50% in just three months!",
+      date: "September 2025",
+    },
+    {
+      name: "Liam Patel",
+      role: "Tech Entrepreneur",
+      quote: "A seamless experience from start to finish. Their solutions are both creative and reliable.",
       date: "August 2025",
     },
     {
-      name: "Mark Thompson",
-      role: "Startup Founder",
-      quote:
-        "Exceptional service and quality. The team delivered beyond our expectations.",
+      name: "Olivia Chen",
+      role: "E-commerce Director",
+      quote: "Our revamped platform now shines in a competitive market, thanks to their expertise.",
       date: "July 2025",
-    },
-    {
-      name: "Sophie Lee",
-      role: "E-commerce Manager",
-      quote:
-        "Professional, reliable, and creative. Our website now stands out in the market!",
-      date: "June 2025",
-    },
-        {
-      name: "Sophie Lee",
-      role: "E-commerce Manager",
-      quote:
-        "Professional, reliable, and creative. Our website now stands out in the market!",
-      date: "June 2025",
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.1 },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
   return (
-    <section className="py-24 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-light tracking-wide text-gray-800">
-            Our Clients’ Stories
+    <section className="py-16 sm:py-24 bg-gradient-to-b from-white to-cyan-50 text-gray-900 font-sans">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-gray-800">
+            Voices of Success
           </h2>
-          <p className="mt-3 text-lg text-gray-500 font-light max-w-md mx-auto">
-            Moments that define our journey, shared by those we’ve worked with.
+          <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Hear from our clients who have transformed their businesses with our innovative solutions.
           </p>
-        </div>
-        <div className="relative">
-          {/* Timeline Line */}
-          <div
-            className="flex space-x-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide justify-center items-center p-4"
-            style={{ scrollSnapType: "x mandatory" }}
-          >
-            {testimonialsData.map((testimonial, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 w-80 snap-center relative group "
-                role="article"
-                aria-labelledby={`testimonial-${index}-name`}
-              >
-                <div className="relative border border-gray-100 rounded-xl p-6 shadow-sm group-hover:shadow-md transition-shadow duration-300 h-64 flex flex-col justify-between ">
-                  <div>
-                    <div className="flex justify-center mb-4">
-                      <MessageCircle
-                        className="h-6 w-6 text-teal-400"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <blockquote className="text-center">
-                      <p className="text-base text-gray-600 font-light leading-relaxed mb-4">
-                        "{testimonial.quote}"
-                      </p>
-                    </blockquote>
-                  </div>
-                  <div className="text-center">
-                    <h3
-                      id={`testimonial-${index}-name`}
-                      className="text-lg font-medium text-gray-800"
-                    >
-                      {testimonial.name}
-                    </h3>
-                    <p className="text-sm text-teal-500 font-light">
-                      {testimonial.role}
-                    </p>
-                    <p className="text-xs text-gray-400 mt-1">
-                      {testimonial.date}
-                    </p>
-                  </div>
-                  {/* Timeline Dot */}
-                  <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-teal-400 rounded-full group-hover:scale-125 transition-transform duration-300" />
-                </div>
+        </motion.div>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+        >
+          {testimonialsData.map((testimonial, index) => (
+            <motion.div
+              key={index}
+              variants={cardVariants}
+              whileHover={{ scale: 1.03, rotateX: 2, rotateY: 2 }}
+              transition={{ duration: 0.3 }}
+              className="relative bg-white rounded-xl p-6 sm:p-8 shadow-sm hover:shadow-lg transition-all duration-300"
+              role="article"
+              aria-labelledby={`testimonial-${index}-name`}
+            >
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <Quote className="h-8 w-8 text-cyan-500" aria-hidden="true" />
               </div>
-            ))}
-          </div>
-        </div>
+              <blockquote className="text-center mt-6">
+                <p className="text-base text-gray-600 leading-relaxed mb-6">
+                  "{testimonial.quote}"
+                </p>
+              </blockquote>
+              <div className="text-center">
+                <h3
+                  id={`testimonial-${index}-name`}
+                  className="text-lg font-medium text-gray-800"
+                >
+                  {testimonial.name}
+                </h3>
+                <p className="text-sm text-cyan-600">{testimonial.role}</p>
+                <p className="text-xs text-gray-500 mt-1">{testimonial.date}</p>
+              </div>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-cyan-500 rounded-full" />
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </section>
   );
 };

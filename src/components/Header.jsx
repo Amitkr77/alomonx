@@ -154,7 +154,10 @@ export default function Header() {
           className={`hidden lg:flex items-center space-x-8  backdrop-blur-lg rounded-full px-10 py-2 border border-white/10 
           bg-gradient-to-br from-cyan-400/20 to-blue-400/20 `}
         >
-          <Dropdown trigger="Services" index={0}>
+          <NavItem href="/" index={0}>
+            Home
+          </NavItem>
+          <Dropdown trigger="Services" index={1}>
             {/* Dropdown Content */}
             <div className="space-y-4">
               <div className="flex items-center text-white font-semibold">
@@ -174,27 +177,28 @@ export default function Header() {
                 Digital Growth
               </div>
               <Link
-                href="/services/seo-mastery"
+                href="/services/web-development"
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
               >
-                SEO Mastery
+                Web development
               </Link>
               <Link
-                href="/services/content-strategy"
+                href="/services/digital-marketing"
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
               >
-                Content Strategy
+                Digital Marketing
               </Link>
-              <Link
+              {/* <Link
                 href="/services/ad-campaigns"
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
               >
                 Ad Campaigns
               </Link>
+               */}
             </div>
           </Dropdown>
 
-          <Dropdown trigger="Solutions" index={1}>
+          {/* <Dropdown trigger="Solutions" index={1}>
             <div className="space-y-4">
               <div className="flex items-center text-white font-semibold">
                 <svg
@@ -225,7 +229,7 @@ export default function Header() {
                 Data Dashboards
               </Link>
             </div>
-          </Dropdown>
+          </Dropdown> */}
 
           <NavItem href="/blog" index={2}>
             Blog
