@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import ConsultationCard from "@/components/ConsultationCard";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Contact = () => {
   const [formValues, setFormValues] = useState({
@@ -362,26 +363,34 @@ const Contact = () => {
               </CardContent>
             </Card>
             <div className="border p-4 rounded-2xl shadow mt-2">
-              <div className=" gap-4 text-gray-600 text-sm flex items-center justify-center">
-                <p className="flex items-center">
-                  <Mail className="h-4 w-4 mr-2 text-indigo-600" />
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 text-sm">
+                <div className="flex items-center gap-2">
+                  <Phone size={16} className="text-cyan-500" />
+                  <a href="tel:+919234625064" className="hover:text-cyan-500">
+                    +91 92346 25064
+                  </a>
+                </div>
+                {/* <div className="flex items-center gap-2">
+                  <FaWhatsapp size={16} className="text-green-500" />
                   <a
-                    href="mailto:info@company.com"
-                    className="hover:text-indigo-600"
+                    href="https://wa.me/919234625064?text=Hi%20there%2C%20I%27m%20interested%20in%20learning%20more%20about%20your%20services."
+                    className="hover:text-cyan-500"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    info@company.com
+                    +91 92346 25064
                   </a>
-                </p>
-                <p className="flex items-center">
-                  <Phone className="h-4 w-4 mr-2 text-indigo-600" />
-                  <a href="tel:+15551234567" className="hover:text-indigo-600">
-                    +1 (555) 123-4567
+                </div> */}
+
+                <div className="flex items-center gap-2">
+                  <Mail size={16} className="text-cyan-500" />
+                  <a
+                    href="mailto:info@alomonx.com"
+                    className="hover:text-cyan-500"
+                  >
+                    info@alomonx.com
                   </a>
-                </p>
-                <p className="flex items-center">
-                  <MapPin className="h-4 w-4 mr-2 text-indigo-600" />
-                  123 Innovation St, Tech City
-                </p>
+                </div>
               </div>
               <div className="mt-6 flex gap-4 justify-center items-center">
                 <a

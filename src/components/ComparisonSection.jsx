@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, XCircle, ChevronDown, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 const features = [
   {
@@ -196,15 +197,18 @@ export function ComparisonSection() {
             Let’s make it happen.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button className="bg-gray-700 text-white hover:bg-gray-800 rounded-full px-8 py-3 text-lg font-medium transition-all duration-300">
+            <Link
+              href="/contact"
+              className="bg-gray-700 text-white hover:bg-gray-800 rounded-full px-8 py-3 text-lg font-medium transition-all duration-300"
+            >
               Launch Now
-            </Button>
-            <Button
-              variant="outline"
-              className="border-gray-300 text-gray-700 hover:bg-gray-100 rounded-full px-8 py-3 text-lg font-medium transition-all duration-300"
+            </Link>
+            <Link
+              href="/portfolio"
+              className="border text-gray-700 hover:bg-gray-800 hover:text-white rounded-full px-8 py-3 text-lg font-medium transition-all duration-300"
             >
               View Portfolio
-            </Button>
+            </Link>
           </div>
         </motion.div>
       </div>

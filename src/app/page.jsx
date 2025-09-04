@@ -102,7 +102,7 @@ export default function Home() {
               Begin Your Transformation
             </Link>
             <Link
-              href=""
+              href="/services"
               className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-blue-600 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
             >
               Our Expertise

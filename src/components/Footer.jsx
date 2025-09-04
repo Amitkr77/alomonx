@@ -22,7 +22,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gradient-to-b from-blue-50 to-white text-gray-700">
+    <footer className="bg-gradient-to-b from-cyan-50 to-white text-gray-700">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -48,9 +48,9 @@ export default function Footer() {
           <h3 className="font-medium text-lg mb-4">Quick Links</h3>
           <ul className="space-y-3 text-sm">
             {[
-              { href: "/", label: "Home" },
               { href: "/service", label: "Services" },
               { href: "/portfolio", label: "Portfolio" },
+              { href: "/career", label: "Career" },
               { href: "/contact", label: "Contact" },
             ].map((link) => (
               <li key={link.href}>
@@ -130,7 +130,7 @@ export default function Footer() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="bg-cyan-50 py-6 px-4 sm:px-6 lg:px-8 "
+        className="bg-gradient-to-t from-cyan-50 py-6 px-4 sm:px-6 lg:px-8 "
       >
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 text-sm">
           <p className="font-medium">Need Help?</p>
@@ -143,12 +143,15 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <FaWhatsapp size={16} className="text-green-500" />
             <a
-              href="https://wa.me/919234625064"
+              href="https://wa.me/919234625064?text=Hi%20there%2C%20I%27m%20interested%20in%20learning%20more%20about%20your%20services."
               className="hover:text-cyan-500"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               +91 92346 25064
             </a>
           </div>
+
           <div className="flex items-center gap-2">
             <Mail size={16} className="text-cyan-500" />
             <a href="mailto:info@alomonx.com" className="hover:text-cyan-500">
