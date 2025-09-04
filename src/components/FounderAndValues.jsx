@@ -3,7 +3,7 @@ import { Card, CardContent, CardTitle, CardDescription } from "./ui/card";
 import { Target, Award, Heart, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function FounderAndValues() {
+export default function Founderandvalues() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
