@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import ConsultationCard from "@/components/ConsultationCard";
+import FounderAndValues from "@/components/Founderandvalues";
 
 const About = () => {
   const heroRef = useRef(null);
@@ -77,94 +78,7 @@ const About = () => {
       </section>
 
       {/* Founder & Values Section */}
-      <section className="container max-w-7xl mx-auto px-6 py-20">
-        <div className="flex flex-col lg:flex-row gap-12">
-          {/* Founder */}
-          <motion.div
-            ref={founderRef}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex-1"
-          >
-            <h2 className="text-3xl font-light text-gray-900 mb-6">
-              Our Founder
-            </h2>
-            <Card className="border-none shadow-none">
-              <CardContent className="p-0">
-                <motion.img
-                  src="./Avatar-Photoroom.png"
-                  alt="Founder"
-                  className="w-28 h-28 rounded-full mb-4"
-                  whileHover={{ scale: 1.05 }}
-                />
-                <CardTitle className="text-lg font-medium text-gray-900">
-                  Jane Doe
-                </CardTitle>
-                <CardDescription className="text-gray-500 mb-4">
-                  Founder & CEO
-                </CardDescription>
-                <p className="text-sm text-gray-600">
-                  Jane's 15+ years of expertise drive our mission to innovate
-                  with precision and passion.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Values */}
-          <motion.div
-            ref={valuesRef}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex-1"
-          >
-            <h2 className="text-3xl font-light text-gray-900 mb-8">
-              Our Values
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  icon: Target,
-                  title: "Innovation",
-                  desc: "Pushing boundaries with creative solutions.",
-                },
-                {
-                  icon: Award,
-                  title: "Excellence",
-                  desc: "Striving for quality in everything we do.",
-                },
-                {
-                  icon: Heart,
-                  title: "Integrity",
-                  desc: "Building trust through transparency.",
-                },
-                {
-                  icon: Users,
-                  title: "Collaboration",
-                  desc: "Succeeding together as a unified team.",
-                },
-              ].map((value, i) => (
-                <motion.div
-                  key={i}
-                  className="flex flex-col items-start"
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <value.icon className="h-7 w-7 text-indigo-600 mb-3" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">
-                    {value.title}
-                  </h3>
-                  <p className="text-sm text-gray-600">{value.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <FounderAndValues/>
 
       {/* Team Section */}
       <section className="bg-gray-50 py-20   ">
@@ -267,14 +181,16 @@ const About = () => {
             transition={{ duration: 0.6 }}
           >
             <div className="pt-5">
-                <h1 className="text-center text-xl">Request A Quote</h1>
-                <p className="text-center text-sm text-gray-500">
-                  Complete the form below, and we’ll get back within one
-                  business day.
-                </p>
-              </div>
-            <form onSubmit={handleContactSubmit} className="space-y-5 max-w-lg mx-auto mt-7">
-              
+              <h1 className="text-center text-xl">Request A Quote</h1>
+              <p className="text-center text-sm text-gray-500">
+                Complete the form below, and we’ll get back within one business
+                day.
+              </p>
+            </div>
+            <form
+              onSubmit={handleContactSubmit}
+              className="space-y-5 max-w-lg mx-auto mt-7"
+            >
               <div className="">
                 <Label
                   htmlFor="name"
