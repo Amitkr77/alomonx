@@ -3,7 +3,7 @@ import { Card, CardContent, CardTitle, CardDescription } from "./ui/card";
 import { Target, Award, Heart, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function Founderandvalues() {
+export default function FounderAndValues() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -64,15 +64,15 @@ export default function Founderandvalues() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="flex flex-col lg:flex-row gap-8 lg:gap-12"
+        className=""
       >
         {/* Founders Section */}
         <motion.div
           variants={containerVariants}
-          className="flex-1"
+          className=""
         >
           <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-gray-900 mb-8">
-            Meet Our Visionaries
+            {/* Meet Our Visionaries */}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
             {founders.map((founder, index) => (
@@ -110,7 +110,7 @@ export default function Founderandvalues() {
         {/* Values Section */}
         <motion.div
           variants={containerVariants}
-          className="flex-1"
+          className=""
         >
           <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-gray-900 mb-8">
             Our Guiding Principles
