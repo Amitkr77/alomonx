@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import ConsultationCard from "@/components/ConsultationCard";
-import FounderAndValues from "@/components/Founderandvalues";
+import Founderandvalues from "@/components/Founderandvalues";
 
 const About = () => {
   const heroRef = useRef(null);
@@ -78,7 +78,7 @@ const About = () => {
       </section>
 
       {/* Founder & Values Section */}
-      <FounderAndValues/>
+      <Founderandvalues/>
 
       {/* Team Section */}
       <section className="bg-gray-50 py-20   ">
