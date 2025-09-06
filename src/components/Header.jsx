@@ -140,7 +140,7 @@ export default function Header() {
               animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              <span className="text-white font-extrabold text-2xl">A</span>
+              <img src="/logo.png" alt="" />
             </motion.div>
             <span
               className={`text-3xl font-bold  tracking-tight bg-gradient-to-br from-cyan-400 to-blue-400  bg-clip-text text-transparent`}
@@ -161,7 +161,7 @@ export default function Header() {
           <Dropdown trigger="Services" index={1}>
             {/* Dropdown Content */}
             <div className="space-y-4">
-              <div className="flex items-center text-white font-semibold">
+              {/* <div className="flex items-center text-white font-semibold">
                 <svg
                   className="mr-2 h-6 w-6 text-cyan-400"
                   fill="none"
@@ -176,7 +176,7 @@ export default function Header() {
                   />
                 </svg>
                 Digital Growth
-              </div>
+              </div> */}
               <Link
                 href="/services/web-development"
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"

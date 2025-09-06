@@ -170,7 +170,7 @@ export default function Footer() {
       >
         <p>
           © 2025 Alomonx Technology. All rights reserved. Designed by{" "}
-          <span className="text-cyan-500">Amit Kumar</span>
+          <span className="text-cyan-500">Alomonx Technology</span>
         </p>
       </motion.div>
     </footer>

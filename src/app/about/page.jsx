@@ -59,16 +59,16 @@ const About = () => {
 
   const founders = [
     {
-      name: "Anand Kumar",
+      name: "Anand Kishor",
       role: "Founder ",
       image: "./founders/anand.jpg",
-      desc: "With over 15 years of experience in digital innovation, Anand spearheads Alomonx Technology’s mission to deliver transformative solutions, blending strategic vision with technical expertise to empower businesses globally.",
+       desc: "As a founder of Alomonx technology With a deep passion for technology, business strategy, and digital transformation. Helping businesses and individuals harness the power of advanced technologies to drive growth and digital empowerment.",
     },
     {
-      name: "Ashish Kumar",
-      role: "Co-Founder & CTO",
+      name: "Ashish Kumar singh",
+      role: "Co-Founder",
       image: "./founders/ashish.jpg",
-      desc: "Ashish’s technical prowess and innovative mindset drive the development of cutting-edge platforms, ensuring scalable, secure, and high-performance solutions that redefine industry standards.",
+     desc: "Tech innovator focused on building scalable solutions and driving digital progress. Passionate about leading agile teams, solving real-world challenges, and empowering businesses to thrive in a rapidly evolving digital landscape.",
     },
   ];
 

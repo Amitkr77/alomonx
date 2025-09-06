@@ -23,16 +23,16 @@ export default function FounderAndValues() {
 
   const founders = [
     {
-      name: "Anand Kumar",
+      name: "Anand Kishor",
       role: "Founder",
       image: "./founders/anand.jpg",
-      desc: "Anand is a passionate tech enthusiast and the visionary behind Alomonx Technology. Although new to the industry, he brings strong technical skills, fresh ideas, and a deep understanding of modern technologies to drive the company's growth.",
+      desc: "As a founder of Alomonx technology With a deep passion for technology, business strategy, and digital transformation. Helping businesses and individuals harness the power of advanced technologies to drive growth and digital empowerment.",
     },
     {
-      name: "Ashish Kumar",
+      name: "Ashish Kumar Singh",
       role: "Co-Founder",
       image: "./founders/ashish.jpg",
-      desc: "Ashish is a skilled developer with a solid foundation in the tech field. As a first-time entrepreneur, he brings energy, curiosity, and a strong problem-solving mindset to help build innovative and impactful solutions through Alomonx Technology.",
+      desc: "Tech innovator focused on building scalable solutions and driving digital progress. Passionate about leading agile teams, solving real-world challenges, and empowering businesses to thrive in a rapidly evolving digital landscape.",
     },
   ];
 

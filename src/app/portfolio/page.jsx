@@ -291,7 +291,7 @@ const Portfolio = () => {
       </AnimatePresence>
 
       {/* Back to Top Button */}
-      <motion.div
+      {/* <motion.div
         className="fixed bottom-6 right-6 z-50"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: showCTA ? 1 : 0, scale: showCTA ? 1 : 0.8 }}
@@ -304,7 +304,7 @@ const Portfolio = () => {
         >
           <ChevronUp className="h-6 w-6" />
         </Button>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 };

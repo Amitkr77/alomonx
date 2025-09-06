@@ -1,32 +1,32 @@
-import React, { useEffect, useRef } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { motion, useAnimation } from 'framer-motion';
+import React, { useEffect, useRef } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { motion, useAnimation } from "framer-motion";
 
 const projects = [
   {
     id: 1,
-    title: 'Project One',
-    image: 'https://images.unsplash.com/photo-1516321318423-4b6a0d41a5c4',
+    title: "Hospital",
+    image: "./website_2.jpg",
   },
   {
     id: 2,
-    title: 'Project Two',
-    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085',
+    title: "School webiste",
+    image: "./website_3.jpg",
   },
   {
     id: 3,
-    title: 'Project Three',
-    image: 'https://images.unsplash.com/photo-1516321318423-4b6a0d41a5c4',
+    title: "GYM webiste",
+    image: "./website_4.jpg",
   },
   {
     id: 4,
-    title: 'Project Four',
-    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085',
+    title: "Dashboard",
+    image: "./dasboard.jpg",
   },
   {
     id: 5,
-    title: 'Project Five',
-    image: 'https://images.unsplash.com/photo-1516321318423-4b6a0d41a5c4',
+    title: "E-commerce website",
+    image: "./website_1.jpg",
   },
 ];
 
@@ -43,9 +43,9 @@ const ProjectCarousel = () => {
         transition: {
           x: {
             repeat: Infinity,
-            repeatType: 'loop',
+            repeatType: "loop",
             duration: 20,
-            ease: 'linear',
+            ease: "linear",
           },
         },
       });
@@ -66,9 +66,9 @@ const ProjectCarousel = () => {
         transition: {
           x: {
             repeat: Infinity,
-            repeatType: 'loop',
+            repeatType: "loop",
             duration: 20,
-            ease: 'linear',
+            ease: "linear",
           },
         },
       });
@@ -81,7 +81,7 @@ const ProjectCarousel = () => {
         ref={carouselRef}
         className="flex"
         animate={controls}
-        style={{ width: '200%' }}
+        style={{ width: "200%" }}
       >
         {[...projects, ...projects].map((project, index) => (
           <motion.div
@@ -90,12 +90,12 @@ const ProjectCarousel = () => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <Card className="relative overflow-hidden group border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <Card className="relative overflow-hidden group border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 h-[200px] py-0">
               <CardContent className="p-0">
                 <motion.img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-[220px] object-cover"
+                  className="w-full h-full object-cover p-0"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 />
