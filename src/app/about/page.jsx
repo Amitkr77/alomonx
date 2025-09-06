@@ -60,7 +60,7 @@ const About = () => {
   const founders = [
     {
       name: "Anand Kumar",
-      role: "Founder & CEO",
+      role: "Founder ",
       image: "./founders/anand.jpg",
       desc: "With over 15 years of experience in digital innovation, Anand spearheads Alomonx Technology’s mission to deliver transformative solutions, blending strategic vision with technical expertise to empower businesses globally.",
     },

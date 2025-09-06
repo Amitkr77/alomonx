@@ -11,17 +11,18 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import ProjectCarousel from "@/components/ProjectCarousel";
 
 const founders = [
   {
     name: "Anand Kumar",
-    role: "Founder & CEO",
+    role: "Founder",
     image: "./founders/anand.jpg",
     desc: "With over 15 years of experience in digital innovation, Anand spearheads Alomonx Technology’s mission to deliver transformative solutions, blending strategic vision with technical expertise to empower businesses globally.",
   },
   {
     name: "Ashish Kumar",
-    role: "Co-Founder & CTO",
+    role: "Co-Founder",
     image: "./founders/ashish.jpg",
     desc: "Ashish’s technical prowess and innovative mindset drive the development of cutting-edge platforms, ensuring scalable, secure, and high-performance solutions that redefine industry standards.",
   },
@@ -153,7 +154,6 @@ export default function Home() {
           }
         `}</style>
       </div>
-
       {/* <CarouselCard/> */}
       {/* video */}
       {/* <div className="container mx-auto px-4 py-8">
@@ -165,6 +165,7 @@ export default function Home() {
         </div>
       </div> */}
 
+      <ProjectCarousel />
       <Services />
       <ComparisonSection />
       <CarouselCard />

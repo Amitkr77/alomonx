@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import VanillaTilt from "vanilla-tilt";
 import Link from "next/link";
 import { ContactModel } from "./ContactModel";
+import { BookOpenText, Hammer, Info, Menu, Phone } from "lucide-react";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -254,7 +255,7 @@ export default function Header() {
           whileTap={{ scale: 0.9 }}
         >
           <svg
-            className="h-8 w-8 text-white"
+            className="h-8 w-8 text-cyan-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -282,27 +283,34 @@ export default function Header() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="lg:hidden bg-gradient-to-b from-gray-900/95 to-blue-900/95 px-6 py-8 space-y-6"
+            className="lg:hidden bg-gradient-to-br from-cyan-400/20 to-blue-400/20 px-6 py-8 space-y-6 min-h-screen backdrop-blur-3xl flex  justify-center items-start"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <a href="#" className="block text-white text-lg">
-              Services
-            </a>
-            <a href="#" className="block text-white text-lg">
-              Solutions
-            </a>
-            <a href="#" className="block text-white text-lg">
-              Blog
-            </a>
-            <a href="#" className="block text-white text-lg">
-              About
-            </a>
-            <a href="#" className="block text-white text-lg">
-              Contact
-            </a>
+            <div className=" text-left space-y-6">
+              <a href="#" className="flex items-center text-black  text-lg ">
+                <Hammer className="w-4 h-4 mr-2" />
+                Services
+              </a>
+              <a href="#" className="flex items-center text-black  text-lg ">
+                <Menu className="w-4 h-4 mr-2" />
+                Solutions
+              </a>
+              <a href="#" className="flex items-center text-black  text-lg ">
+                <BookOpenText className="w-4 h-4 mr-2" />
+                Blog
+              </a>
+              <a href="#" className="flex items-center text-black  text-lg ">
+                <Info className="w-4 h-4 mr-2" />
+                About
+              </a>
+              <a href="#" className="flex items-center text-black text-lg ">
+                <Phone className="w-4 h-4 mr-2" />
+                Contact
+              </a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

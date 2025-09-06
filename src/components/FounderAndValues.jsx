@@ -14,21 +14,25 @@ export default function FounderAndValues() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const founders = [
     {
       name: "Anand Kumar",
-      role: "Founder & CEO",
+      role: "Founder",
       image: "./founders/anand.jpg",
-      desc: "With over 15 years of experience in digital innovation, Anand spearheads Alomonx Technology’s mission to deliver transformative solutions, blending strategic vision with technical expertise to empower businesses globally.",
+      desc: "Anand is a passionate tech enthusiast and the visionary behind Alomonx Technology. Although new to the industry, he brings strong technical skills, fresh ideas, and a deep understanding of modern technologies to drive the company's growth.",
     },
     {
       name: "Ashish Kumar",
-      role: "Co-Founder & CTO",
+      role: "Co-Founder",
       image: "./founders/ashish.jpg",
-      desc: "Ashish’s technical prowess and innovative mindset drive the development of cutting-edge platforms, ensuring scalable, secure, and high-performance solutions that redefine industry standards.",
+      desc: "Ashish is a skilled developer with a solid foundation in the tech field. As a first-time entrepreneur, he brings energy, curiosity, and a strong problem-solving mindset to help build innovative and impactful solutions through Alomonx Technology.",
     },
   ];
 
@@ -55,7 +59,6 @@ export default function FounderAndValues() {
     },
   ];
   console.log(founders[0].image);
-  
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 bg-gradient-to-b from-white to-cyan-50">
@@ -67,10 +70,7 @@ export default function FounderAndValues() {
         className=""
       >
         {/* Founders Section */}
-        <motion.div
-          variants={containerVariants}
-          className=""
-        >
+        <motion.div variants={containerVariants} className="">
           <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-gray-900 mb-8">
             {/* Meet Our Visionaries */}
           </h2>
@@ -85,7 +85,7 @@ export default function FounderAndValues() {
                   src={founder.image}
                   alt={founder.name}
                   className="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover mb-4 border-2 border-cyan-200 bg-gray-100"
-                //   onError={(e) => (e.target.src = "/founders/anand.jpg")} // Fallback image
+                  //   onError={(e) => (e.target.src = "/founders/anand.jpg")} // Fallback image
                   whileHover={{ scale: 1.05, rotate: 2 }}
                   transition={{ duration: 0.3 }}
                 />
@@ -108,10 +108,7 @@ export default function FounderAndValues() {
         </motion.div>
 
         {/* Values Section */}
-        <motion.div
-          variants={containerVariants}
-          className=""
-        >
+        <motion.div variants={containerVariants} className="">
           <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-gray-900 mb-8">
             Our Guiding Principles
           </h2>
