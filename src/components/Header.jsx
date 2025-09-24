@@ -136,11 +136,11 @@ export default function Header() {
             whileTap={{ scale: 0.95 }}
           >
             <motion.div
-              className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-full flex items-center justify-center shadow-lg"
+              className="w-12 h-12  rounded-full flex items-center justify-center shadow-lg"
               animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              <img src="/logo.png" alt="" />
+              <img src="/logo.png" alt=""  />
             </motion.div>
             <span
               className={`text-3xl font-bold  tracking-tight bg-gradient-to-br from-cyan-400 to-blue-400  bg-clip-text text-transparent`}
