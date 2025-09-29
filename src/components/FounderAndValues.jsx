@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head"; // Import Next.js Head component
 import { Card, CardContent, CardTitle, CardDescription } from "./ui/card";
 import { Target, Award, Heart, Users } from "lucide-react";
 import { motion } from "framer-motion";
@@ -25,13 +26,13 @@ export default function FounderAndValues() {
     {
       name: "Anand Kishor",
       role: "Founder",
-      image: "./founders/anand.jpg",
-      desc: "As a founder of Alomonx technology With a deep passion for technology, business strategy, and digital transformation. Helping businesses and individuals harness the power of advanced technologies to drive growth and digital empowerment.",
+      image: "./founders/founder.jpg",
+      desc: "As a founder of Alomonx technology With a deep passion for technology, business strategy, and digital transformation. Helping businesses and individuals harness the power of advanced technologies to drive growth and digital empowerment.",
     },
     {
       name: "Ashish Kumar Singh",
       role: "Co-Founder",
-      image: "./founders/ashish.jpg",
+      image: "./founders/co-founder.jpg",
       desc: "Tech innovator focused on building scalable solutions and driving digital progress. Passionate about leading agile teams, solving real-world challenges, and empowering businesses to thrive in a rapidly evolving digital landscape.",
     },
   ];
@@ -58,83 +59,120 @@ export default function FounderAndValues() {
       desc: "We thrive on teamwork, uniting diverse expertise to create cohesive, impactful solutions that drive collective success.",
     },
   ];
+
   console.log(founders[0].image);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 bg-gradient-to-b from-white to-cyan-50">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className=""
-      >
-        {/* Founders Section */}
-        <motion.div variants={containerVariants} className="">
-          <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-gray-900 mb-8">
-            {/* Meet Our Visionaries */}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-            {founders.map((founder, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="flex flex-col items-center text-center bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
-              >
-                <motion.img
-                  src={founder.image}
-                  alt={founder.name}
-                  className="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover mb-4 border-2 border-cyan-200 bg-gray-100"
-                  //   onError={(e) => (e.target.src = "/founders/anand.jpg")} // Fallback image
-                  whileHover={{ scale: 1.05, rotate: 2 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <Card className="border-none shadow-none bg-transparent">
-                  <CardContent className="p-0">
-                    <CardTitle className="text-lg sm:text-xl font-medium text-gray-900">
-                      {founder.name}
-                    </CardTitle>
-                    <CardDescription className="text-sm text-gray-500 mb-3">
-                      {founder.role}
-                    </CardDescription>
-                    <p className="text-sm text-gray-600 leading-relaxed max-w-xs">
-                      {founder.desc}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+    <>
+      {/* Metadata using Next.js Head */}
+      <Head>
+        <title>Meet Our Founders & Core Values | Alomonx Technology</title>
+        <meta
+          name="description"
+          content="Discover the visionaries behind Alomonx Technology and our core values driving innovation, excellence, integrity, and collaboration."
+        />
+        <meta
+          name="keywords"
+          content="Alomonx Technology, founders, values, innovation, digital transformation, technology solutions"
+        />
+        <meta name="author" content="Alomonx Technology" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Meet Our Founders & Core Values | Alomonx Technology" />
+        <meta
+          property="og:description"
+          content="Learn about the founders of Alomonx Technology and the guiding principles that shape our mission to empower businesses through technology."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.alomonx.com/about" /> 
+        <meta
+          property="og:image"
+          content="https://www.alomonx.com/images/founder.jpg" /> 
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Meet Our Founders & Core Values | Alomonx Technology" />
+        <meta
+          name="twitter:description"
+          content="Discover the visionaries behind Alomonx Technology and our core values driving innovation, excellence, integrity, and collaboration."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.alomonx.com/founders/founder.jpg" /> 
+        <link rel="canonical" href="https://www.alomonx.com/about" /> 
+      </Head>
 
-        {/* Values Section */}
-        <motion.div variants={containerVariants} className="">
-          <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-gray-900 mb-8">
-            Our Guiding Principles
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {values.map((value, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="flex items-start p-5 bg-gradient-to-r from-white to-cyan-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
-                whileHover={{ y: -5, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <value.icon className="h-6 w-6 text-cyan-500 mr-4 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">
-                    {value.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {value.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 bg-gradient-to-b from-white to-cyan-50">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className=""
+        >
+          {/* Founders Section */}
+          <motion.div variants={containerVariants} className="">
+            <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-gray-900 mb-8">
+              Meet Our Visionaries
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+              {founders.map((founder, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="flex flex-col items-center text-center bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <motion.img
+                    src={founder.image}
+                    alt={founder.name}
+                    className="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover mb-4 border-2 border-cyan-200 bg-gray-100"
+                    whileHover={{ scale: 1.05, rotate: 2 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                  <Card className="border-none shadow-none bg-transparent">
+                    <CardContent className="p-0">
+                      <CardTitle className="text-lg sm:text-xl font-medium text-gray-900">
+                        {founder.name}
+                      </CardTitle>
+                      <CardDescription className="text-sm text-gray-500 mb-3">
+                        {founder.role}
+                      </CardDescription>
+                      <p className="text-sm text-gray-600 leading-relaxed max-w-xs">
+                        {founder.desc}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Values Section */}
+          <motion.div variants={containerVariants} className="">
+            <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-gray-900 mb-8">
+              Our Guiding Principles
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {values.map((value, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="flex items-start p-5 bg-gradient-to-r from-white to-cyan-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <value.icon className="h-6 w-6 text-cyan-500 mr-4 mt-1 flex-shrink-0" />
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900">
+                      {value.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      {value.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
-    </section>
+      </section>
+    </>
   );
 }

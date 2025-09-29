@@ -3,46 +3,94 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import VanillaTilt from "vanilla-tilt";
 import Link from "next/link";
+import Head from "next/head";
 import { ContactModel } from "./ContactModel";
-import { BookOpenText, Hammer, Info, Menu, Phone } from "lucide-react";
+import { BookOpenText, Hammer, Info, Phone,Menu } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export default function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [theme, setTheme] = useState("light");
+  const [open, setOpen] = useState(false);
   const navItemsRef = useRef([]);
 
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-
+  // Scroll handling with debouncing
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    let timeoutId;
+    const handleScroll = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsScrolled(window.scrollY > 40);
+      }, 100);
+    };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
+  // Theme detection
   useEffect(() => {
-    navItemsRef.current.forEach((el) => {
-      if (el) {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = () => {
+      setTheme(mediaQuery.matches ? "dark" : "light");
+    };
+    mediaQuery.addEventListener("change", handleChange);
+    handleChange();
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  // VanillaTilt initialization
+  useEffect(() => {
+    const tiltElements = navItemsRef.current.filter((el) => el instanceof HTMLElement);
+    tiltElements.forEach((el) => {
+      try {
         VanillaTilt.init(el, {
           max: 15,
           speed: 400,
           glare: true,
           "max-glare": 0.3,
         });
+      } catch (error) {
+        console.error("Failed to initialize VanillaTilt:", error);
       }
     });
+
+    return () => {
+      tiltElements.forEach((el) => {
+        if (el.vanillaTilt) {
+          el.vanillaTilt.destroy();
+        }
+      });
+    };
   }, []);
 
+  // Analytics tracking
+  const trackEvent = (action, label) => {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", action, { event_label: label });
+    }
+  };
+
   const NavItem = ({ children, href, index }) => (
-    <Link href={href}>
+    <Link href={href} onClick={() => trackEvent("click", `${children} Nav`)}>
       <motion.div
         ref={(el) => (navItemsRef.current[index] = el)}
-        className={`relative  font-medium px-5 py-2 rounded-full transition-all duration-300 text-black`}
+        className="relative font-medium px-5 py-2 rounded-full transition-all duration-300 text-black"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >
         {children}
         <motion.span
-          className="absolute bottom-0 left-1/2 w-0 h-0.5  transform -translate-x-1/2"
+          className="absolute bottom-0 left-1/2 w-0 h-0.5 transform -translate-x-1/2 bg-black"
           whileHover={{ width: "80%" }}
           transition={{ duration: 0.3 }}
         />
@@ -50,38 +98,52 @@ export default function Header() {
     </Link>
   );
 
-  const Dropdown = ({ trigger, children, index }) => {
+  const Dropdown = ({ trigger, children, index, isScrolled }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
-    const navItemsRef = useRef([]); // if used elsewhere, otherwise remove
-    const isScrolled = false; // replace with your logic or prop
+    const buttonRef = useRef(null);
 
-    // Close dropdown on outside click
     useEffect(() => {
       const handleClickOutside = (event) => {
-        if (
-          dropdownRef.current &&
-          !dropdownRef.current.contains(event.target)
-        ) {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
           setIsOpen(false);
         }
       };
-
       document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
+      return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        setIsOpen(!isOpen);
+      }
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
 
     return (
       <div className="relative" ref={dropdownRef}>
         <motion.button
-          ref={(el) => (navItemsRef.current[index] = el)}
+          ref={(el) => {
+            navItemsRef.current[index] = el;
+            buttonRef.current = el;
+          }}
           className={`flex items-center font-medium px-5 py-2 rounded-full ${
             isScrolled ? "text-white" : "text-black"
           }`}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => {
+            setIsOpen(!isOpen);
+            trackEvent("click", `${trigger} Dropdown`);
+          }}
+          onKeyDown={handleKeyDown}
           whileHover={{ scale: 1.1 }}
+          aria-expanded={isOpen}
+          aria-controls={`dropdown-${index}`}
+          aria-haspopup="true"
+          id={`dropdown-${index}-button`}
         >
           {trigger}
           <motion.svg
@@ -104,11 +166,16 @@ export default function Header() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 w-80 rounded-2xl shadow-2xl p-6 z-50 border border-white/10 backdrop-blur-2xl backdrop-saturate-200 bg-black/50"
+              id={`dropdown-${index}`}
+              className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-4 w-80 rounded-2xl shadow-2xl p-6 z-50 border border-white/10 backdrop-blur-2xl backdrop-saturate-200 ${
+                isScrolled ? "bg-black/50 text-white" : "bg-white/50 text-black"
+              }`}
               initial={{ opacity: 0, scale: 0.9, y: -20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: -20 }}
               transition={{ duration: 0.3 }}
+              role="menu"
+              aria-labelledby={`dropdown-${index}-button`}
             >
               {children}
             </motion.div>
@@ -119,201 +186,267 @@ export default function Header() {
   };
 
   return (
-    <motion.header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        isScrolled ? "" : ""
-      }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.7 }}
-    >
-      <div className="container mx-auto p-3 flex justify-between items-center">
-        {/* Logo */}
-        <Link href="/">
-          <motion.div
-            className="flex items-center space-x-3"
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.95 }}
-          >
+    <>
+      <Head>
+        <link rel="preload" href="/logo.png" as="image" />
+      </Head>
+      <motion.header
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+          isScrolled
+            ? ""
+            : "bg-transparent"
+        }`}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.7 }}
+      >
+        <div className="container mx-auto p-3 flex justify-between items-center">
+          {/* Logo */}
+          <Link href="/">
             <motion.div
-              className="w-12 h-12  rounded-full flex items-center justify-center shadow-lg"
-              animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
+              className="flex items-center space-x-3"
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <img src="/logo.png" alt=""  />
+              <motion.div
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg"
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <img
+                  src="/logo.png"
+                  alt="Alomonx Logo"
+                  className="w-full h-full object-contain"
+                  onError={(e) => (e.target.src = "/fallback-logo.png")}
+                />
+              </motion.div>
+              <span
+                className={`text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-br ${
+                  theme === "dark" ? "from-cyan-300 to-blue-300" : "from-cyan-400 to-blue-400"
+                } bg-clip-text text-transparent`}
+              >
+                Alomonx
+              </span>
             </motion.div>
-            <span
-              className={`text-3xl font-bold  tracking-tight bg-gradient-to-br from-cyan-400 to-blue-400  bg-clip-text text-transparent`}
-            >
-              Alomonx
-            </span>
-          </motion.div>
-        </Link>
+          </Link>
 
-        {/* Desktop Navigation */}
-        <nav
-          className={`hidden lg:flex items-center space-x-8  backdrop-blur-lg rounded-full px-10 py-2 border border-white/10 
-          bg-gradient-to-br from-cyan-400/20 to-blue-400/20 `}
-        >
-          <NavItem href="/" index={0}>
-            Home
-          </NavItem>
-          <Dropdown trigger="Services" index={1}>
-            {/* Dropdown Content */}
-            <div className="space-y-4">
-              {/* <div className="flex items-center text-white font-semibold">
-                <svg
-                  className="mr-2 h-6 w-6 text-cyan-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+          {/* Desktop Navigation */}
+          <nav
+            className="hidden lg:flex items-center space-x-8 backdrop-blur-lg rounded-full px-10 py-2 border border-white/10 bg-gradient-to-br from-cyan-400/20 to-blue-400/20"
+            role="navigation"
+            aria-label="Main navigation"
+          >
+            <NavItem href="/" index={0}>
+              Home
+            </NavItem>
+            <Dropdown trigger="Services" index={1} isScrolled={isScrolled}>
+              <div className="space-y-4">
+                <Link
+                  href="/services/web-development"
+                  className="block px-4 py-2 hover:bg-white/10 rounded-lg"
+                  onClick={() => trackEvent("click", "Web Development Dropdown")}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Digital Growth
-              </div> */}
-              <Link
-                href="/services/web-development"
-                className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
-              >
-                Web development
-              </Link>
-              <Link
-                href="/services/digital-marketing"
-                className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
-              >
-                Digital Marketing
-              </Link>
-              {/* <Link
-                href="/services/ad-campaigns"
-                className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
-              >
-                Ad Campaigns
-              </Link>
-               */}
-            </div>
-          </Dropdown>
-
-          {/* <Dropdown trigger="Solutions" index={1}>
-            <div className="space-y-4">
-              <div className="flex items-center text-white font-semibold">
-                <svg
-                  className="mr-2 h-6 w-6 text-cyan-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  Web Development
+                </Link>
+                <Link
+                  href="/services/digital-marketing"
+                  className="block px-4 py-2 hover:bg-white/10 rounded-lg"
+                  onClick={() => trackEvent("click", "Digital Marketing Dropdown")}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-                Analytics
+                  Digital Marketing
+                </Link>
               </div>
-              <Link
-                href="/services/real-time-insights"
-                className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
-              >
-                Real-Time Insights
-              </Link>
-              <Link
-                href="/services/data-dashboard"
-                className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg"
-              >
-                Data Dashboards
-              </Link>
-            </div>
-          </Dropdown> */}
+            </Dropdown>
+            <NavItem href="/blog" index={2}>
+              Blog
+            </NavItem>
+            <NavItem href="/about" index={3}>
+              About
+            </NavItem>
+            <NavItem href="/contact" index={4}>
+              Contact
+            </NavItem>
+          </nav>
 
-          <NavItem href="/blog" index={2}>
-            Blog
-          </NavItem>
-          <NavItem href="/about" index={3}>
-            About
-          </NavItem>
-          <NavItem href="/contact" index={4}>
-            Contact
-          </NavItem>
-        </nav>
+          {/* Desktop CTA and Theme Toggle */}
+          <div className="hidden lg:flex items-center space-x-4">
+            <ContactModel />
+            
+          </div>
 
-        {/* CTA */}
-        <div className="hidden lg:block">
-          <ContactModel />
+          {/* Mobile Menu Sheet Trigger */}
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <motion.div
+                whileTap={{ scale: 0.9 }}
+                className="flex items-center justify-center lg:hidden p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300"
+                aria-label={open ? "Close menu" : "Open menu"}
+              >
+                <svg
+                  className="h-8 w-8 text-cyan-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <AnimatePresence mode="wait">
+                    {open ? (
+                      <motion.path
+                        key="close"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M6 18L18 6M6 6l12 12"
+                        initial={{ opacity: 0, rotate: -90 }}
+                        animate={{ opacity: 1, rotate: 0 }}
+                        exit={{ opacity: 0, rotate: 90 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    ) : (
+                      <motion.path
+                        key="open"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M4 6h16M4 12h16M4 18h16"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    )}
+                  </AnimatePresence>
+                </svg>
+              </motion.div>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              className="w-80 sm:w-96 max-w-md mx-auto bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-xl border border-white/10 rounded-l-2xl p-6"
+            >
+              <SheetHeader className="mb-6 flex justify-between items-center">
+                <div>
+                  <SheetTitle className="text-gray-300 text-2xl font-semibold font-sans">
+                    Menu
+                  </SheetTitle>
+                  <SheetDescription className="text-gray-300 text-sm font-medium font-sans">
+                    Explore our services and connect with us.
+                  </SheetDescription>
+                </div>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 absolute top-1 right-1"
+                  aria-label="Close menu"
+                >
+                  <svg
+                    className="h-6 w-6 text-cyan-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </SheetHeader>
+              <div className="py-8 space-y-4">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 }}
+                >
+                  <Link
+                    href="/services"
+                    className="flex items-center text-gray-300 text-lg font-medium font-sans hover:bg-white/10 p-4 rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                    onClick={() => {
+                      trackEvent("click", "Services Mobile Menu");
+                      setOpen(false);
+                    }}
+                  >
+                    <Hammer className="w-6 h-6 mr-3 text-cyan-500" />
+                    Services
+                  </Link>
+                </motion.div>
+                <hr className="border-white/10" />
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
+                >
+                  <Link
+                    href="/portfolio"
+                    className="flex items-center text-gray-300 text-lg font-medium font-sans hover:bg-white/10 p-4 rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                    onClick={() => {
+                      trackEvent("click", "Portfolio Mobile Menu");
+                      setOpen(false);
+                    }}
+                  >
+                    <Menu className="w-6 h-6 mr-3 text-cyan-500" />
+                    Portfolio
+                  </Link>
+                </motion.div>
+                <hr className="border-white/10" />
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.3 }}
+                >
+                  <Link
+                    href="/blog"
+                    className="flex items-center text-gray-300 text-lg font-medium font-sans hover:bg-white/10 p-4 rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                    onClick={() => {
+                      trackEvent("click", "Blog Mobile Menu");
+                      setOpen(false);
+                    }}
+                  >
+                    <BookOpenText className="w-6 h-6 mr-3 text-cyan-500" />
+                    Blog
+                  </Link>
+                </motion.div>
+                <hr className="border-white/10" />
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                >
+                  <Link
+                    href="/about"
+                    className="flex items-center text-gray-300 text-lg font-medium font-sans hover:bg-white/10 p-4 rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                    onClick={() => {
+                      trackEvent("click", "About Mobile Menu");
+                      setOpen(false);
+                    }}
+                  >
+                    <Info className="w-6 h-6 mr-3 text-cyan-500" />
+                    About
+                  </Link>
+                </motion.div>
+                <hr className="border-white/10" />
+                <motion.div
+                  className="pt-4"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.5 }}
+                >
+                  <Link
+                    href="/contact"
+                    className="flex items-center justify-center text-white text-lg font-semibold font-sans bg-gradient-to-br from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 p-4 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                    onClick={() => {
+                      trackEvent("click", "Contact Mobile Menu");
+                      setOpen(false);
+                    }}
+                  >
+                    <Phone className="w-6 h-6 mr-3" />
+                    Contact Us
+                  </Link>
+                </motion.div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
-
-        {/* Mobile Menu Button */}
-        <motion.button
-          className="lg:hidden p-3 rounded-full bg-white/10"
-          onClick={toggleMobileMenu}
-          whileTap={{ scale: 0.9 }}
-        >
-          <svg
-            className="h-8 w-8 text-cyan-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            {isMobileMenuOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
-        </motion.button>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            className="lg:hidden bg-gradient-to-br from-cyan-400/20 to-blue-400/20 px-6 py-8 space-y-6 min-h-screen backdrop-blur-3xl flex  justify-center items-start"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className=" text-left space-y-6">
-              <a href="#" className="flex items-center text-black  text-lg ">
-                <Hammer className="w-4 h-4 mr-2" />
-                Services
-              </a>
-              <a href="#" className="flex items-center text-black  text-lg ">
-                <Menu className="w-4 h-4 mr-2" />
-                Solutions
-              </a>
-              <a href="#" className="flex items-center text-black  text-lg ">
-                <BookOpenText className="w-4 h-4 mr-2" />
-                Blog
-              </a>
-              <a href="#" className="flex items-center text-black  text-lg ">
-                <Info className="w-4 h-4 mr-2" />
-                About
-              </a>
-              <a href="#" className="flex items-center text-black text-lg ">
-                <Phone className="w-4 h-4 mr-2" />
-                Contact
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+      </motion.header>
+    </>
   );
 }

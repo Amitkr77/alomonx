@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://alomonx.com/
+
+# Sitemaps
+Sitemap: https://alomonx.com/sitemap.xml

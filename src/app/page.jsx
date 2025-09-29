@@ -17,13 +17,13 @@ import ProjectCarousel from "@/components/ProjectCarousel";
     {
       name: "Anand Kishor",
       role: "Founder",
-      image: "./founders/anand.jpg",
+      image: "./founders/founder.jpg",
       desc: "As a founder of Alomonx technology With a deep passion for technology, business strategy, and digital transformation. Helping businesses and individuals harness the power of advanced technologies to drive growth and digital empowerment.",
     },
     {
       name: "Ashish Kumar Singh",
       role: "Co-Founder",
-      image: "./founders/ashish.jpg",
+      image: "./founders/co-founder.jpg",
       desc: "Tech innovator focused on building scalable solutions and driving digital progress. Passionate about leading agile teams, solving real-world challenges, and empowering businesses to thrive in a rapidly evolving digital landscape.",
     },
   ];
@@ -154,17 +154,6 @@ export default function Home() {
           }
         `}</style>
       </div>
-      {/* <CarouselCard/> */}
-      {/* video */}
-      {/* <div className="container mx-auto px-4 py-8">
-        <div className="relative max-w-5xl mx-auto rounded-lg overflow-hidden shadow-lg">
-          <video className="w-full h-auto" autoPlay muted loop playsInline>
-            <source src="./hero_video.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div> */}
-
       <ProjectCarousel />
       <Services />
       <ComparisonSection />
@@ -201,7 +190,7 @@ export default function Home() {
                     alt={founder.name}
                     className="rounded-full w-full h-full object-cover border-4 border-cyan-200 shadow-md transition-transform duration-300 group-hover:scale-105 group-hover:rotate-1"
                     onError={(e) =>
-                      (e.target.src = "/founders/placeholder.jpg")
+                      (e.target.src = "/founders/founder.jpg")
                     }
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3 }}

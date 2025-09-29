@@ -91,9 +91,9 @@ export default function Footer() {
         {/* Contact & Social */}
         <motion.div
           variants={itemVariants}
-          className="col-span-2 lg:col-span-1 flex flex-col items-center "
+          className="col-span-2 lg:col-span-1 flex flex-col items-center  "
         >
-          <div className="flex space-x-4 text-gray-600 text-lg mb-6">
+          <div className="flex space-x-4 text-gray-600 text-lg mb-3  w-full">
             {[
               {
                 href: "https://www.facebook.com/share/19funaxch4/?mibextid=wwXIfr",
@@ -116,7 +116,7 @@ export default function Footer() {
               </Link>
             ))}
           </div>
-          <div className="text-sm">
+          <div className="text-sm sm:text-left text-center ">
             <p className="font-medium">Kurji, Digha, Patna, Bihar</p>
             <p className="mt-2 text-gray-600">
               Monday – Saturday <br /> 10:00 AM – 6:00 PM

@@ -61,13 +61,13 @@ const About = () => {
     {
       name: "Anand Kishor",
       role: "Founder ",
-      image: "./founders/anand.jpg",
+      image: "./founders/founder.jpg",
        desc: "As a founder of Alomonx technology With a deep passion for technology, business strategy, and digital transformation. Helping businesses and individuals harness the power of advanced technologies to drive growth and digital empowerment.",
     },
     {
       name: "Ashish Kumar singh",
       role: "Co-Founder",
-      image: "./founders/ashish.jpg",
+      image: "./founders/co-founder.jpg",
      desc: "Tech innovator focused on building scalable solutions and driving digital progress. Passionate about leading agile teams, solving real-world challenges, and empowering businesses to thrive in a rapidly evolving digital landscape.",
     },
   ];

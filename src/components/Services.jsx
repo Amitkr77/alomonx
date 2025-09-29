@@ -1,9 +1,7 @@
 "use client";
 import React from "react";
 import { ServiceCard } from "./ServiceCard";
-
 import { Button } from "./ui/button";
-
 import {
   Code2,
   PenTool,
@@ -11,6 +9,7 @@ import {
   LayoutTemplate,
   ShoppingCart,
   SearchCheck,
+  SettingsIcon,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -21,8 +20,7 @@ const services = [
     description: "We build scalable and performant websites and apps.",
     badgeNumber: "01",
     badgeColor: "blue-500",
-        slug: "web-development",
-
+    slug: "web-development",
     Icon: Code2,
   },
   {
@@ -31,8 +29,7 @@ const services = [
     description: "Creative and user-friendly design solutions.",
     badgeNumber: "02",
     badgeColor: "violet-500",
-        slug: "ui-ux-design",
-
+    slug: "ui-ux-design",
     Icon: PenTool,
   },
   {
@@ -41,35 +38,31 @@ const services = [
     description: "Boost your brand with targeted strategies.",
     badgeNumber: "03",
     badgeColor: "green-500",
-        slug: "digital-marketing",
-
+    slug: "digital-marketing",
     Icon: TrendingUp,
   },
   {
     id: 4,
-    title: "WordPress Development",
+    title: "WP Development",
     description: "Custom themes, plugins, and full WP solutions.",
     badgeNumber: "04",
-        slug: "wordpress-development",
-
+    slug: "wordpress-development",
     badgeColor: "yellow-500",
     Icon: LayoutTemplate,
   },
   {
     id: 5,
-    title: "Ecommerce Development",
+    title: "Ecom Development",
     description: "Powerful ecommerce stores with secure features.",
     badgeNumber: "05",
     badgeColor: "red-500",
-        slug: "ecommerce-development",
-
+    slug: "ecommerce-development",
     Icon: ShoppingCart,
   },
   {
     id: 6,
     title: "SEO Optimization",
-        slug: "seo-optimization",
-
+    slug: "seo-optimization",
     description: "Enhance your website’s visibility and ranking.",
     badgeNumber: "06",
     badgeColor: "indigo-500",
@@ -79,37 +72,52 @@ const services = [
 
 const Services = () => {
   return (
-    <section className=" p-10 md:p-16  text-black">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+    <section
+      className="py-12 md:py-20 bg-gradient-to-b from-gray-50 to-white text-black"
+      aria-label="Our Services Section"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
-        <div className="col-span-1 md:col-span-3 flex flex-col md:flex-row md:items-center md:justify-between text-center md:text-left mb-6">
-          <div>
-            <h1 className="text-5xl font-bold uppercase mb-4">Services</h1>
-            <p className="text-lg  max-w-xl">
-              Explore our wide range of services designed to help your business
-              grow in the digital world.
-            </p>
+        <div className="text-center  mb-12 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-light tracking-wide text-gray-700 flex items-center justify-center gap-2 ">
+           <SettingsIcon className="text-blue-400" size={36}/>
+            Our Services
+          </h1>
+          <p className="text-lg text-gray-500 mt-4 max-w-2xl mx-auto leading-relaxed ">
+            Discover our comprehensive suite of digital solutions designed to
+            elevate your business. From cutting-edge web development to
+            strategic marketing, we empower your brand to thrive in the digital
+            landscape.
+          </p>
+          <p className="mt-2 text-sm text-blue-500 italic ">
+            Your success is our mission.
+          </p>
+          <div className="mt-6">
+            <Link href="/services">
+              <Button
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-transform duration-300 ease-custom hover:scale-105"
+                aria-label="Explore all services"
+              >
+                Explore All Services
+              </Button>
+            </Link>
           </div>
-
-          {/* <div className="mt-6 md:mt-0">
-            <Button size="lg" className=" text-blue-700 bg-blue-100 font-semibold transition hover:bg-blue-200">
-              Get Free Consultation
-            </Button>
-          </div> */}
         </div>
 
         {/* Service Cards */}
-        {services.map((service) => (
-          <div key={service.id} className="flex justify-center">
-            <Link
-              key={service.id}
-              href={`/services/${service.slug}`}
-              className=""
-            >
-              <ServiceCard {...service} />
-            </Link>
-          </div>
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service) => (
+            <div key={service.id} className="flex justify-center">
+              <Link
+                href={`/services/${service.slug}`}
+                className="group/link block transition-transform duration-300 ease-custom hover:scale-102"
+                aria-label={`Learn more about ${service.title}`}
+              >
+                <ServiceCard {...service} />
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

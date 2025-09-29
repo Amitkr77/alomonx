@@ -6,21 +6,21 @@ import { Quote } from "lucide-react";
 const Testimonials = () => {
   const testimonialsData = [
     {
-      name: "Emma Carter",
-      role: "Chief Marketing Officer",
-      quote: "Their innovative approach skyrocketed our engagement by 50% in just three months!",
+      name: "Hemnarayan Singn",
+      role: "BJP state leader",
+      quote: " Alomonx Technology played a crucial role in managing and executing our digital campaign. Their team was proactive, creative, and deeply committed to our vision. From social media strategy to ground-level voter engagement through digital channels, their work helped amplify our message effectively. A reliable and impactful partner for political campaigns! ",
       date: "September 2025",
     },
     {
-      name: "Liam Patel",
-      role: "Tech Entrepreneur",
-      quote: "A seamless experience from start to finish. Their solutions are both creative and reliable.",
+      name: "Tech Altum MD",
+      role: " Tech Altum Institute",  
+      quote: " Alomonx Technology has helped us improve our online presence and generate more student inquiries through smart digital marketing. Their team is professional, creative, and result-oriented. We’re happy with the outcome! ",
       date: "August 2025",
     },
     {
-      name: "Olivia Chen",
-      role: "E-commerce Director",
-      quote: "Our revamped platform now shines in a competitive market, thanks to their expertise.",
+      name: "Shoheb Khan",
+      role: "Royal Darbar",
+      quote: " The digital marketing services provided by Alomonx Technology have been exceptional. Their team organized our Google My Business profile and manages post creation, which has significantly improved our online presence and helped us reach more customers. Highly recommended for anyone looking for reliable digital marketing support. ",
       date: "July 2025",
     },
   ];
@@ -91,7 +91,7 @@ const Testimonials = () => {
                 <p className="text-sm text-cyan-600">{testimonial.role}</p>
                 <p className="text-xs text-gray-500 mt-1">{testimonial.date}</p>
               </div>
-              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-cyan-500 rounded-full" />
+              {/* <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-cyan-500 rounded-full" /> */}
             </motion.div>
           ))}
         </motion.div>
