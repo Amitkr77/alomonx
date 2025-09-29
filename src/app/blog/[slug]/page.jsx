@@ -295,7 +295,7 @@ const BlogDetail = () => {
       {/* Breadcrumb Navigation */}
       <div className="max-w-6xl mx-auto px-4 py-4">
         <nav className="flex items-center gap-2 text-sm text-gray-600">
-          <Link href="/" className="hover:text-teal-600">
+          <Link href="/" className="hover:text-teal-600 flex items-center ">
             <Home className="h-4 w-4 inline-block mr-1" />
             Home
           </Link>
@@ -304,7 +304,7 @@ const BlogDetail = () => {
             Blog
           </Link>
           <span>/</span>
-          <span className="text-teal-600">{post.title}</span>
+          <span className="text-teal-600 ">{post.title}</span>
         </nav>
       </div>
 

@@ -37,16 +37,7 @@ export default function Header() {
     };
   }, []);
 
-  // Theme detection
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = () => {
-      setTheme(mediaQuery.matches ? "dark" : "light");
-    };
-    mediaQuery.addEventListener("change", handleChange);
-    handleChange();
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
+ 
 
   // VanillaTilt initialization
   useEffect(() => {
@@ -131,9 +122,7 @@ export default function Header() {
             navItemsRef.current[index] = el;
             buttonRef.current = el;
           }}
-          className={`flex items-center font-medium px-5 py-2 rounded-full ${
-            isScrolled ? "text-white" : "text-black"
-          }`}
+          className={`flex items-center font-medium px-5 py-2 rounded-full`}
           onClick={() => {
             setIsOpen(!isOpen);
             trackEvent("click", `${trigger} Dropdown`);
@@ -271,7 +260,6 @@ export default function Header() {
           {/* Desktop CTA and Theme Toggle */}
           <div className="hidden lg:flex items-center space-x-4">
             <ContactModel />
-            
           </div>
 
           {/* Mobile Menu Sheet Trigger */}
