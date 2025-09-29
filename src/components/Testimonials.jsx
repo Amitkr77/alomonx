@@ -6,7 +6,7 @@ import { Quote } from "lucide-react";
 const Testimonials = () => {
   const testimonialsData = [
     {
-      name: "Hemnarayan Singn",
+      name: "Hemnarayan Singh",
       role: "BJP state leader",
       quote: " Alomonx Technology played a crucial role in managing and executing our digital campaign. Their team was proactive, creative, and deeply committed to our vision. From social media strategy to ground-level voter engagement through digital channels, their work helped amplify our message effectively. A reliable and impactful partner for political campaigns! ",
       date: "September 2025",
@@ -18,7 +18,7 @@ const Testimonials = () => {
       date: "August 2025",
     },
     {
-      name: "Shoheb Khan",
+      name: "sahal Khan",
       role: "Royal Darbar",
       quote: " The digital marketing services provided by Alomonx Technology have been exceptional. Their team organized our Google My Business profile and manages post creation, which has significantly improved our online presence and helped us reach more customers. Highly recommended for anyone looking for reliable digital marketing support. ",
       date: "July 2025",
