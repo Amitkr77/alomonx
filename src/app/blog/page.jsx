@@ -1,3 +1,4 @@
+// src\app\blog\page.jsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,105 +29,90 @@ import Link from "next/link";
 const blogPosts = [
   {
     id: 1,
-    title: "The Future of Web Development in 2025",
-    slug: "the-future-of-web-development-in-2025",
-    excerpt: "Explore emerging trends and technologies shaping the web development landscape.",
-    content: "Web development in 2025 is set to be a transformative year with advancements in AI-driven development, Web3 integration, and enhanced performance optimization. Developers are leveraging tools like Next.js, AI code assistants, and serverless architectures to build faster, more secure, and scalable applications. The rise of low-code platforms is also empowering businesses to create custom solutions with minimal coding expertise. In this article, we dive into the key trends, including progressive web apps, real-time data processing, and the impact of 5G on web experiences.",
-    date: "August 20, 2025",
-    category: "Technology",
-    image:
-      "https://images.unsplash.com/photo-1669023414162-8b0573b9c6b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHdlYiUyMGRldmVsb3BtZW50fGVufDB8MHwwfHx8MA%3D%3D",
-    author: {
-      name: "Jane Doe",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop",
-    },
-    readingTime: 5,
-    comments: 12,
-    relatedPosts: [2, 4],
-  },
-  {
-    id: 2,
-    title: "Boosting Your Brand with Digital Marketing",
-    slug: "boosting-your-brand-with-digital-marketing",
-    excerpt: "Learn strategies to enhance your online presence and engage your audience.",
-    content: "Digital marketing in 2025 is all about personalization and data-driven strategies. From AI-powered ad targeting to immersive storytelling through video content, brands are finding new ways to connect with their audiences. This article explores the latest trends in social media marketing, SEO optimization, and email campaigns, providing actionable insights to boost your brand’s visibility and engagement. Learn how to leverage analytics and automation to maximize ROI and build lasting customer relationships.",
-    date: "August 15, 2025",
-    category: "Marketing",
+    title:
+      "Digital Success in 2025: Transforming Small Businesses with Marketing and Web Design Trends",
+    slug: "digital-success-in-2025-transforming-small-businesses",
+    excerpt:
+      "Discover how digital marketing strategies and cutting-edge web design trends can empower small businesses to thrive in 2025.",
+    content: `
+     <h2>Introduction</h2>
+      <p>In 2025, digital marketing and web design are transforming small businesses by enabling them to compete with industry giants, reach global audiences, and deliver exceptional user experiences. From AI-powered personalization to mobile-first designs, this article explores how small businesses can leverage digital marketing strategies and the latest web design trends to grow faster, reach wider, and compete smarter.</p>
+      
+      <h3>Social Media Marketing: Building Communities in 2025</h3>
+      <p>Social media marketing remains a cornerstone for small businesses. Platforms like Instagram, TikTok, Facebook, and LinkedIn allow brands to share their stories, connect with audiences, and build loyal communities. By creating engaging content and leveraging platform-specific features like Instagram Reels or LinkedIn articles, small businesses can boost visibility and foster customer loyalty.</p>
+      
+      <h3>Local SEO: A Game Changer for Visibility</h3>
+      <p>Search Engine Optimization (SEO) in 2025 is more powerful than ever. By using smart keywords, AI-driven analytics, and local SEO strategies, small businesses can rank higher on Google search results, attracting local customers. Optimizing for "near me" searches and maintaining consistent business listings on platforms like Google My Business are key to driving foot traffic and online conversions.</p>
+      
+      <h3>The Power of Mobile-Friendly Websites</h3>
+      <p>A mobile-friendly website is non-negotiable in 2025. With most users accessing websites via smartphones, sites must load quickly, look great on all screen sizes, and provide seamless navigation. A smooth user experience increases visitor retention, encourages exploration, and boosts conversion rates.</p>
+      
+      <h3>Top 10 Website Design Trends for 2025</h3>
+      <p>Web design in 2025 is all about speed, simplicity, and personalization. Here are the top trends shaping the future of small business websites:</p>
+      <ul class="list-none pl-0 space-y-4">
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>AI-Powered Personalization:</strong> AI and machine learning deliver tailored content and dynamic layouts based on user preferences.</span>
+        </li>
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>Minimalist and Clean Layouts:</strong> Simple interfaces with ample white space and clear typography enhance readability and navigation.</span>
+        </li>
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>Dark Mode Designs:</strong> Modern and battery-saving, dark mode offers a sleek, professional aesthetic.</span>
+        </li>
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>3D and Immersive Visuals:</strong> Advanced graphics and micro-animations create engaging, futuristic experiences.</span>
+        </li>
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>Voice User Interfaces (VUI):</strong> Voice commands improve accessibility and speed up navigation.</span>
+        </li>
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>Faster Loading Speeds:</strong> Lightweight code and image compression ensure sites load in under three seconds.</span>
+        </li>
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>Bold Typography and Gradients:</strong> Creative fonts and colorful gradients give websites a strong visual identity.</span>
+        </li>
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>Sustainability-Focused Design:</strong> Eco-friendly designs with lightweight files reduce energy consumption.</span>
+        </li>
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>Interactive Elements:</strong> Hover effects and scroll-triggered transitions keep visitors engaged.</span>
+        </li>
+        <li class="flex items-start gap-3 text-gray-700">
+          <span class="text-teal-600 font-bold">✔</span>
+          <span><strong>Mobile-First and Responsive Design:</strong> Seamless adaptation to all devices ensures optimal performance.</span>
+        </li>
+      </ul>
+      
+      <h3>Final Thoughts</h3>
+      <p>The future of digital success for small businesses in 2025 lies in combining powerful digital marketing strategies with innovative web design. By embracing personalization, automation, and mobile-first approaches, small businesses can stand out, build trust, and drive growth. At Alomonx Technology, we specialize in creating websites and marketing strategies that empower businesses to thrive in the digital era.</p>`,
+    date: "October 20, 2025",
+    category: "Digital Strategy",
     image:
       "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1170&auto=format&fit=crop",
     author: {
-      name: "John Smith",
-      avatar:
-        "https://images.unsplash.com/photo-1500648762-418d3f2095c6?q=80&w=100&auto=format&fit=crop",
-    },
-    readingTime: 7,
-    comments: 8,
-    relatedPosts: [1, 3],
-  },
-  {
-    id: 3,
-    title: "Designing User-Centric Web Applications",
-    slug: "designing-user-centric-web-applications",
-    excerpt: "Discover best practices for creating intuitive and engaging web experiences.",
-    content: "User-centric design is at the heart of successful web applications. This article covers best practices for creating intuitive interfaces, including user research, wireframing, and iterative testing. We explore tools like Figma and Adobe XD, discuss accessibility standards, and highlight the importance of responsive design. With real-world examples, learn how to create web applications that delight users and drive engagement through seamless UX and visually appealing UI.",
-    date: "August 10, 2025",
-    category: "Design",
-    image:
-      "https://images.unsplash.com/photo-1605606722649-39761c5a3397?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGRlc2lnbmluZyUyMHRvb2x8ZW58MHwwfDB8fHww",
-    author: {
-      name: "Emily Brown",
-      avatar:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=100&auto=format&fit=crop",
-    },
-    readingTime: 6,
-    comments: 15,
-    relatedPosts: [2, 4],
-  },
-  {
-    id: 4,
-    title: "Scaling Your Business with Cloud Solutions",
-    slug: "scaling-your-business-with-cloud-solutions",
-    excerpt: "Understand how cloud technology can drive efficiency and growth.",
-    content: "Cloud solutions are revolutionizing how businesses scale and operate. This article dives into the benefits of cloud computing, including cost efficiency, scalability, and enhanced collaboration. We explore platforms like AWS, Azure, and Google Cloud, discussing use cases such as serverless computing, data storage, and disaster recovery. Learn how to implement cloud solutions to streamline operations and support business growth in a competitive landscape.",
-    date: "August 5, 2025",
-    category: "Technology",
-    image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1170&auto=format&fit=crop",
-    author: {
-      name: "Michael Lee",
+      name: "Alex Carter",
       avatar:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
     },
-    readingTime: 8,
+    readingTime: 6,
     comments: 10,
-    relatedPosts: [1, 3],
-  },
-  {
-    id: 5,
-    title: "AI in Everyday Design Tools",
-    slug: "ai-in-everyday-design-tools",
-    excerpt: "How AI is revolutionizing the design process for creators.",
-    content: "Artificial intelligence is transforming design workflows, enabling creators to work smarter and faster. This article explores how AI-powered tools like Canva, Adobe Sensei, and Figma plugins are streamlining design tasks, from generating layouts to suggesting color palettes. We discuss the benefits of AI in design, including automation, personalization, and enhanced creativity, while addressing ethical considerations and the future of AI-driven design.",
-    date: "July 30, 2025",
-    category: "Design",
-    image:
-      "https://images.unsplash.com/photo-1724638197367-1bab34842f90?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGRlc2lnbmluZyUyMHRvb2x8ZW58MHwwfDB8fHww",
-    author: {
-      name: "Sarah Davis",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop",
-    },
-    readingTime: 4,
-    comments: 5,
-    relatedPosts: [3, 1],
+    relatedPosts: [], // No related posts since there's only one
   },
 ];
 
-const categories = ["All", "Technology", "Marketing", "Design"];
+const categories = ["All", "Digital Strategy"];
 
 const calculateReadingTime = (content) => {
-  const words = content.split(" ").length;
+  const words = content.replace(/<[^>]+>/g, "").split(" ").length; // Strip HTML tags
   return Math.ceil(words / 200); // Average reading speed
 };
 
@@ -142,9 +128,7 @@ const Blog = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    // Set featured post as the latest one
     setFeaturedPost(blogPosts[0]);
-    // Calculate reading time if not provided
     blogPosts.forEach((post) => {
       if (!post.readingTime)
         post.readingTime = calculateReadingTime(post.content);
@@ -221,7 +205,8 @@ const Blog = () => {
               Insights & Innovations
             </h1>
             <p className="text-lg text-gray-200">
-              Explore expert articles on technology, design, and marketing trends.
+              Explore expert articles on digital strategies for small
+              businesses.
             </p>
           </div>
         </motion.div>
@@ -252,7 +237,9 @@ const Blog = () => {
               {categories.map((category) => (
                 <Button
                   key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
+                  variant={
+                    selectedCategory === category ? "default" : "outline"
+                  }
                   className={`text-sm ${
                     selectedCategory === category
                       ? "bg-indigo-600 text-white hover:bg-indigo-700"
@@ -359,7 +346,7 @@ const Blog = () => {
             >
               <Link href={`/blog/${post.slug}`}>
                 <Card
-                  className={`border border-gray-200 routed-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
+                  className={`border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
                     darkMode ? "bg-gray-800 border-gray-700" : "bg-white"
                   }`}
                 >
@@ -456,45 +443,8 @@ const Blog = () => {
           )}
         </div>
 
-        {/* Related Posts (example for first post) */}
-        {currentPosts.length > 0 && (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mt-12"
-          >
-            <h2 className="text-2xl font-light mb-4">Related Posts</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {blogPosts[0].relatedPosts.map((id) => {
-                const relatedPost = blogPosts.find((p) => p.id === id);
-                if (!relatedPost) return null;
-                return (
-                  <Link key={id} href={`/blog/${relatedPost.slug}`}>
-                    <Card className="border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-                      <CardContent className="p-0">
-                        <img
-                          src={relatedPost.image}
-                          alt={relatedPost.title}
-                          className="w-full h-32 object-cover rounded-t-lg"
-                        />
-                        <div className="p-4">
-                          <CardTitle className="text-sm font-medium mb-1">
-                            {relatedPost.title}
-                          </CardTitle>
-                          <CardDescription className="text-xs text-gray-600">
-                            {relatedPost.excerpt.substring(0, 50)}...
-                          </CardDescription>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
+        {/* Related Posts Section Removed */}
+        {/* Since there's only one post, related posts are not applicable */}
       </section>
 
       {/* Newsletter Section */}
@@ -539,7 +489,9 @@ const Blog = () => {
                       newsletterError ? "border-red-500" : ""
                     }`}
                     aria-invalid={!!newsletterError}
-                    aria-describedby={newsletterError ? "newsletter-error" : undefined}
+                    aria-describedby={
+                      newsletterError ? "newsletter-error" : undefined
+                    }
                   />
                   {newsletterError && (
                     <p
@@ -615,7 +567,10 @@ const Blog = () => {
               <span className="sr-only">LinkedIn</span>
             </a>
           </div>
-          <a href="/rss.xml" className="text-sm text-indigo-600 hover:underline">
+          <a
+            href="/rss.xml"
+            className="text-sm text-indigo-600 hover:underline"
+          >
             Subscribe via RSS
           </a>
         </motion.div>

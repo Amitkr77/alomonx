@@ -194,18 +194,16 @@ export default function Header() {
           <Link href="/">
             <motion.div
               className="flex items-center space-x-3"
-              whileHover={{ scale: 1.15 }}
-              whileTap={{ scale: 0.95 }}
+             
             >
               <motion.div
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg"
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+               
               >
                 <img
                   src="/logo.png"
                   alt="Alomonx Logo"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain "
                   onError={(e) => (e.target.src = "/fallback-logo.png")}
                 />
               </motion.div>
