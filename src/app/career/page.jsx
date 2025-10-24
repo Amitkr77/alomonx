@@ -173,7 +173,7 @@ const Career = () => {
       </div>
 
       {/* Jobs Section */}
-      <motion.div
+      {/*<motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -251,7 +251,7 @@ const Career = () => {
             </motion.div>
           ))}
         </div>
-      </motion.div>
+      </motion.div> */}
 
       {/* Application Form */}
       <motion.div
