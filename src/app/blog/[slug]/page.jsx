@@ -20,16 +20,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 
 const blogPosts = [
   {
     id: 1,
-    title: "Digital Success in 2025: Transforming Small Businesses with Marketing and Web Design Trends",
+    title:
+      "Digital Success in 2025: Transforming Small Businesses with Marketing and Web Design Trends",
     slug: "digital-success-in-2025-transforming-small-businesses",
-    excerpt: "Discover how digital marketing strategies and cutting-edge web design trends can empower small businesses to thrive in 2025.",
+    excerpt:
+      "Discover how digital marketing strategies and cutting-edge web design trends can empower small businesses to thrive in 2025.",
     content: `
       <h2>Introduction</h2>
       <p>In 2025, digital marketing and web design are transforming small businesses by enabling them to compete with industry giants, reach global audiences, and deliver exceptional user experiences. From AI-powered personalization to mobile-first designs, this article explores how small businesses can leverage digital marketing strategies and the latest web design trends to grow faster, reach wider, and compete smarter.</p>
@@ -95,12 +96,11 @@ const blogPosts = [
     image:
       "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1170&auto=format&fit=crop",
     author: {
-      name: "Alex Carter",
-      avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
+      name: "Alomonx Technology",
+      avatar: "./logo.png",
     },
     readingTime: 6,
-    comments: 10,
+    comments: 0,
     relatedPosts: [],
   },
 ];
@@ -140,7 +140,8 @@ const BlogDetail = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrollTop / docHeight) * 100;
       setScrollProgress(progress);
       setShowCTA(scrollTop > 300);
@@ -220,7 +221,9 @@ const BlogDetail = () => {
         >
           <div className="flex items-center justify-center gap-2 mb-3">
             <Tag className="h-5 w-5 text-white" />
-            <span className="text-sm font-medium text-white">{post.category}</span>
+            <span className="text-sm font-medium text-white">
+              {post.category}
+            </span>
           </div>
           <motion.h1
             className="text-4xl md:text-6xl font-bold font-sans text-white tracking-tight"
@@ -240,7 +243,9 @@ const BlogDetail = () => {
               </motion.span>
             ))}
           </motion.h1>
-          <p className="mt-3 text-lg text-white/90 font-serif">{post.excerpt}</p>
+          <p className="mt-3 text-lg text-white/90 font-serif">
+            {post.excerpt}
+          </p>
         </motion.div>
       </div>
 
@@ -276,7 +281,9 @@ const BlogDetail = () => {
                 <AvatarFallback>{post.author.name[0]}</AvatarFallback>
               </Avatar>
               <div>
-                <p className="text-sm font-medium font-sans">{post.author.name}</p>
+                <p className="text-sm font-medium font-sans">
+                  {post.author.name}
+                </p>
                 <p className="text-xs text-gray-500">{post.date}</p>
               </div>
               <div className="ml-auto flex items-center gap-4 text-sm text-gray-500">

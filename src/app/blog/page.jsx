@@ -99,13 +99,12 @@ const blogPosts = [
     image:
       "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1170&auto=format&fit=crop",
     author: {
-      name: "Alex Carter",
-      avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
+      name: "Alomonx Technology",
+      avatar: "./logo.png",
     },
     readingTime: 6,
-    comments: 10,
-    relatedPosts: [], // No related posts since there's only one
+    comments: 0,
+    relatedPosts: [],
   },
 ];
 
