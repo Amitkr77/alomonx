@@ -25,8 +25,6 @@ import {
 import {
   Card,
   CardContent,
-  CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,8 +86,9 @@ const Contact = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+    setErrors({ ...errors, [name]: "" });
   };
 
   const handleContactSubmit = async (e) => {
@@ -100,25 +99,27 @@ const Contact = () => {
       setFormValues({ ...formValues, name: "", email: "", message: "" });
       setTimeout(() => setSubmitted(false), 5000);
     }
+
     try {
       const response = await fetch("/api/sheet/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formValues,
+          name: formValues.name,
+          email: formValues.email,
+          message: formValues.message,
         }),
       });
 
       if (response.ok) {
-        // setStep(4);
-        setErrors(null);
+        setErrors({}); // Fixed: never null
       } else {
         const { message } = await response.json();
-        setErrors(message || "Failed to save data");
+        setErrors({ error: message || "Failed to save data" });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      setErrors("An error occurred while saving your data");
+      setErrors({ error: "An error occurred while saving your data" });
     }
   };
 
@@ -130,6 +131,7 @@ const Contact = () => {
       setFormValues({ ...formValues, newsletter: "" });
       setTimeout(() => setNewsletterSubmitted(false), 5000);
     }
+
     try {
       const response = await fetch("/api/sheet/subscribe", {
         method: "POST",
@@ -140,14 +142,14 @@ const Contact = () => {
       });
 
       if (response.ok) {
-        setErrors(null);
+        setErrors({}); // Fixed: never null
       } else {
         const { message } = await response.json();
-        setErrors(message || "Failed to save data");
+        setErrors({ newsletter: message || "Failed to save data" });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      setErrors("An error occurred while saving your data");
+      setErrors({ newsletter: "An error occurred while saving your data" });
     }
   };
 
@@ -218,7 +220,7 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="border border-gray-100 shadow-md rounded-xl ">
+            <Card className="border border-gray-100 shadow-md rounded-xl">
               <CardContent className="p-6">
                 <AnimatePresence>
                   {!submitted ? (
@@ -234,11 +236,10 @@ const Contact = () => {
                       <h2 className="text-lg font-medium text-gray-900 mb-4">
                         Send Us a Message
                       </h2>
+
+                      {/* Name */}
                       <div>
-                        <Label
-                          htmlFor="name"
-                          className="text-sm font-medium text-gray-700"
-                        >
+                        <Label htmlFor="name" className="text-sm font-medium text-gray-700">
                           Name *
                         </Label>
                         <Input
@@ -249,28 +250,21 @@ const Contact = () => {
                           onChange={handleInputChange}
                           required
                           className={`mt-1 rounded-lg border-gray-200 focus:ring-indigo-300 ${
-                            errors.name ? "border-red-500" : ""
+                            errors?.name ? "border-red-500" : ""
                           }`}
-                          aria-invalid={!!errors.name}
-                          aria-describedby={
-                            errors.name ? "name-error" : undefined
-                          }
+                          aria-invalid={!!errors?.name}
+                          aria-describedby={errors?.name ? "name-error" : undefined}
                         />
-                        {errors.name && (
-                          <p
-                            id="name-error"
-                            className="text-xs text-red-500 mt-1 flex items-center"
-                          >
-                            <AlertCircle className="h-4 w-4 mr-1" />{" "}
-                            {errors.name}
+                        {errors?.name && (
+                          <p id="name-error" className="text-xs text-red-500 mt-1 flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" /> {errors.name}
                           </p>
                         )}
                       </div>
+
+                      {/* Email */}
                       <div>
-                        <Label
-                          htmlFor="email"
-                          className="text-sm font-medium text-gray-700"
-                        >
+                        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                           Email *
                         </Label>
                         <Input
@@ -282,28 +276,21 @@ const Contact = () => {
                           onChange={handleInputChange}
                           required
                           className={`mt-1 rounded-lg border-gray-200 focus:ring-indigo-300 ${
-                            errors.email ? "border-red-500" : ""
+                            errors?.email ? "border-red-500" : ""
                           }`}
-                          aria-invalid={!!errors.email}
-                          aria-describedby={
-                            errors.email ? "email-error" : undefined
-                          }
+                          aria-invalid={!!errors?.email}
+                          aria-describedby={errors?.email ? "email-error" : undefined}
                         />
-                        {errors.email && (
-                          <p
-                            id="email-error"
-                            className="text-xs text-red-500 mt-1 flex items-center"
-                          >
-                            <AlertCircle className="h-4 w-4 mr-1" />{" "}
-                            {errors.email}
+                        {errors?.email && (
+                          <p id="email-error" className="text-xs text-red-500 mt-1 flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" /> {errors.email}
                           </p>
                         )}
                       </div>
+
+                      {/* Message */}
                       <div>
-                        <Label
-                          htmlFor="message"
-                          className="text-sm font-medium text-gray-700"
-                        >
+                        <Label htmlFor="message" className="text-sm font-medium text-gray-700">
                           Message *
                         </Label>
                         <Textarea
@@ -314,24 +301,19 @@ const Contact = () => {
                           onChange={handleInputChange}
                           required
                           className={`mt-1 rounded-lg border-gray-200 focus:ring-indigo-300 ${
-                            errors.message ? "border-red-500" : ""
+                            errors?.message ? "border-red-500" : ""
                           }`}
                           rows={4}
-                          aria-invalid={!!errors.message}
-                          aria-describedby={
-                            errors.message ? "message-error" : undefined
-                          }
+                          aria-invalid={!!errors?.message}
+                          aria-describedby={errors?.message ? "message-error" : undefined}
                         />
-                        {errors.message && (
-                          <p
-                            id="message-error"
-                            className="text-xs text-red-500 mt-1 flex items-center"
-                          >
-                            <AlertCircle className="h-4 w-4 mr-1" />{" "}
-                            {errors.message}
+                        {errors?.message && (
+                          <p id="message-error" className="text-xs text-red-500 mt-1 flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" /> {errors.message}
                           </p>
                         )}
                       </div>
+
                       <Button
                         type="submit"
                         className="w-full bg-indigo-600 text-white hover:bg-indigo-700 text-sm rounded-lg"
@@ -354,14 +336,15 @@ const Contact = () => {
                         Message Sent!
                       </h3>
                       <p className="text-sm text-gray-600">
-                        Thank you for reaching out. We'll respond within 24-48
-                        hours.
+                        Thank you for reaching out. We'll respond within 24-48 hours.
                       </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </CardContent>
             </Card>
+
+            {/* Contact Info */}
             <div className="border p-4 rounded-2xl shadow mt-2">
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 text-sm">
                 <div className="flex items-center gap-2">
@@ -370,24 +353,9 @@ const Contact = () => {
                     +91 92346 25064
                   </a>
                 </div>
-                {/* <div className="flex items-center gap-2">
-                  <FaWhatsapp size={16} className="text-green-500" />
-                  <a
-                    href="https://wa.me/919234625064?text=Hi%20there%2C%20I%27m%20interested%20in%20learning%20more%20about%20your%20services."
-                    className="hover:text-cyan-500"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    +91 92346 25064
-                  </a>
-                </div> */}
-
                 <div className="flex items-center gap-2">
                   <Mail size={16} className="text-cyan-500" />
-                  <a
-                    href="mailto:info@alomonx.com"
-                    className="hover:text-cyan-500"
-                  >
+                  <a href="mailto:info@alomonx.com" className="hover:text-cyan-500">
                     info@alomonx.com
                   </a>
                 </div>
@@ -437,7 +405,7 @@ const Contact = () => {
         </motion.div>
       </section>
 
-      {/* Map Placeholder */}
+      {/* Map Section */}
       <section className="">
         <motion.div
           variants={containerVariants}
@@ -452,7 +420,7 @@ const Contact = () => {
           <Card className="border border-gray-200 rounded-lg shadow-sm">
             <CardContent className="p-6">
               <div className="bg-gray-200 h-64 rounded-md flex items-center justify-center">
-                <DynamicMap />{" "}
+                <DynamicMap />
               </div>
               <p className="text-center font-medium text-sm text-gray-600 mt-4">
                 Alomonx, Kurji, Digha, Patna Bihar
@@ -549,7 +517,7 @@ const Contact = () => {
                 className="space-y-4"
               >
                 <div>
-                  <div className="flex ">
+                  <div className="flex">
                     <Input
                       id="newsletter"
                       name="newsletter"
@@ -559,24 +527,18 @@ const Contact = () => {
                       onChange={handleInputChange}
                       required
                       className={`rounded-r-none rounded-lg border-gray-200 focus:ring-indigo-300 ${
-                        errors.newsletter ? "border-red-500" : ""
+                        errors?.newsletter ? "border-red-500" : ""
                       }`}
-                      aria-invalid={!!errors.newsletter}
-                      aria-describedby={
-                        errors.newsletter ? "newsletter-error" : undefined
-                      }
+                      aria-invalid={!!errors?.newsletter}
+                      aria-describedby={errors?.newsletter ? "newsletter-error" : undefined}
                     />
                     <button className="bg-blue-500 text-white px-6 rounded-r-full hover:bg-blue-600">
                       Subscribe
                     </button>
                   </div>
-                  {errors.newsletter && (
-                    <p
-                      id="newsletter-error"
-                      className="text-xs text-red-500 mt-1 flex items-center"
-                    >
-                      <AlertCircle className="h-4 w-4 mr-1" />{" "}
-                      {errors.newsletter}
+                  {errors?.newsletter && (
+                    <p id="newsletter-error" className="text-xs text-red-500 mt-1 flex items-center">
+                      <AlertCircle className="h-4 w-4 mr-1" /> {errors.newsletter}
                     </p>
                   )}
                 </div>
@@ -600,7 +562,7 @@ const Contact = () => {
         </motion.div>
       </section>
 
-      {/* Live Chat Toggle */}
+      {/* Live Chat */}
       <motion.div
         className="fixed bottom-6 right-6"
         initial={{ opacity: 0 }}
