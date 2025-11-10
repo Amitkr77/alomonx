@@ -41,6 +41,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ message: 'Data saved successfully', Data: response });
     } catch (error) {
         console.error('❌ Error saving to Google Sheet:', error);
-        return res.status(500).json({ message: 'Failed to save data' });
+        return res.status(500).json({ message: 'Failed to save data',error });
     }
 }

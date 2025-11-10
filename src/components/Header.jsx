@@ -196,16 +196,11 @@ export default function Header() {
               className="flex items-center space-x-3"
              
             >
-              <motion.div
+              {/* <motion.div
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg"
                
               >
-                <img
-                  src="/logo.png"
-                  alt="Alomonx Logo"
-                  className="w-full h-full object-contain "
-                  onError={(e) => (e.target.src = "/fallback-logo.png")}
-                />
+                
               </motion.div>
               <span
                 className={`text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-br ${
@@ -213,7 +208,10 @@ export default function Header() {
                 } bg-clip-text text-transparent`}
               >
                 Alomonx
-              </span>
+              </span> */}
+             <div>
+              <img src="/alomonx_log.png" alt="Alomonx Logo" className=" h-10  sm:h-14"/>
+             </div>
             </motion.div>
           </Link>
 

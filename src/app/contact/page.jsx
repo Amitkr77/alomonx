@@ -110,7 +110,7 @@ const Contact = () => {
       });
 
       if (response.ok) {
-        setStep(4);
+        // setStep(4);
         setErrors(null);
       } else {
         const { message } = await response.json();
