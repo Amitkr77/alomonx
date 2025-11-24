@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, Github } from "lucide-react";
 import Link from "next/link";
 import {
   FaWhatsapp,
@@ -8,6 +8,7 @@ import {
   FaFacebook,
   FaLinkedin,
 } from "react-icons/fa";
+import { ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Footer() {
@@ -162,16 +163,40 @@ export default function Footer() {
       </motion.div>
 
       {/* Bottom */}
+
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="text-center text-xs py-4 border-t border-gray-200 bg-white"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="border-t border-gray-200 bg-white/80 backdrop-blur-sm"
       >
-        <p>
-          © 2025 Alomonx Technology. All rights reserved. Designed by{" "}
-          <span className="text-cyan-500">Alomonx Technology</span>
-        </p>
+        <div className="max-w-5xl mx-auto px-4 py-6">
+          <p className="text-center text-xs text-gray-600 leading-relaxed">
+            © {new Date().getFullYear()} Alomonx Technology. All rights
+            reserved.
+            <br className="sm:hidden" /> {/* line break on mobile only */}
+            <span className="text-gray-500"> Crafted with ❤️ by </span>
+            <a
+              href="https://github.com/Amitkr77"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-cyan-600 hover:text-cyan-700 inline-flex items-center gap-1.5 transition-colors"
+            >
+              Amit Kumar
+              <Github className="w-3.5 h-3.5" />
+            </a>
+            {" • "}
+            <a
+              href="https://amit-kumar.dev" // replace with your real portfolio
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-cyan-600 hover:text-cyan-700 inline-flex items-center gap-1 transition-colors"
+            >
+              Portfolio
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </p>
+        </div>
       </motion.div>
     </footer>
   );

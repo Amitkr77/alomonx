@@ -32,19 +32,19 @@ const blogPosts = [
     excerpt:
       "Discover how digital marketing strategies and cutting-edge web design trends can empower small businesses to thrive in 2025.",
     content: `
-      <h2>Introduction</h2>
+      <h2 class="font-bold mb-2 text-2xl">Introduction</h2>
       <p>In 2025, digital marketing and web design are transforming small businesses by enabling them to compete with industry giants, reach global audiences, and deliver exceptional user experiences. From AI-powered personalization to mobile-first designs, this article explores how small businesses can leverage digital marketing strategies and the latest web design trends to grow faster, reach wider, and compete smarter.</p>
       
       <h3>Social Media Marketing: Building Communities in 2025</h3>
       <p>Social media marketing remains a cornerstone for small businesses. Platforms like Instagram, TikTok, Facebook, and LinkedIn allow brands to share their stories, connect with audiences, and build loyal communities. By creating engaging content and leveraging platform-specific features like Instagram Reels or LinkedIn articles, small businesses can boost visibility and foster customer loyalty.</p>
       
-      <h3>Local SEO: A Game Changer for Visibility</h3>
+      <h3><span class="font-bold mt-2">Local SEO:</span> A Game Changer for Visibility</h3>
       <p>Search Engine Optimization (SEO) in 2025 is more powerful than ever. By using smart keywords, AI-driven analytics, and local SEO strategies, small businesses can rank higher on Google search results, attracting local customers. Optimizing for "near me" searches and maintaining consistent business listings on platforms like Google My Business are key to driving foot traffic and online conversions.</p>
       
-      <h3>The Power of Mobile-Friendly Websites</h3>
+      <h3 class="font-bold">The Power of Mobile-Friendly Websites</h3>
       <p>A mobile-friendly website is non-negotiable in 2025. With most users accessing websites via smartphones, sites must load quickly, look great on all screen sizes, and provide seamless navigation. A smooth user experience increases visitor retention, encourages exploration, and boosts conversion rates.</p>
       
-      <h3>Top 10 Website Design Trends for 2025</h3>
+      <h3 class="font-bold mt-2 mb-1">Top 10 Website Design Trends for 2025</h3>
       <p>Web design in 2025 is all about speed, simplicity, and personalization. Here are the top trends shaping the future of small business websites:</p>
       <ul class="list-none pl-0 space-y-4">
         <li class="flex items-start gap-3 text-gray-700">
@@ -88,8 +88,8 @@ const blogPosts = [
           <span><strong>Mobile-First and Responsive Design:</strong> Seamless adaptation to all devices ensures optimal performance.</span>
         </li>
       </ul>
-      
-      <h3>Final Thoughts</h3>
+      <hr class="my-6" />
+      <h3 class="font-bold mt-2">Final Thoughts</h3>
       <p>The future of digital success for small businesses in 2025 lies in combining powerful digital marketing strategies with innovative web design. By embracing personalization, automation, and mobile-first approaches, small businesses can stand out, build trust, and drive growth. At Alomonx Technology, we specialize in creating websites and marketing strategies that empower businesses to thrive in the digital era.</p>`,
     date: "October 20, 2025",
     category: "Digital Strategy",
@@ -112,27 +112,27 @@ const BlogDetail = () => {
   const [commentName, setCommentName] = useState("");
   const [commentError, setCommentError] = useState("");
   const [commentsList, setCommentsList] = useState([
-    {
-      id: 1,
-      name: "Lisa Wong",
-      text: "Really insightful article! The tips on local SEO are super helpful for my small business.",
-      date: "October 21, 2025",
-      replies: [
-        {
-          id: 1.1,
-          name: "Alex Carter",
-          text: "Glad you found it useful! Local SEO is a game-changer for small businesses.",
-          date: "October 22, 2025",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Mark Johnson",
-      text: "The web design trends section was spot-on. Excited to try implementing dark mode!",
-      date: "October 22, 2025",
-      replies: [],
-    },
+    // {
+    //   id: 1,
+    //   name: "Lisa Wong",
+    //   text: "Really insightful article! The tips on local SEO are super helpful for my small business.",
+    //   date: "October 21, 2025",
+    //   replies: [
+    //     {
+    //       id: 1.1,
+    //       name: "Alex Carter",
+    //       text: "Glad you found it useful! Local SEO is a game-changer for small businesses.",
+    //       date: "October 22, 2025",
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: 2,
+    //   name: "Mark Johnson",
+    //   text: "The web design trends section was spot-on. Excited to try implementing dark mode!",
+    //   date: "October 22, 2025",
+    //   replies: [],
+    // },
   ]);
   const [showCTA, setShowCTA] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -214,12 +214,12 @@ const BlogDetail = () => {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-teal-600/80 to-coral-500/80 backdrop-blur-sm"></div>
         <motion.div
-          className="relative text-center z-10 max-w-4xl px-4"
+          className="relative text-center z-10 max-w-5xl px-4"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="flex items-center justify-center gap-2 mb-3">
+          <div className="flex items-center justify-center gap-2 mb-3 mt-8">
             <Tag className="h-5 w-5 text-white" />
             <span className="text-sm font-medium text-white">
               {post.category}
@@ -491,7 +491,7 @@ const BlogDetail = () => {
       </AnimatePresence>
 
       {/* Back to Top Button */}
-      <motion.div
+      {/* <motion.div
         className="fixed bottom-6 right-6 z-50"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: showCTA ? 1 : 0, scale: showCTA ? 1 : 0.8 }}
@@ -504,7 +504,7 @@ const BlogDetail = () => {
         >
           <ChevronUp className="h-6 w-6" />
         </Button>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 };
