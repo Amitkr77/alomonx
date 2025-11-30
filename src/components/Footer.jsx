@@ -177,16 +177,17 @@ export default function Footer() {
             <br className="sm:hidden" /> {/* line break on mobile only */}
             <span className="text-gray-500"> Crafted with ❤️ by </span>
             <a
-              href="https://github.com/Amitkr77"
-              target="_blank"
-              rel="noopener noreferrer"
+              // href="https://github.com/Amitkr77"
+              // target="_blank"
+              // rel="noopener noreferrer"
               className="font-medium text-cyan-600 hover:text-cyan-700 inline-flex items-center gap-1.5 transition-colors"
             >
-              Amit Kumar
-              <Github className="w-3.5 h-3.5" />
+              {/* Amit Kumar */}
+              Alomonx Technology
+              {/* <Github className="w-3.5 h-3.5" /> */}
             </a>
-            {" • "}
-            <a
+            {/* {" • "} */}
+            {/* <a
               href="https://amit-kumar.dev" // replace with your real portfolio
               target="_blank"
               rel="noopener noreferrer"
@@ -194,7 +195,7 @@ export default function Footer() {
             >
               Portfolio
               <ExternalLink className="w-3 h-3" />
-            </a>
+            </a> */}
           </p>
         </div>
       </motion.div>
