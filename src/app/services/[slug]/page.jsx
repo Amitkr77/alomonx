@@ -764,7 +764,7 @@ const ServiceDetail = () => {
           </motion.div>
 
           {/* Testimonial (Spanning 5 columns) */}
-          <motion.div
+          {/* <motion.div
             className="md:col-span-5 bg-gradient-to-br from-teal-50 to-coral-50 rounded-2xl p-8 shadow-sm border border-gray-200"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -779,7 +779,7 @@ const ServiceDetail = () => {
             <p className="mt-4 text-gray-800 font-medium">
               {details.testimonial.author}
             </p>
-          </motion.div>
+          </motion.div> */}
         </div>
       </div>
 
