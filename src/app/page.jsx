@@ -12,6 +12,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import ProjectCarousel from "@/components/ProjectCarousel";
+import EcosystemSection from "@/components/EcosystemSection";
 
  const founders = [
     {
@@ -158,6 +159,7 @@ export default function Home() {
       <Services />
       <ComparisonSection />
       <CarouselCard />
+      <EcosystemSection/>
       <section className="py-16 bg-gradient-to-b from-white to-cyan-50">
         <motion.div
           variants={containerVariants}

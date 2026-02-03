@@ -5,7 +5,7 @@ import VanillaTilt from "vanilla-tilt";
 import Link from "next/link";
 import Head from "next/head";
 import { ContactModel } from "./ContactModel";
-import { BookOpenText, Hammer, Info, Phone,Menu } from "lucide-react";
+import { BookOpenText, Hammer, Info, Phone, Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -37,11 +37,11 @@ export default function Header() {
     };
   }, []);
 
- 
-
   // VanillaTilt initialization
   useEffect(() => {
-    const tiltElements = navItemsRef.current.filter((el) => el instanceof HTMLElement);
+    const tiltElements = navItemsRef.current.filter(
+      (el) => el instanceof HTMLElement,
+    );
     tiltElements.forEach((el) => {
       try {
         VanillaTilt.init(el, {
@@ -96,12 +96,16 @@ export default function Header() {
 
     useEffect(() => {
       const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target)
+        ) {
           setIsOpen(false);
         }
       };
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     const handleKeyDown = (event) => {
@@ -180,10 +184,8 @@ export default function Header() {
         <link rel="preload" href="/logo.png" as="image" />
       </Head>
       <motion.header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-          isScrolled
-            ? ""
-            : "bg-transparent"
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 px-10 ${
+          isScrolled ? "" : "bg-transparent"
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -192,27 +194,11 @@ export default function Header() {
         <div className="container mx-auto p-3 flex justify-between items-center">
           {/* Logo */}
           <Link href="/">
-            <motion.div
-              className="flex items-center space-x-3"
-             
-            >
-              {/* <motion.div
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg"
-               
-              >
-                
-              </motion.div>
-              <span
-                className={`text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-br ${
-                  theme === "dark" ? "from-cyan-300 to-blue-300" : "from-cyan-400 to-blue-400"
-                } bg-clip-text text-transparent`}
-              >
-                Alomonx
-              </span> */}
-             <div>
-              <img src="/alomonx_log.png" alt="Alomonx Logo" className=" h-10  sm:h-14"/>
-             </div>
-            </motion.div>
+            <img
+              src="/alomonx_log.png"
+              alt="Alomonx Logo"
+              className="h-10 sm:h-16 w-auto cursor-pointer"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -229,14 +215,18 @@ export default function Header() {
                 <Link
                   href="/services/web-development"
                   className="block px-4 py-2 hover:bg-white/10 rounded-lg"
-                  onClick={() => trackEvent("click", "Web Development Dropdown")}
+                  onClick={() =>
+                    trackEvent("click", "Web Development Dropdown")
+                  }
                 >
                   Web Development
                 </Link>
                 <Link
                   href="/services/digital-marketing"
                   className="block px-4 py-2 hover:bg-white/10 rounded-lg"
-                  onClick={() => trackEvent("click", "Digital Marketing Dropdown")}
+                  onClick={() =>
+                    trackEvent("click", "Digital Marketing Dropdown")
+                  }
                 >
                   Digital Marketing
                 </Link>
