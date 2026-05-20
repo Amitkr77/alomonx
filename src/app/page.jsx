@@ -14,20 +14,20 @@ import {
 import ProjectCarousel from "@/components/ProjectCarousel";
 import EcosystemSection from "@/components/EcosystemSection";
 
- const founders = [
-    {
-      name: "Anand Kishor",
-      role: "Founder",
-      image: "./founders/founder.jpg",
-      desc: "As a founder of Alomonx technology With a deep passion for technology, business strategy, and digital transformation. Helping businesses and individuals harness the power of advanced technologies to drive growth and digital empowerment.",
-    },
-    {
-      name: "Ashish Kumar Singh",
-      role: "Co-Founder",
-      image: "./founders/co-founder.jpg",
-      desc: "Tech innovator focused on building scalable solutions and driving digital progress. Passionate about leading agile teams, solving real-world challenges, and empowering businesses to thrive in a rapidly evolving digital landscape.",
-    },
-  ];
+const founders = [
+  {
+    name: "Anand Kishor",
+    role: "Founder",
+    image: "./founders/founder.jpg",
+    desc: "As a founder of Alomonx technology With a deep passion for technology, business strategy, and digital transformation. Helping businesses and individuals harness the power of advanced technologies to drive growth and digital empowerment.",
+  },
+  {
+    name: "Ashish Kumar Singh",
+    role: "Co-Founder",
+    image: "./founders/co-founder.jpg",
+    desc: "Tech innovator focused on building scalable solutions and driving digital progress. Passionate about leading agile teams, solving real-world challenges, and empowering businesses to thrive in a rapidly evolving digital landscape.",
+  },
+];
 
 export default function Home() {
   const containerVariants = {
@@ -48,19 +48,22 @@ export default function Home() {
   };
 
   return (
-    <div className="">
+    <div>
       <div
         className="relative min-h-screen flex items-center justify-center bg-blue-800 overflow-hidden"
         style={{
-          backgroundImage: "url('/Component-23.png')",
+          backgroundImage: "var(--hero-bg-image)",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundColor: "rgba(135, 206, 250, 0.6)",
-          backgroundBlendMode: "overlay",
+          backgroundColor: "var(--hero-bg-color)",
+          backgroundBlendMode: "var(--hero-bg-blend)",
         }}
       >
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg otimizesystematic.combg-gradient-to-t from-gray-100/80 to-blue-100/30"></div>
+        <div
+          className="absolute inset-0"
+          style={{ background: "var(--hero-overlay-gradient)" }}
+        ></div>
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
           {/* Tagline */}
@@ -111,55 +114,14 @@ export default function Home() {
             </Link>
           </div>
         </div>
-
-        {/* Inline CSS for animations */}
-        <style jsx>{`
-          @keyframes rise {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-          @keyframes dotPulse {
-            0% {
-              opacity: 0.5;
-            }
-            50% {
-              opacity: 0.3;
-            }
-            100% {
-              opacity: 0.5;
-            }
-          }
-          @keyframes grow {
-            from {
-              transform: scaleX(0);
-            }
-            to {
-              transform: scaleX(1);
-            }
-          }
-          .animate-rise {
-            animation: rise 0.7s ease-out forwards;
-          }
-          .animate-dot-pulse {
-            animation: dotPulse 10s ease-in-out infinite;
-          }
-          .animate-grow {
-            animation: grow 0.6s ease-out forwards;
-            animation-delay: 0.5s;
-          }
-        `}</style>
       </div>
+
       <ProjectCarousel />
       <Services />
       <ComparisonSection />
       <CarouselCard />
-      <EcosystemSection/>
+      <EcosystemSection />
+
       <section className="py-16 bg-gradient-to-b from-white to-cyan-50">
         <motion.div
           variants={containerVariants}
@@ -191,21 +153,19 @@ export default function Home() {
                     src={founder.image}
                     alt={founder.name}
                     className="rounded-full w-full h-full object-cover border-4 border-cyan-200 shadow-md transition-transform duration-300 group-hover:scale-105 group-hover:rotate-1"
-                    onError={(e) =>
-                      (e.target.src = "/founders/founder.jpg")
-                    }
+                    onError={(e) => {
+                      e.target.src = "/founders/founder.jpg";
+                    }}
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3 }}
                   />
-                  {/* Optional social icons or overlay */}
                   <div className="absolute -bottom-2 right-2 bg-white shadow rounded-full p-1">
-                    {/* Example: LinkedIn icon */}
                     <svg
                       className="h-5 w-5 text-cyan-500"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M19 0h-14c-2.761...z" />
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
                   </div>
                 </div>
@@ -228,6 +188,7 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
+
       <Testimonials />
     </div>
   );
