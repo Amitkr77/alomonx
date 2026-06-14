@@ -1,195 +1,469 @@
 "use client";
-import CarouselCard from "@/components/CarouselCard";
-import { ComparisonSection } from "@/components/ComparisonSection";
-import Services from "@/components/Services";
-import Testimonials from "@/components/Testimonials";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import ProjectCarousel from "@/components/ProjectCarousel";
-import EcosystemSection from "@/components/EcosystemSection";
 
-const founders = [
-  {
-    name: "Anand Kishor",
-    role: "Founder",
-    image: "./founders/founder.jpg",
-    desc: "As a founder of Alomonx technology With a deep passion for technology, business strategy, and digital transformation. Helping businesses and individuals harness the power of advanced technologies to drive growth and digital empowerment.",
+import { useRef, useState, useCallback, lazy, Suspense } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  AnimatePresence,
+} from "framer-motion";
+import { X } from "lucide-react";
+
+// ─── Critical above-the-fold components: load eagerly ───────
+import StatsSection from "@/components/StatsSection";
+
+// ─── Below-the-fold components: lazy load ───────────────────
+// These are dynamically imported so they don't block the initial bundle.
+// Each one is only downloaded when it's about to enter the viewport.
+const Services = lazy(() => import("@/components/Services"));
+const AlomonxAISection = lazy(() => import("@/components/AlomonxAISection"));
+const EngineerFuture = lazy(() => import("@/components/EngineerFuture"));
+const PresentationSection = lazy(
+  () => import("@/components/PresentationSection"),
+);
+const TechCapabilities = lazy(() => import("@/components/TechCapabilities"));
+const PortfolioCarousel = lazy(() => import("@/components/PortfolioCarousel"));
+const Testimonials = lazy(() => import("@/components/Testimonials"));
+const MarketingBanner = lazy(() => import("@/components/MarketingBanner"));
+const ContactForm = lazy(() => import("@/components/ContactForm"));
+
+// ─────────────────────────────────────────────────────────────
+// Lightweight section skeleton shown while lazy chunks load
+// ─────────────────────────────────────────────────────────────
+function SectionFallback() {
+  return (
+    <div
+      aria-hidden="true"
+      style={{ minHeight: 120, background: "transparent" }}
+    />
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Animation Variants — defined OUTSIDE the component so they
+// are created once (not re-created on every render).
+// ─────────────────────────────────────────────────────────────
+
+const heroContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.3 },
   },
-  {
-    name: "Ashish Kumar Singh",
-    role: "Co-Founder",
-    image: "./founders/co-founder.jpg",
-    desc: "Tech innovator focused on building scalable solutions and driving digital progress. Passionate about leading agile teams, solving real-world challenges, and empowering businesses to thrive in a rapidly evolving digital landscape.",
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
   },
+};
+
+const sectionReveal = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+// lineWipe is a factory — only called 3 times total, result is stable
+const lineWipe = (delay) => ({
+  hidden: { clipPath: "inset(0 0 100% 0)", opacity: 0 },
+  visible: {
+    clipPath: "inset(0 0 0% 0)",
+    opacity: 1,
+    transition: { duration: 0.95, delay, ease: [0.22, 1, 0.36, 1] },
+  },
+});
+
+// Hero headline lines — static data, defined outside component
+// so the array is not rebuilt on every render.
+const HERO_LINES = [
+  { text: "Building Future Ready", colored: false },
+  { text: "Digital Solutions", colored: true },
+  { text: "For Businesses", colored: false },
 ];
 
-export default function Home() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-    },
-  };
+// Star SVG — extracted so it isn't redeclared 5× per render
+function StarIcon() {
+  return (
+    <svg
+      className="w-3.5 h-3.5 md:w-4 md:h-4"
+      style={{ fill: "#22D3EE" }}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </svg>
+  );
+}
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
+// ─────────────────────────────────────────────────────────────
+// Page
+// ─────────────────────────────────────────────────────────────
+
+export default function Home() {
+  const heroRef = useRef(null);
+
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
+  // useCallback so these handlers have stable references and won't
+  // cause unnecessary re-renders in child components that receive them.
+  const handleVideoError = useCallback(() => setVideoFailed(true), []);
+  const openContact = useCallback(() => setIsContactOpen(true), []);
+  const closeContact = useCallback(() => setIsContactOpen(false), []);
+
+  const handleExpertiseClick = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Delay is fine here — just dispatching an event, no state update
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("open-services-menu"));
+    }, 400);
+  }, []);
+
+  // ── Scroll-driven hero animations ──────────────────────────
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  // useTransform is already memoized internally by Framer Motion.
+  // Keep the input arrays as module-level constants to prevent new
+  // array allocations on every render.
+  const contentOpacity = useTransform(
+    heroProgress,
+    OPACITY_INPUT,
+    OPACITY_OUTPUT,
+  );
+  const bgY = useTransform(heroProgress, BG_Y_INPUT, BG_Y_OUTPUT);
+  const scrollIndicatorOpacity = useTransform(
+    heroProgress,
+    SCROLL_IND_INPUT,
+    SCROLL_IND_OUTPUT,
+  );
+
+  const bgYSpring = useSpring(bgY, SPRING_CONFIG);
 
   return (
-    <div>
-      <div
-        className="relative min-h-screen flex items-center justify-center bg-blue-800 overflow-hidden"
-        style={{
-          backgroundImage: "var(--hero-bg-image)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundColor: "var(--hero-bg-color)",
-          backgroundBlendMode: "var(--hero-bg-blend)",
-        }}
+    <div className="bg-[#000000] pb-16">
+      {/* ================================================== */}
+      {/* HERO                                               */}
+      {/* ================================================== */}
+      <section
+        ref={heroRef}
+        className="relative min-h-screen overflow-hidden bg-[#020617]"
       >
-        {/* Gradient Overlay */}
-        <div
-          className="absolute inset-0"
-          style={{ background: "var(--hero-overlay-gradient)" }}
-        ></div>
-
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-          {/* Tagline */}
-          <p
-            className="text-sm md:text-base font-semibold text-blue-700 uppercase tracking-[0.15em] mb-5 animate-rise"
-            style={{ animationDelay: "0.1s" }}
-          >
-            Redefine Your Impact
-          </p>
-
-          {/* Main Heading */}
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 mb-8 animate-rise"
-            style={{ animationDelay: "0.3s" }}
-          >
-            <span className="block">Transform with</span>
-            <span className="block relative">
-              Alomonx Technology
-              <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-blue-600 scale-x-0 animate-grow origin-center"></span>
-            </span>
-          </h1>
-
-          {/* Subheading */}
-          <p
-            className="max-w-3xl mx-auto text-lg md:text-xl text-gray-600 mb-12 animate-rise"
-            style={{ animationDelay: "0.5s" }}
-          >
-            Elevate your brand with powerful digital campaigns and innovative
-            software solutions.
-          </p>
-
-          {/* CTA Buttons */}
-          <div
-            className="flex flex-col sm:flex-row gap-4 justify-center animate-rise"
-            style={{ animationDelay: "0.7s" }}
-          >
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 shadow-sm hover:shadow-md"
-            >
-              Begin Your Transformation
-            </Link>
-            <Link
-              href="/services"
-              className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-blue-600 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-            >
-              Our Expertise
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <ProjectCarousel />
-      <Services />
-      <ComparisonSection />
-      <CarouselCard />
-      <EcosystemSection />
-
-      <section className="py-16 bg-gradient-to-b from-white to-cyan-50">
+        {/* ── Background ──────────────────────────────────── */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          className="absolute inset-0 w-full h-[125%] -top-[10%]"
+          style={{ y: bgYSpring, willChange: "transform" }}
         >
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
-              Meet Our Visionaries
-            </h2>
-            <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-gray-600">
-              The leaders behind Alomonx Technology, blending innovation and
-              strategy to shape the future.
-            </p>
-          </div>
+          {!videoFailed && (
+            <video
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              // "metadata" instead of "auto": browser fetches just enough
+              // to display the poster/dimensions without buffering the whole
+              // video on slow connections. The video still auto-plays because
+              // autoPlay triggers a fetch once the element is in the DOM.
+              preload="metadata"
+              poster="/hero_2.jpeg"
+              onError={handleVideoError}
+              aria-hidden="true"
+            >
+              {/* webm first — smaller file, better compression */}
+              <source src="/hero-bg.webm" type="video/webm" />
+              <source src="/hero-bg.mp4" type="video/mp4" />
+            </video>
+          )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
-            {founders.map((founder, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="relative bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center group"
+          {/* Fallback image (hidden behind video unless video fails) */}
+          <div
+            className="absolute inset-0 w-full h-full"
+            style={{
+              backgroundImage: "url('/hero_2.jpeg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+              backgroundColor: "#020617",
+              // Only visible when video fails; otherwise sits behind it.
+              zIndex: videoFailed ? 0 : -1,
+            }}
+          />
+
+          {/* Gradient overlays — pure CSS, zero JS cost */}
+          <div className="absolute inset-0" style={OVERLAY_1} />
+          <div className="absolute inset-0" style={OVERLAY_2} />
+          <div className="absolute inset-0" style={OVERLAY_3} />
+        </motion.div>
+
+        {/* ── Foreground content ──────────────────────────── */}
+        <motion.div
+          className="relative z-10 flex flex-col min-h-screen px-6 sm:px-10 lg:px-14"
+          style={{ opacity: contentOpacity, willChange: "opacity" }}
+        >
+          {/* Spacer that pushes content to the bottom */}
+          <div className="flex-1" />
+
+          {/* Bottom Content */}
+          <motion.div
+            variants={heroContainerVariants}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 md:gap-10 lg:gap-16 pb-16 md:pb-16 lg:pb-20"
+          >
+            {/* Left — headline */}
+            <motion.div variants={fadeUp} className="flex-1 min-w-0">
+              <h1
+                className="text-[38px] sm:text-[46px] md:text-[clamp(3rem,7.0vw,5.4rem)] font-medium text-[#F8FAFC] leading-[1.1] md:leading-[1.0] tracking-[-0.04em]"
+                style={{ fontFamily: "var(--font-jost, 'Jost', sans-serif)" }}
               >
-                <div className="relative w-36 h-36 sm:w-44 sm:h-44 mb-4">
-                  <motion.img
-                    loading="lazy"
-                    src={founder.image}
-                    alt={founder.name}
-                    className="rounded-full w-full h-full object-cover border-4 border-cyan-200 shadow-md transition-transform duration-300 group-hover:scale-105 group-hover:rotate-1"
-                    onError={(e) => {
-                      e.target.src = "/founders/founder.jpg";
-                    }}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  <div className="absolute -bottom-2 right-2 bg-white shadow rounded-full p-1">
-                    <svg
-                      className="h-5 w-5 text-cyan-500"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
+                {HERO_LINES.map((line, i) => (
+                  <span key={line.text} className="block overflow-hidden">
+                    <motion.span
+                      className="block"
+                      variants={lineWipe(0.45 + i * 0.18)}
+                      initial="hidden"
+                      animate="visible"
                     >
-                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                    </svg>
-                  </div>
-                </div>
+                      {line.colored ? (
+                        <span style={{ color: "#2563FF" }}>{line.text}</span>
+                      ) : (
+                        line.text
+                      )}
+                    </motion.span>
+                  </span>
+                ))}
+              </h1>
+            </motion.div>
 
-                <Card className="border-none shadow-none bg-transparent">
-                  <CardContent className="p-0">
-                    <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900">
-                      {founder.name}
-                    </CardTitle>
-                    <CardDescription className="text-sm text-cyan-600 mb-3">
-                      {founder.role}
-                    </CardDescription>
-                    <p className="text-sm text-gray-600 leading-relaxed max-w-xs mx-auto">
-                      {founder.desc}
-                    </p>
-                  </CardContent>
-                </Card>
+            {/* Right — CTA column */}
+            <motion.div
+              variants={fadeUp}
+              className="lg:max-w-[340px] xl:max-w-[380px] flex-shrink-0 flex flex-col gap-5 md:gap-7 lg:pb-1"
+              style={{ fontFamily: "var(--font-jost, 'Jost', sans-serif)" }}
+            >
+              <motion.p
+                className="text-[#94A3B8] text-[14px] md:text-base sm:text-[17px] leading-relaxed font-light"
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.75, delay: 0.9 }}
+              >
+                Elevate your brand with powerful digital campaigns and
+                innovative software solutions.
+              </motion.p>
+
+              {/* Buttons */}
+              <motion.div
+                className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 1.05 }}
+              >
+                <button
+                  type="button"
+                  onClick={openContact}
+                  className="group inline-flex items-center gap-2 md:gap-3 pl-4 md:pl-6 pr-1 md:pr-2 py-1 md:py-2 rounded-full text-[#F8FAFC] text-[9px] md:text-[11px] font-bold tracking-[0.18em] uppercase transition-all duration-300 w-fit"
+                  style={BTN_PRIMARY_STYLE}
+                >
+                  <span>Begin Your Transformation</span>
+                  <span
+                    className="flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full"
+                    style={{ background: "#020617", color: "#22D3EE" }}
+                  >
+                    →
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleExpertiseClick}
+                  className="inline-flex items-center justify-center px-5 md:px-6 py-2.5 md:py-3 rounded-full text-[9px] md:text-[11px] font-bold uppercase tracking-[0.18em] transition-all duration-300 w-fit"
+                  style={BTN_OUTLINE_STYLE}
+                >
+                  Our Expertise
+                </button>
               </motion.div>
-            ))}
-          </div>
+
+              {/* Review strip */}
+              <motion.div
+                className="flex items-center gap-3 md:gap-4 pl-3 md:pl-4 mt-2 md:mt-0"
+                style={{ borderLeft: "2px solid rgba(34,211,238,0.4)" }}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.65, delay: 1.2 }}
+              >
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-0.5">{STARS}</div>
+                  <span className="text-[#94A3B8] text-[10px] md:text-xs font-medium">
+                    100+ Positive Client Reviews
+                  </span>
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
+        {/* ── Scroll indicator ─────────────────────────────── */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6, duration: 0.8 }}
+          style={{ opacity: scrollIndicatorOpacity }}
+        >
+          <motion.div
+            className="w-[1px] h-12"
+            style={{
+              background:
+                "linear-gradient(to bottom, transparent, rgba(34,211,238,0.5))",
+            }}
+            animate={{ scaleY: [0, 1, 0], originY: 0 }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          />
         </motion.div>
       </section>
 
-      <Testimonials />
+      {/* ─── Below-fold sections ─────────────────────────────
+          Each is wrapped in Suspense so the page doesn't wait
+          for every chunk before showing anything.
+          viewport={{ once: true }} means the animation fires
+          only once — no re-triggering on scroll back up.       */}
+
+      <StatsSection />
+
+      <Suspense fallback={<SectionFallback />}>
+        <motion.div
+          id="services"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.12 }}
+          className="scroll-mt-20"
+        >
+          <Services />
+        </motion.div>
+      </Suspense>
+
+      <Suspense fallback={<SectionFallback />}>
+        <AlomonxAISection />
+      </Suspense>
+
+      <Suspense fallback={<SectionFallback />}>
+        <EngineerFuture />
+      </Suspense>
+
+      <Suspense fallback={<SectionFallback />}>
+        <PresentationSection />
+      </Suspense>
+
+      <Suspense fallback={<SectionFallback />}>
+        <TechCapabilities />
+      </Suspense>
+
+      <Suspense fallback={<SectionFallback />}>
+        <section id="portfolio" className="scroll-mt-10">
+          <PortfolioCarousel />
+        </section>
+      </Suspense>
+
+      <Suspense fallback={<SectionFallback />}>
+        <Testimonials />
+      </Suspense>
+
+      <Suspense fallback={<SectionFallback />}>
+        <MarketingBanner />
+      </Suspense>
+
+      {/* ─── Contact modal ─────────────────────────────────── */}
+      <AnimatePresence>
+        {isContactOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            // Clicking the backdrop closes the modal
+            onClick={closeContact}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              // Stop click propagation so clicking inside the card
+              // doesn't close the modal.
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-6xl max-h-[95vh] overflow-y-auto custom-scrollbar rounded-2xl shadow-2xl"
+            >
+              <button
+                onClick={closeContact}
+                className="absolute top-4 right-4 z-50 p-2 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full text-white transition-colors"
+                aria-label="Close Contact Form"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* ContactForm is lazy — only its JS chunk is fetched when
+                  the modal opens for the first time. */}
+              <Suspense fallback={<SectionFallback />}>
+                <ContactForm />
+              </Suspense>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+
+// ─────────────────────────────────────────────────────────────
+// Module-level constants
+// Defining these outside the component means they are created
+// exactly once per module load, not on every render.
+// ─────────────────────────────────────────────────────────────
+
+// useTransform input/output arrays
+const OPACITY_INPUT = [0, 0.3];
+const OPACITY_OUTPUT = [1, 0];
+const BG_Y_INPUT = [0, 1];
+const BG_Y_OUTPUT = ["0%", "15%"];
+const SCROLL_IND_INPUT = [0, 0.18];
+const SCROLL_IND_OUTPUT = [1, 0];
+
+// useSpring config
+const SPRING_CONFIG = { stiffness: 60, damping: 18 };
+
+// Overlay styles (static objects — no re-allocation per render)
+const OVERLAY_1 = { background: "rgba(2,6,23,0.52)", zIndex: 1 };
+const OVERLAY_2 = {
+  background:
+    "linear-gradient(to top, rgba(2,6,23,0.92) 0%, rgba(2,6,23,0.2) 50%, transparent 100%)",
+  zIndex: 1,
+};
+const OVERLAY_3 = {
+  background:
+    "linear-gradient(to right, rgba(2,6,23,0.55) 0%, transparent 65%)",
+  zIndex: 1,
+};
+
+// Button styles
+const BTN_PRIMARY_STYLE = {
+  background: "#2563FF",
+  boxShadow: "0 2px 24px rgba(37,99,255,0.45)",
+};
+const BTN_OUTLINE_STYLE = {
+  border: "1px solid rgba(6,182,212,0.6)",
+  color: "#06B6D4",
+};
+
+// Pre-render the 5 star icons as a static array — avoids recreating
+// the SVG elements on every render cycle.
+const STARS = Array.from({ length: 5 }, (_, i) => <StarIcon key={i} />);

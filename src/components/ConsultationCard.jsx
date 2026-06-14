@@ -1,608 +1,509 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar } from "@/components/ui/calendar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ChevronLeft, CheckCircle, AlertCircle } from "lucide-react";
+import { ChevronLeft, CheckCircle2, Clock, CalendarDays, User, Building2, Mail, IndianRupee, FileText, Sparkles } from "lucide-react";
+import { enGB } from "date-fns/locale"; // <-- Fixes the hydration mismatch
 
-const timeSlots = [
-  "9:00 AM",
-  "10:30 AM",
-  "12:00 PM",
-  "2:00 PM",
-  "3:30 PM",
-  "5:00 PM",
+// ── Import dynamic data ────────────────────────────────────────────────────────
+import { allServices } from "@/lib/services-data";
+import { allAiServices } from "@/lib/ai-services-data";
+
+// ── Generate Project Types dynamically ─────────────────────────────────────────
+const PROJECT_TYPES = [
+  ...allServices.map((service) => ({
+    group: "Development",
+    label: service.label,
+  })),
+  ...allAiServices.map((service) => ({
+    group: "AI Services",
+    label: service.label,
+  })),
+  // Retaining standard generic options
+  { group: "Other", label: "SEO & Digital Marketing" },
+  { group: "Other", label: "UI/UX Design" },
+  { group: "Other", label: "Maintenance & Support" },
+  { group: "Other", label: "Not Sure Yet" },
 ];
 
-const timeZones = ["UTC", "EST", "CST", "MST", "PST", "IST", "CET"];
+const TIME_SLOTS = [
+  "9:00 AM", "10:30 AM", "12:00 PM",
+  "2:00 PM", "3:30 PM", "5:00 PM",
+];
 
+const TIME_ZONES = ["IST", "UTC", "EST", "CST", "MST", "PST", "CET"];
+
+const TIMELINES = ["Less than 1 Month", "1–3 Months", "3–6 Months", "6+ Months"];
+
+const BUDGETS = [
+  "Under ₹25,000",
+  "₹25,000 – ₹75,000",
+  "₹75,000 – ₹2,00,000",
+  "₹2,00,000 – ₹5,00,000",
+  "Above ₹5,00,000",
+  "Not Sure",
+];
+
+// ── Animation variants ─────────────────────────────────────────────────────────
+const slide = {
+  hidden: { opacity: 0, x: 18 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1] } },
+  exit: { opacity: 0, x: -14, transition: { duration: 0.2 } },
+};
+
+// ── Sub-components ─────────────────────────────────────────────────────────────
+function GlassInput({ icon: Icon, error, ...props }) {
+  return (
+    <div className="relative">
+      {Icon && (
+        <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+      )}
+      <input
+        {...props}
+        className={`w-full bg-white/5 border rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none transition-all focus:bg-white/8
+          ${Icon ? "pl-10" : ""}
+          ${error
+            ? "border-red-500/60 focus:border-red-400 focus:ring-1 focus:ring-red-400/30"
+            : "border-white/10 focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/20"
+          }`}
+      />
+      {error && <p className="text-xs text-red-400 mt-1.5 ml-1">{error}</p>}
+    </div>
+  );
+}
+
+function GlassSelect({ icon: Icon, error, placeholder, children, ...props }) {
+  return (
+    <div className="relative">
+      {Icon && (
+        <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none z-10" />
+      )}
+      <select
+        {...props}
+        className={`w-full appearance-none bg-white/5 border rounded-xl px-4 py-3 text-sm outline-none transition-all cursor-pointer
+          ${Icon ? "pl-10" : ""}
+          ${props.value ? "text-white" : "text-slate-500"}
+          ${error
+            ? "border-red-500/60 focus:border-red-400"
+            : "border-white/10 focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/20"
+          }`}
+      >
+        {placeholder && (
+          <option value="" disabled className="bg-[#0d1117] text-slate-400">
+            {placeholder}
+          </option>
+        )}
+        {children}
+      </select>
+      {error && <p className="text-xs text-red-400 mt-1.5 ml-1">{error}</p>}
+    </div>
+  );
+}
+
+function StepDots({ current, total = 3 }) {
+  return (
+    <div className="flex items-center gap-2 justify-center">
+      {Array.from({ length: total }).map((_, i) => (
+        <motion.div
+          key={i}
+          animate={{
+            width: i + 1 === current ? 24 : 6,
+            opacity: i + 1 <= current ? 1 : 0.25,
+            backgroundColor: i + 1 < current ? "#7c3aed" : i + 1 === current ? "#a78bfa" : "#475569",
+          }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="h-1.5 rounded-full"
+        />
+      ))}
+    </div>
+  );
+}
+
+function SectionLabel({ children }) {
+  return (
+    <p className="text-[10px] font-semibold tracking-[0.12em] uppercase text-slate-500 mb-3">
+      {children}
+    </p>
+  );
+}
+
+// ── Main component ─────────────────────────────────────────────────────────────
 const ConsultationCard = () => {
-  const [step, setStep] = useState(1); // 1 = calendar, 2 = time, 3 = form, 4 = confirmation
+  const [step, setStep] = useState(1);
   const [date, setDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedTimeZone, setSelectedTimeZone] = useState("UTC");
-  const [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
-    company: "",
-    websiteType: "",
-    platform: "",
-    timeline: "",
-    budget: "",
-    additionalNotes: "",
-    phone: "",
+  const [selectedTimeZone, setSelectedTimeZone] = useState("IST");
+  const [form, setForm] = useState({
+    name: "", email: "", company: "",
+    projectType: "", timeline: "", budget: "", notes: "",
   });
   const [errors, setErrors] = useState({});
 
-  // Validate form fields
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formValues.name.trim()) newErrors.name = "Name is required";
-    if (
-      !formValues.email.trim() ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email)
-    )
-      newErrors.email = "Valid email is required";
-    if (!formValues.company.trim())
-      newErrors.company = "Company name is required";
-    if (!formValues.websiteType)
-      newErrors.websiteType = "Website type is required";
-    if (!formValues.platform) newErrors.platform = "Platform is required";
-    if (!formValues.timeline) newErrors.timeline = "Timeline is required";
-    if (!formValues.budget.trim()) newErrors.budget = "Budget is required";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = "Required";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Valid email required";
+    if (!form.company.trim()) e.company = "Required";
+    if (!form.projectType) e.projectType = "Select a project type";
+    if (!form.timeline) e.timeline = "Select a timeline";
+    if (!form.budget) e.budget = "Select a budget range";
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
-  const handleInputChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" }); // Clear error on input change
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      try {
-        const response = await fetch("/api/sheet/appointment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            date: date?.toLocaleDateString(),
-            time: selectedTime,
-            timeZone: selectedTimeZone,
-            ...formValues,
-          }),
-        });
-
-        if (response.ok) {
-          setStep(4);
-          setErrors(null);
-        } else {
-          const { message } = await response.json();
-          setErrors(message || "Failed to save data");
-        }
-      } catch (error) {
-        console.error("Error submitting form:", error);
-        setErrors("An error occurred while saving your data");
+    if (!validate()) return;
+    try {
+      const res = await fetch("/api/sheet/appointment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date: date?.toLocaleDateString("en-GB"), // Standardize submission format
+          time: selectedTime,
+          timeZone: selectedTimeZone,
+          ...form,
+        }),
+      });
+      if (res.ok) {
+        setStep(4);
+        setErrors({});
+      } else {
+        const { message } = await res.json();
+        setErrors({ submit: message || "Submission failed. Please try again." });
       }
+    } catch {
+      setErrors({ submit: "Network error. Please try again." });
     }
   };
 
-  // Prevent proceeding to form step without date and time
-  const canProceedToForm = date && selectedTime;
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4, ease: "easeOut" },
-    },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+  const reset = () => {
+    setStep(1); setDate(null); setSelectedTime(null); setSelectedTimeZone("IST");
+    setForm({ name: "", email: "", company: "", projectType: "", timeline: "", budget: "", notes: "" });
+    setErrors({});
   };
 
+  // Group project types for the select
+  const groups = [...new Set(PROJECT_TYPES.map((p) => p.group))];
+
   return (
-    <Card className="border border-gray-100 shadow-md rounded-xl max-w-xl mx-auto h-[530px] overflow-y-auto">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-medium text-gray-900 text-center">
-          Schedule a Discovery Call
-        </CardTitle>
-        <div className="flex justify-center gap-2 mt-2">
-          {[1, 2, 3].map((s) => (
-            <div
-              key={s}
-              className={`h-1 w-8 rounded-full ${
-                step >= s ? "bg-indigo-600" : "bg-gray-200"
-              }`}
-              aria-hidden="true"
-            />
-          ))}
+    <div className="w-full h-[580px] flex flex-col rounded-2xl overflow-hidden border border-white/10 bg-[#080c14]/90 backdrop-blur-xl shadow-2xl shadow-black/40 text-white">
+
+      {/* ── Header ── */}
+      <div className="shrink-0 px-6 pt-5 pb-4 border-b border-white/8">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-violet-500/15 border border-violet-500/25 flex items-center justify-center">
+              <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+            </div>
+            <span className="text-sm font-semibold text-white tracking-tight">
+              Book a Consultation
+            </span>
+          </div>
+          <StepDots current={Math.min(step, 3)} />
         </div>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center  space-y-5 px-6 py-4">
+
+        {/* Step label */}
         <AnimatePresence mode="wait">
-          {/* Step 1: Calendar Selection */}
-          {step === 1 && (
+          {step < 4 && (
             <motion.div
-              key="calendar"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="w-full flex flex-col items-center justify-center"
+              key={step}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.2 }}
             >
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={(selectedDate) => {
-                  setDate(selectedDate);
-                  if (selectedDate) setStep(2);
-                }}
-                className="rounded-lg border-gray-200 shadow-sm"
-                disabled={{ before: new Date() }}
-                aria-label="Select a date for your consultation"
-              />
-              <p className="text-sm text-gray-500 text-center mt-3">
-                Choose a date to see available times
+              <p className="text-xs text-slate-500">
+                {step === 1 && "Step 1 of 3 — Pick a date"}
+                {step === 2 && "Step 2 of 3 — Choose a time slot"}
+                {step === 3 && "Step 3 of 3 — Tell us about your project"}
               </p>
-            </motion.div>
-          )}
-
-          {/* Step 2: Time Slot Selection */}
-          {step === 2 && (
-            <motion.div
-              key="time"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="w-full space-y-4"
-            >
-              <div className="text-center text-sm text-gray-700">
-                <p>
-                  Selected: <strong>{date?.toLocaleDateString()}</strong>
-                </p>
-              </div>
-
-              {/* Time Zone Selector */}
-              <div>
-                <Label
-                  htmlFor="timezone"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Time Zone
-                </Label>
-                <select
-                  id="timezone"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-indigo-300 focus:border-indigo-300"
-                  value={selectedTimeZone}
-                  onChange={(e) => setSelectedTimeZone(e.target.value)}
-                  aria-label="Select your time zone"
-                >
-                  {timeZones.map((zone) => (
-                    <option key={zone} value={zone}>
-                      {zone}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Time Slots */}
-              <div className="grid grid-cols-2 gap-2">
-                {timeSlots.map((slot) => (
-                  <motion.div
-                    key={slot}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <Button
-                      variant={selectedTime === slot ? "default" : "outline"}
-                      className={`w-full text-sm py-2 ${
-                        selectedTime === slot
-                          ? "bg-indigo-600 text-white hover:bg-indigo-700"
-                          : "border-gray-200 hover:bg-gray-50"
-                      }`}
-                      onClick={() => setSelectedTime(slot)}
-                      aria-label={`Select time slot ${slot}`}
-                    >
-                      {slot}
-                    </Button>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <Button
-                  disabled={!canProceedToForm}
-                  onClick={() => setStep(3)}
-                  className="w-full bg-indigo-600 text-white hover:bg-indigo-700 text-sm disabled:opacity-50"
-                  aria-label="Proceed to booking details"
-                >
-                  Next
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    setStep(1);
-                    setSelectedTime(null);
-                  }}
-                  className="w-full text-sm flex items-center justify-center"
-                  aria-label="Back to calendar"
-                >
-                  <ChevronLeft className="h-4 w-4 mr-1" /> Back
-                </Button>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Step 3: Form */}
-          {step === 3 && (
-            <motion.form
-              key="form"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              onSubmit={handleSubmit}
-              className="w-full space-y-4"
-            >
-              <div className="text-sm text-gray-600 space-y-1">
-                <p>
-                  <strong>Date:</strong> {date?.toLocaleDateString()}
-                </p>
-                <p>
-                  <strong>Time:</strong> {selectedTime} ({selectedTimeZone})
-                </p>
-              </div>
-
-              <div>
-                <Label
-                  htmlFor="name"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Full Name *
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder="Your Name"
-                  value={formValues.name}
-                  onChange={handleInputChange}
-                  required
-                  className={`mt-1 rounded-lg border-gray-200 ${
-                    errors.name ? "border-red-500" : ""
-                  }`}
-                  aria-invalid={!!errors.name}
-                  aria-describedby={errors.name ? "name-error" : undefined}
-                />
-                {errors.name && (
-                  <p
-                    id="name-error"
-                    className="text-xs text-red-500 mt-1 flex items-center"
-                  >
-                    <AlertCircle className="h-4 w-4 mr-1" /> {errors.name}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label
-                  htmlFor="email"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Email *
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Your Email"
-                  value={formValues.email}
-                  onChange={handleInputChange}
-                  required
-                  className={`mt-1 rounded-lg border-gray-200 ${
-                    errors.email ? "border-red-500" : ""
-                  }`}
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                />
-                {errors.email && (
-                  <p
-                    id="email-error"
-                    className="text-xs text-red-500 mt-1 flex items-center"
-                  >
-                    <AlertCircle className="h-4 w-4 mr-1" /> {errors.email}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label
-                  htmlFor="company"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Company Name *
-                </Label>
-                <Input
-                  id="company"
-                  name="company"
-                  placeholder="Your Company"
-                  value={formValues.company}
-                  onChange={handleInputChange}
-                  required
-                  className={`mt-1 rounded-lg border-gray-200 ${
-                    errors.company ? "border-red-500" : ""
-                  }`}
-                  aria-invalid={!!errors.company}
-                  aria-describedby={
-                    errors.company ? "company-error" : undefined
-                  }
-                />
-                {errors.company && (
-                  <p
-                    id="company-error"
-                    className="text-xs text-red-500 mt-1 flex items-center"
-                  >
-                    <AlertCircle className="h-4 w-4 mr-1" /> {errors.company}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label
-                  htmlFor="websiteType"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Website Type *
-                </Label>
-                <select
-                  id="websiteType"
-                  name="websiteType"
-                  className={`w-full border rounded-lg px-3 py-2 mt-1 text-sm ${
-                    errors.websiteType ? "border-red-500" : "border-gray-200"
-                  }`}
-                  value={formValues.websiteType}
-                  onChange={handleInputChange}
-                  required
-                  aria-invalid={!!errors.websiteType}
-                  aria-describedby={
-                    errors.websiteType ? "websiteType-error" : undefined
-                  }
-                >
-                  <option value="">Select...</option>
-                  <option>Corporate/Business</option>
-                  <option>E-Commerce</option>
-                  <option>Web Application</option>
-                  <option>Portfolio/Blog</option>
-                </select>
-                {errors.websiteType && (
-                  <p
-                    id="websiteType-error"
-                    className="text-xs text-red-500 mt-1 flex items-center"
-                  >
-                    <AlertCircle className="h-4 w-4 mr-1" />{" "}
-                    {errors.websiteType}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label
-                  htmlFor="platform"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Preferred Platform *
-                </Label>
-                <select
-                  id="platform"
-                  name="platform"
-                  className={`w-full border rounded-lg px-3 py-2 mt-1 text-sm ${
-                    errors.platform ? "border-red-500" : "border-gray-200"
-                  }`}
-                  value={formValues.platform}
-                  onChange={handleInputChange}
-                  required
-                  aria-invalid={!!errors.platform}
-                  aria-describedby={
-                    errors.platform ? "platform-error" : undefined
-                  }
-                >
-                  <option value="">Select...</option>
-                  <option>WordPress</option>
-                  <option>React/Next.js</option>
-                  <option>Shopify</option>
-                  <option>Webflow</option>
-                  <option>Not Sure</option>
-                </select>
-                {errors.platform && (
-                  <p
-                    id="platform-error"
-                    className="text-xs text-red-500 mt-1 flex items-center"
-                  >
-                    <AlertCircle className="h-4 w-4 mr-1" /> {errors.platform}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label
-                  htmlFor="timeline"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Timeline *
-                </Label>
-                <select
-                  id="timeline"
-                  name="timeline"
-                  className={`w-full border rounded-lg px-3 py-2 mt-1 text-sm ${
-                    errors.timeline ? "border-red-500" : "border-gray-200"
-                  }`}
-                  value={formValues.timeline}
-                  onChange={handleInputChange}
-                  required
-                  aria-invalid={!!errors.timeline}
-                  aria-describedby={
-                    errors.timeline ? "timeline-error" : undefined
-                  }
-                >
-                  <option value="">Select...</option>
-                  <option>1–3 Months</option>
-                  <option>3–6 Months</option>
-                  <option>6+ Months</option>
-                </select>
-                {errors.timeline && (
-                  <p
-                    id="timeline-error"
-                    className="text-xs text-red-500 mt-1 flex items-center"
-                  >
-                    <AlertCircle className="h-4 w-4 mr-1" /> {errors.timeline}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label
-                  htmlFor="budget"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Budget *
-                </Label>
-                <Input
-                  id="budget"
-                  name="budget"
-                  placeholder="e.g., $5,000 - $10,000"
-                  value={formValues.budget}
-                  onChange={handleInputChange}
-                  required
-                  className={`mt-1 rounded-lg border-gray-200 ${
-                    errors.budget ? "border-red-500" : ""
-                  }`}
-                  aria-invalid={!!errors.budget}
-                  aria-describedby={errors.budget ? "budget-error" : undefined}
-                />
-                {errors.budget && (
-                  <p
-                    id="budget-error"
-                    className="text-xs text-red-500 mt-1 flex items-center"
-                  >
-                    <AlertCircle className="h-4 w-4 mr-1" /> {errors.budget}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label
-                  htmlFor="additionalNotes"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Additional Notes
-                </Label>
-                <textarea
-                  id="additionalNotes"
-                  name="additionalNotes"
-                  placeholder="Any specific requirements?"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 mt-1 text-sm"
-                  rows={3}
-                  value={formValues.additionalNotes}
-                  onChange={handleInputChange}
-                  aria-label="Additional notes for your consultation"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => setStep(2)}
-                  className="w-full text-sm flex items-center justify-center"
-                  aria-label="Back to time selection"
-                >
-                  <ChevronLeft className="h-4 w-4 mr-1" /> Back
-                </Button>
-                <Button
-                  type="submit"
-                  className="w-full bg-indigo-600 text-white hover:bg-indigo-700 text-sm"
-                  aria-label="Confirm consultation booking"
-                >
-                  Confirm Booking
-                </Button>
-              </div>
-
-              <p className="text-xs text-gray-500 text-center mt-3">
-                By submitting, you agree to our{" "}
-                <a href="#" className="underline hover:text-indigo-600">
-                  Terms of Use
-                </a>{" "}
-                and{" "}
-                <a href="#" className="underline hover:text-indigo-600">
-                  Privacy Policy
-                </a>
-                .
-              </p>
-            </motion.form>
-          )}
-
-          {/* Step 4: Confirmation */}
-          {step === 4 && (
-            <motion.div
-              key="confirmation"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="w-full text-center space-y-5"
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5, ease: "backOut" }}
-              >
-                <CheckCircle className="h-12 w-12 text-indigo-600 mx-auto" />
-              </motion.div>
-              <h3 className="text-lg font-medium text-gray-900">
-                Booking Confirmed
-              </h3>
-              <p className="text-sm text-gray-600">
-                Your discovery call is scheduled for{" "}
-                <strong>{date?.toLocaleDateString()}</strong> at{" "}
-                <strong>
-                  {selectedTime} ({selectedTimeZone})
-                </strong>
-                . A confirmation email will be sent soon.
-              </p>
-              <Button
-                onClick={() => {
-                  setStep(1);
-                  setDate(null);
-                  setSelectedTime(null);
-                  setFormValues({
-                    name: "",
-                    email: "",
-                    company: "",
-                    websiteType: "",
-                    platform: "",
-                    timeline: "",
-                    budget: "",
-                    additionalNotes: "",
-                    phone: "",
-                  });
-                  setErrors({});
-                }}
-                className="bg-indigo-600 text-white hover:bg-indigo-700 text-sm"
-                aria-label="Book another consultation"
-              >
-                Book Another Call
-              </Button>
             </motion.div>
           )}
         </AnimatePresence>
-      </CardContent>
-    </Card>
+      </div>
+
+      {/* ── Body ── */}
+      <div className="flex-1 overflow-y-auto px-6 py-5 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+        <AnimatePresence mode="wait">
+
+          {/* ─── Step 1: Calendar ─── */}
+          {step === 1 && (
+            <motion.div key="s1" variants={slide} initial="hidden" animate="visible" exit="exit"
+              className="flex flex-col items-center gap-4">
+              
+              {/* Wrapped in 'dark' to force Shadcn theme, added strict CSS overrides */}
+              <div className="dark rounded-xl border border-white/10 bg-[#080c14] p-3 w-fit shadow-inner shadow-black/20">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(d) => { setDate(d); if (d) setStep(2); }}
+                  disabled={{ before: new Date() }}
+                  locale={enGB} // <-- Enforces consistent DD/MM/YYYY formatting
+                  className="rounded-lg bg-transparent p-0 
+                    [&_.rdp-caption_label]:text-white 
+                    [&_.rdp-head_cell]:text-slate-400 
+                    [&_button.rdp-day]:text-white 
+                    [&_button.rdp-day:hover]:bg-violet-500/20 
+                    [&_button[aria-selected='true']]:!bg-violet-600 
+                    [&_button[aria-selected='true']]:!text-white 
+                    [&_button[aria-selected='true']:hover]:!bg-violet-500
+                    [&_.rdp-day_disabled]:!text-white/20 
+                    [&_.rdp-day_disabled]:!bg-transparent
+                    [&_.rdp-day_outside]:text-white/30"
+                />
+              </div>
+              
+              <p className="text-xs text-slate-500 text-center">
+                Select a date to view available slots
+              </p>
+            </motion.div>
+          )}
+
+          {/* ─── Step 2: Time ─── */}
+          {step === 2 && (
+            <motion.div key="s2" variants={slide} initial="hidden" animate="visible" exit="exit"
+              className="space-y-5">
+
+              {/* Selected date chip */}
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-violet-500/10 border border-violet-500/20">
+                <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
+                  <CalendarDays className="w-4 h-4 text-violet-400" />
+                </div>
+                <div>
+                  <p className="text-[10px] text-violet-400/70 font-semibold uppercase tracking-widest">Selected date</p>
+                  <p className="text-sm font-semibold text-white">
+                    {date?.toLocaleDateString("en-GB", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
+                  </p>
+                </div>
+              </div>
+
+              {/* Timezone */}
+              <div>
+                <SectionLabel>Time Zone</SectionLabel>
+                <GlassSelect
+                  value={selectedTimeZone}
+                  onChange={(e) => setSelectedTimeZone(e.target.value)}
+                >
+                  {TIME_ZONES.map((z) => (
+                    <option key={z} value={z} className="bg-[#0d1117]">{z}</option>
+                  ))}
+                </GlassSelect>
+              </div>
+
+              {/* Time grid */}
+              <div>
+                <SectionLabel>Available Slots</SectionLabel>
+                <div className="grid grid-cols-3 gap-2">
+                  {TIME_SLOTS.map((slot) => {
+                    const active = selectedTime === slot;
+                    return (
+                      <button
+                        key={slot}
+                        onClick={() => setSelectedTime(slot)}
+                        className={`relative py-2.5 rounded-xl border text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1.5
+                          ${active
+                            ? "bg-violet-600 border-violet-500 text-white shadow-lg shadow-violet-500/25"
+                            : "bg-white/4 border-white/8 text-slate-400 hover:border-white/20 hover:text-white hover:bg-white/8"
+                          }`}
+                      >
+                        <Clock className={`w-3 h-3 ${active ? "text-violet-200" : "text-slate-600"}`} />
+                        {slot}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Nav */}
+              <div className="flex gap-2 pt-1">
+                <button
+                  onClick={() => { setStep(1); setSelectedTime(null); }}
+                  className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-white/10 text-slate-400 text-sm hover:text-white hover:border-white/20 transition-all"
+                >
+                  <ChevronLeft className="w-4 h-4" /> Back
+                </button>
+                <button
+                  disabled={!selectedTime}
+                  onClick={() => setStep(3)}
+                  className="flex-1 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-violet-500/20"
+                >
+                  Continue
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ─── Step 3: Form ─── */}
+          {step === 3 && (
+            <motion.form key="s3" variants={slide} initial="hidden" animate="visible" exit="exit"
+              onSubmit={handleSubmit} className="space-y-4">
+
+              {/* Booking summary */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-white/4 border border-white/8 text-xs">
+                <div className="flex items-center gap-2">
+                  <CalendarDays className="w-3.5 h-3.5 text-violet-400" />
+                  <span className="text-slate-400">{date?.toLocaleDateString("en-GB")}</span>
+                </div>
+                <div className="w-px h-3 bg-white/15" />
+                <div className="flex items-center gap-2">
+                  <Clock className="w-3.5 h-3.5 text-sky-400" />
+                  <span className="text-slate-400">{selectedTime}</span>
+                </div>
+                <div className="w-px h-3 bg-white/15" />
+                <span className="text-emerald-400 font-semibold">{selectedTimeZone}</span>
+              </div>
+
+              {/* Contact info */}
+              <div className="space-y-3">
+                <SectionLabel>Contact Details</SectionLabel>
+                <GlassInput icon={User} name="name" placeholder="Full Name *"
+                  value={form.name} onChange={handleChange} error={errors.name} />
+                <GlassInput icon={Mail} name="email" type="email" placeholder="Email Address *"
+                  value={form.email} onChange={handleChange} error={errors.email} />
+                <GlassInput icon={Building2} name="company" placeholder="Company / Organisation *"
+                  value={form.company} onChange={handleChange} error={errors.company} />
+              </div>
+
+              {/* Project info */}
+              <div className="space-y-3">
+                <SectionLabel>Project Details</SectionLabel>
+
+                <GlassSelect
+                  name="projectType"
+                  value={form.projectType}
+                  onChange={handleChange}
+                  error={errors.projectType}
+                  placeholder="Select Project Type *"
+                  icon={FileText}
+                >
+                  {groups.map((group) => (
+                    <optgroup key={group} label={group} className="bg-[#0d1117] text-slate-400 text-xs">
+                      {PROJECT_TYPES.filter((p) => p.group === group).map((p) => (
+                        <option key={p.label} value={p.label} className="bg-[#0d1117] text-white">
+                          {p.label}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </GlassSelect>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <GlassSelect
+                    name="timeline"
+                    value={form.timeline}
+                    onChange={handleChange}
+                    error={errors.timeline}
+                    placeholder="Timeline *"
+                  >
+                    {TIMELINES.map((t) => (
+                      <option key={t} value={t} className="bg-[#0d1117] text-white">{t}</option>
+                    ))}
+                  </GlassSelect>
+
+                  <GlassSelect
+                    name="budget"
+                    value={form.budget}
+                    onChange={handleChange}
+                    error={errors.budget}
+                    placeholder="Budget *"
+                    icon={IndianRupee}
+                  >
+                    {BUDGETS.map((b) => (
+                      <option key={b} value={b} className="bg-[#0d1117] text-white">{b}</option>
+                    ))}
+                  </GlassSelect>
+                </div>
+
+                <textarea
+                  name="notes"
+                  value={form.notes}
+                  onChange={handleChange}
+                  placeholder="Additional notes (optional)"
+                  rows={2}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none transition-all focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/20 resize-none"
+                />
+              </div>
+
+              {errors.submit && (
+                <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-center">
+                  {errors.submit}
+                </div>
+              )}
+
+              <div className="flex gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setStep(2)}
+                  className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-white/10 text-slate-400 text-sm hover:text-white hover:border-white/20 transition-all"
+                >
+                  <ChevronLeft className="w-4 h-4" /> Back
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold transition-all shadow-lg shadow-violet-500/20"
+                >
+                  Confirm Booking
+                </button>
+              </div>
+            </motion.form>
+          )}
+
+          {/* ─── Step 4: Confirmed ─── */}
+          {step === 4 && (
+            <motion.div key="s4" variants={slide} initial="hidden" animate="visible" exit="exit"
+              className="flex flex-col items-center justify-center text-center h-full py-8 gap-6">
+
+              <motion.div
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
+                className="w-20 h-20 rounded-full bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center"
+              >
+                <CheckCircle2 className="w-10 h-10 text-emerald-400" strokeWidth={1.5} />
+              </motion.div>
+
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white tracking-tight">You're booked!</h3>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Your consultation is confirmed for
+                </p>
+                <div className="inline-flex items-center gap-2 mt-1 px-4 py-2 rounded-xl bg-violet-500/12 border border-violet-500/20">
+                  <CalendarDays className="w-4 h-4 text-violet-400" />
+                  <span className="text-sm font-semibold text-violet-300">
+                    {date?.toLocaleDateString("en-GB", { weekday: "short", month: "short", day: "numeric" })} at {selectedTime} {selectedTimeZone}
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-500 bg-white/4 border border-white/8 rounded-xl px-5 py-3 max-w-[240px] leading-relaxed">
+                A confirmation has been sent to <span className="text-slate-300">{form.email}</span>
+              </p>
+
+              <button
+                onClick={reset}
+                className="mt-2 px-6 py-2.5 rounded-xl border border-white/12 text-sm text-slate-400 hover:text-white hover:border-white/25 hover:bg-white/5 transition-all"
+              >
+                Book another call
+              </button>
+            </motion.div>
+          )}
+
+        </AnimatePresence>
+      </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+        .scrollbar-track-transparent::-webkit-scrollbar-track { background: transparent; }
+        .scrollbar-thumb-white\\/10::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 8px; }
+      ` }} />
+    </div>
   );
 };
 
