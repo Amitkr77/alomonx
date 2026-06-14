@@ -9,7 +9,6 @@ export default function WhyChooseUs({
   const [activeIndex, setActiveIndex] = useState(0);
   const imageRefs = useRef([]);
 
-  // Memoize incoming items so we don't recalculate on every render
   const slides = useMemo(() => {
     return items.map((item, i) => ({
       num: String(i + 1).padStart(2, "0"),
@@ -22,8 +21,6 @@ export default function WhyChooseUs({
   useEffect(() => {
     if (!slides.length) return;
 
-    // Use IntersectionObserver instead of high-cost scroll event listeners
-    // The rootMargin creates a narrow "tripwire" in the exact center of the screen
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -35,7 +32,7 @@ export default function WhyChooseUs({
       },
       {
         root: null,
-        rootMargin: "-45% 0px -45% 0px", // Triggers when the item hits the middle 10% of viewport
+        rootMargin: "-45% 0px -45% 0px",
         threshold: 0,
       },
     );
@@ -56,10 +53,59 @@ export default function WhyChooseUs({
 
   return (
     <section className="text-[#FDFBE2] font-sans relative">
-      <div className="w-full max-w-[1500px] mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start relative">
+      <div className="w-full max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-12">
+        {/* ── MOBILE / TABLET layout (below lg) ─────────────────────────── */}
+        <div className="lg:hidden">
+          {/* Section label */}
+          <div className="flex items-baseline gap-2 pt-12 pb-10">
+            <span className="font-serif text-2xl font-bold text-[#FDFBE2] leading-tight">
+              {sectionLabel}
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-blue-900 inline-block" />
+              <span className="w-2 h-2 rounded-full bg-blue-900 inline-block" />
+              <span className="w-2 h-2 rounded-full bg-blue-900 inline-block" />
+            </span>
+          </div>
+
+          {/* Each slide stacked: number → image → text */}
+          <div className="flex flex-col gap-14 pb-16">
+            {slides.map((slide, index) => (
+              <div key={index} className="flex flex-col gap-5">
+                {/* Number */}
+                <span className="text-[80px] sm:text-[100px] leading-none font-medium tracking-tighter text-[#FDFBE2]/20">
+                  {slide.num}
+                </span>
+
+                {/* Image */}
+                <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden">
+                  <Image
+                    src={slide.img}
+                    alt={slide.alt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 400px"
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Text */}
+                <div className="pt-1">
+                  <h3 className="text-lg sm:text-xl font-semibold text-[#FDFBE2] mb-2 leading-snug">
+                    {slide.alt}
+                  </h3>
+                  <p className="text-base sm:text-lg leading-relaxed text-[#FDFBE2]/75">
+                    {slide.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── DESKTOP layout (lg and above) ─────────────────────────────── */}
+        <div className="hidden lg:grid lg:grid-cols-12 gap-16 items-start relative">
           {/* LEFT COLUMN (STICKY) - Nav & Big Number */}
-          <div className="hidden lg:block lg:col-span-3 sticky top-0 h-screen">
+          <div className="lg:col-span-3 sticky top-0 h-screen">
             <div className="h-full flex flex-col justify-between py-12">
               <div className="flex items-baseline gap-2">
                 <span className="font-serif text-2xl font-bold text-[#FDFBE2] leading-tight">
@@ -124,7 +170,7 @@ export default function WhyChooseUs({
           </div>
 
           {/* RIGHT COLUMN (STICKY) - Crossfading Text + Title */}
-          <div className="hidden lg:block lg:col-span-4 sticky top-0 h-screen">
+          <div className="lg:col-span-4 sticky top-0 h-screen">
             <div className="h-full flex items-center relative">
               <div className="relative w-full max-w-[320px]">
                 {slides.map((slide, index) => (

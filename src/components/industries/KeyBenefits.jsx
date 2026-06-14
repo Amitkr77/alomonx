@@ -14,9 +14,7 @@ export default function KeyBenefits({ benefits = [] }) {
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // OPTIMIZATION 1: Use a ref to track the index and prevent React state spam
   const currentIndexRef = useRef(0);
-
   const totalItems = benefits.length;
 
   const { scrollYProgress } = useScroll({
@@ -24,7 +22,6 @@ export default function KeyBenefits({ benefits = [] }) {
     offset: ["start start", "end end"],
   });
 
-  // OPTIMIZATION 2: Apply a physics spring to the scroll progress for fluid momentum
   const smoothProgress = useSpring(scrollYProgress, {
     mass: 0.1,
     stiffness: 100,
@@ -32,20 +29,13 @@ export default function KeyBenefits({ benefits = [] }) {
     restDelta: 0.001,
   });
 
-  // OPTIMIZATION 3: Map rotation directly to the scroll spring (bypasses React state)
   const rotation = useTransform(smoothProgress, [0, 1], [0, 360]);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (!totalItems) return;
-
     const step = 1 / totalItems;
     let index = Math.floor(latest / step);
-
-    if (index >= totalItems) {
-      index = totalItems - 1;
-    }
-
-    // Only trigger a React re-render if the index has ACTUALLY changed
+    if (index >= totalItems) index = totalItems - 1;
     if (index !== currentIndexRef.current) {
       currentIndexRef.current = index;
       setActiveIndex(index);
@@ -58,17 +48,136 @@ export default function KeyBenefits({ benefits = [] }) {
     <section
       ref={containerRef}
       className="relative"
-      style={{
-        height: `${totalItems * 100}vh`,
-      }}
+      style={{ height: `${totalItems * 100}vh` }}
     >
-      {/* Adjust top-[80px] and calc(100vh - 80px) to match your exact header height */}
-      <div className="sticky top-[80px] h-[calc(105vh-80px)] w-full overflow-hidden flex flex-col lg:block">
-        {/* AMBIENT GLOW - Simplified for better paint performance */}
+      <div className="sticky top-[80px] h-[calc(100vh-80px)] w-full overflow-hidden flex flex-col lg:block">
+        {/* AMBIENT GLOW */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-white/5 blur-[80px] rounded-full pointer-events-none" />
 
-        {/* MOBILE PROGRESS BAR */}
-        <div className="lg:hidden absolute top-0 left-0 w-full h-1 bg-white/10 z-50">
+        {/* ── MOBILE LAYOUT (hidden on lg+) ───────────────────────── */}
+        <div className="lg:hidden flex flex-col h-full px-5 pt-8 pb-6 relative z-20">
+          {/* Top bar — label + counter */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="h-[1px] w-5 bg-white/30" />
+              <span className="text-[10px] tracking-[0.4em] uppercase text-white/50 font-mono">
+                Key Benefits
+              </span>
+            </div>
+            <div className="flex items-center gap-1 text-white/40 font-mono text-xs">
+              <span className="text-white text-sm font-light">
+                {String(activeIndex + 1).padStart(2, "0")}
+              </span>
+              <span className="mx-1 text-white/20">/</span>
+              <span>{String(totalItems).padStart(2, "0")}</span>
+            </div>
+          </div>
+
+          {/* Mini orb */}
+          <div className="flex justify-center mb-6">
+            <div className="relative w-[120px] h-[120px]">
+              {/* Outer ring */}
+              <svg
+                viewBox="0 0 200 200"
+                className="absolute inset-0 w-full h-full text-white/20"
+              >
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="98"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="0.5"
+                  strokeDasharray="1 4"
+                />
+              </svg>
+              {/* Rotating comet */}
+              <motion.div
+                style={{ rotate: rotation }}
+                className="absolute inset-0 will-change-transform"
+              >
+                <svg
+                  viewBox="0 0 200 200"
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <defs>
+                    <linearGradient
+                      id="cometTailMob"
+                      x1="50%"
+                      y1="0%"
+                      x2="100%"
+                      y2="50%"
+                    >
+                      <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+                      <stop offset="100%" stopColor="rgba(255,255,255,0.8)" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M 100 1 A 99 99 0 0 1 199 100"
+                    fill="none"
+                    stroke="url(#cometTailMob)"
+                    strokeWidth="2"
+                  />
+                </svg>
+                {/* Comet dot */}
+                <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 flex items-center justify-center">
+                  <div className="absolute w-6 h-6 rounded-full bg-white/10 blur-sm" />
+                  <div className="relative w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_2px_rgba(255,255,255,0.9)]" />
+                </div>
+              </motion.div>
+              {/* Centre glow */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10" />
+              </div>
+            </div>
+          </div>
+
+          {/* Progress dots */}
+          <div className="flex justify-center gap-2 mb-6">
+            {benefits.map((_, i) => (
+              <div
+                key={i}
+                className={`h-[2px] rounded-full transition-all duration-500 ease-out ${
+                  i === activeIndex ? "w-8 bg-white" : "w-2 bg-white/20"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Benefit text */}
+          <div className="flex-1 flex items-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -30 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="w-full will-change-transform"
+              >
+                <div className="text-[10px] uppercase tracking-[0.35em] text-white/40 font-mono mb-3 flex items-center gap-2">
+                  <span className="inline-block w-4 h-[1px] bg-white/20" />
+                  Primary Benefit
+                </div>
+                <h2 className="text-white font-medium leading-[1.1] tracking-tight text-[clamp(1.6rem,7vw,2.4rem)] text-balance">
+                  {benefits[activeIndex]}
+                </h2>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom progress bar */}
+          <div className="mt-6 w-full h-[1px] bg-white/10 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-white/60 will-change-transform"
+              style={{ scaleX: smoothProgress, transformOrigin: "0% 50%" }}
+            />
+          </div>
+        </div>
+
+        {/* ── DESKTOP LAYOUT (unchanged, hidden below lg) ─────────── */}
+        {/* MOBILE PROGRESS BAR — desktop only (original) */}
+        <div className="hidden lg:block absolute top-0 left-0 w-full h-1 bg-white/10 z-50">
           <motion.div
             className="h-full bg-white will-change-transform"
             style={{ scaleX: smoothProgress, transformOrigin: "0% 50%" }}
@@ -104,7 +213,6 @@ export default function KeyBenefits({ benefits = [] }) {
               />
             </svg>
 
-            {/* DIRECT SCROLL-DRIVEN ROTATION */}
             <motion.div
               style={{ rotate: rotation }}
               className="absolute inset-4 will-change-transform"
@@ -116,7 +224,6 @@ export default function KeyBenefits({ benefits = [] }) {
                     "conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255,255,255,0.08) 90deg, transparent 90deg)",
                 }}
               />
-
               <svg
                 viewBox="0 0 200 200"
                 className="absolute inset-0 w-full h-full drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
@@ -140,7 +247,6 @@ export default function KeyBenefits({ benefits = [] }) {
                   strokeWidth="1.5"
                 />
               </svg>
-
               <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 flex items-center justify-center">
                 <div className="absolute w-12 h-12 rounded-full bg-white/10 blur-md" />
                 <div className="absolute w-5 h-5 rounded-full border border-white/40 bg-[#050505]" />
@@ -156,12 +262,10 @@ export default function KeyBenefits({ benefits = [] }) {
                   Key Benefits
                 </div>
               </div>
-
               <div className="flex items-start gap-4 ml-11">
                 <span className="text-white text-7xl font-light tabular-nums tracking-tighter leading-none">
                   {String(activeIndex + 1).padStart(2, "0")}
                 </span>
-
                 <div className="flex flex-col mt-1 gap-1 text-white/30 font-mono tracking-widest">
                   <span className="uppercase text-[9px]">Total</span>
                   <span className="text-lg text-white/50">
@@ -169,7 +273,6 @@ export default function KeyBenefits({ benefits = [] }) {
                   </span>
                 </div>
               </div>
-
               <div className="flex gap-2 ml-11 mt-2">
                 {benefits.map((_, i) => (
                   <div
@@ -185,7 +288,7 @@ export default function KeyBenefits({ benefits = [] }) {
         </div>
 
         {/* RIGHT CONTENT */}
-        <div className="h-full flex items-center justify-center lg:justify-start w-full relative z-20 pointer-events-none">
+        <div className="hidden lg:flex h-full items-center justify-start w-full relative z-20 pointer-events-none">
           <div className="w-full max-w-[1700px] mx-auto px-6 md:px-12 lg:pl-[480px] lg:pr-20">
             <AnimatePresence mode="wait">
               <motion.div
@@ -197,16 +300,10 @@ export default function KeyBenefits({ benefits = [] }) {
                 className="flex flex-col relative pointer-events-auto will-change-transform"
               >
                 <div className="hidden md:block absolute -left-8 top-2 w-[3px] h-12 bg-gradient-to-b from-white to-transparent rounded-full" />
-
                 <div className="text-xs uppercase tracking-[0.35em] text-white/50 mb-6 font-mono flex items-center gap-4">
-                  <span className="text-white/40 lg:hidden bg-white/10 px-3 py-1 rounded-full">
-                    {String(activeIndex + 1).padStart(2, "0")} /{" "}
-                    {String(totalItems).padStart(2, "0")}
-                  </span>
                   <span className="hidden lg:inline-block w-8 h-[1px] bg-white/20" />
                   Primary Benefit
                 </div>
-
                 <h2 className="text-white font-medium leading-[1.1] max-w-5xl text-4xl md:text-6xl lg:text-7xl xl:text-8xl tracking-tight text-balance">
                   {benefits[activeIndex]}
                 </h2>

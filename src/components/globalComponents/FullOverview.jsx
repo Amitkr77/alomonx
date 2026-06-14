@@ -3,8 +3,6 @@ import React, { useRef, useMemo } from "react";
 import { motion, useInView } from "framer-motion";
 import { Jost } from "next/font/google";
 
-// Optimally load the font at build-time (Zero Layout Shift)
-// Playfair Display and Lora were removed because they were never used in your styles!
 const jost = Jost({
   subsets: ["latin"],
   weight: ["400", "700", "800"],
@@ -15,7 +13,6 @@ export default function FullOverview({ fullOverview, meta }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
-  // Memoize paragraph splitting so it doesn't recalculate on every animation frame/render
   const paragraphs = useMemo(() => {
     if (!fullOverview?.overview) return [];
     return fullOverview.overview.trim().split("\n").filter(Boolean);
@@ -34,19 +31,18 @@ export default function FullOverview({ fullOverview, meta }) {
   return (
     <section
       ref={ref}
-      className={jost.className} // Applies the Jost font globally to this section efficiently
+      className={`${jost.className} px-4 sm:px-8 md:px-12 lg:px-16 py-12 sm:py-16 md:py-20 lg:py-24`}
       style={{
-        padding: "50px 16px",
         textAlign: "center",
         backgroundColor: "#000000",
       }}
     >
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+      <div className="mx-auto w-full max-w-[580px] sm:max-w-[680px] md:max-w-[760px] lg:max-w-[860px]">
         {/* Eyebrow */}
         <motion.p
           {...fade(0)}
           style={{
-            fontSize: "12px",
+            fontSize: "clamp(10px, 1.5vw, 12px)",
             fontWeight: 800,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
@@ -61,11 +57,11 @@ export default function FullOverview({ fullOverview, meta }) {
         <motion.h2
           {...fade(0.12)}
           style={{
-            fontSize: "clamp(2rem, 5vw, 3rem)",
+            fontSize: "clamp(1.6rem, 4vw, 3rem)",
             fontWeight: 400,
             color: "#ffffff",
             lineHeight: 1.2,
-            marginBottom: "30px",
+            marginBottom: "clamp(20px, 3vw, 36px)",
           }}
         >
           {title}
@@ -77,10 +73,11 @@ export default function FullOverview({ fullOverview, meta }) {
             key={i}
             {...fade(0.24 + i * 0.1)}
             style={{
-              fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+              fontSize: "clamp(0.875rem, 1.8vw, 1.05rem)",
               color: "rgba(255,255,255,0.65)",
               lineHeight: 1.9,
-              marginBottom: i < paragraphs.length - 1 ? "16px" : "0",
+              marginBottom:
+                i < paragraphs.length - 1 ? "clamp(12px, 2vw, 20px)" : "0",
             }}
           >
             {para}

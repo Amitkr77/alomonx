@@ -18,7 +18,7 @@ export default function CTABanner({ details }) {
           background: "#111827",
           border: "1px solid rgba(136,146,176,0.12)",
           borderRadius: "32px",
-          padding: "clamp(32px, 5vw, 60px) clamp(28px, 5vw, 64px)",
+          padding: "clamp(28px, 5vw, 60px) clamp(20px, 5vw, 64px)",
         }}
       >
         {/* Background glows */}
@@ -50,11 +50,11 @@ export default function CTABanner({ details }) {
         />
 
         {/* Two-column grid */}
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left — Image */}
           <div className="order-2 md:order-1">
             <div
-              className="relative"
+              className="relative w-full"
               style={{
                 borderRadius: "20px",
                 overflow: "hidden",
@@ -118,7 +118,7 @@ export default function CTABanner({ details }) {
             <h2
               style={{
                 fontFamily: "'Playfair Display', serif",
-                fontSize: "clamp(26px, 3vw, 38px)",
+                fontSize: "clamp(22px, 4vw, 38px)",
                 fontWeight: 500,
                 color: "#e8eaf0",
                 lineHeight: 1.2,
@@ -132,7 +132,7 @@ export default function CTABanner({ details }) {
             {/* Description */}
             <p
               style={{
-                fontSize: "15px",
+                fontSize: "clamp(13px, 2vw, 15px)",
                 color: "#6b7394",
                 lineHeight: 1.8,
                 fontWeight: 300,
@@ -142,9 +142,9 @@ export default function CTABanner({ details }) {
               {description}
             </p>
 
-            {/* CTA Button - JS events replaced with Tailwind classes for Server rendering */}
+            {/* CTA Button */}
             <Link href="/contact">
-              <button className="inline-flex items-center gap-[10px] bg-[#1d9e75] hover:bg-[#0f6e56] text-[#e8f7f2] text-[14px] font-medium px-[28px] py-[14px] rounded-[100px] border-none cursor-pointer transition-all duration-200 hover:-translate-y-[1px]">
+              <button className="inline-flex items-center gap-[10px] bg-[#1d9e75] hover:bg-[#0f6e56] text-[#e8f7f2] text-[14px] font-medium px-[24px] py-[13px] md:px-[28px] md:py-[14px] rounded-[100px] border-none cursor-pointer transition-all duration-200 hover:-translate-y-[1px]">
                 {buttonText}
                 <ArrowRight size={16} style={{ opacity: 0.85 }} />
               </button>
