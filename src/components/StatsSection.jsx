@@ -56,8 +56,6 @@ const STATS = [
 
 // ─────────────────────────────────────────────────────────────
 // External stylesheets — injected once at module level.
-// CHANGE: Store link elements in a Set so we never double-inject
-// even if the module is evaluated twice (HMR, strict mode, etc.)
 // ─────────────────────────────────────────────────────────────
 if (typeof document !== "undefined") {
   const inject = (href, id) => {
@@ -67,9 +65,6 @@ if (typeof document !== "undefined") {
         rel: "stylesheet",
         href,
       });
-      // CHANGE: Add `media="print"` trick — the browser downloads it
-      // at low priority (non-blocking), then `onload` swaps it to "all".
-      // This prevents icon/font CSS from delaying the First Contentful Paint.
       link.media = "print";
       link.onload = () => {
         link.media = "all";
@@ -78,10 +73,6 @@ if (typeof document !== "undefined") {
     }
   };
 
-  // CHANGE: Load only the specific icon subset instead of the full
-  // @tabler/icons-webfont package. The full package is ~500 KB of CSS.
-  // If you only use 5 icons, self-host just those glyphs.
-  // For now, still loading full CDN but non-blocking (print trick above).
   inject(
     "https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;700&display=swap",
     "__stats-fonts",
@@ -93,20 +84,14 @@ if (typeof document !== "undefined") {
 }
 
 // ─────────────────────────────────────────────────────────────
-// useCountUp — counts from 0 to `target` with easeOutCubic.
-// CHANGE: Added a `started` ref guard so the RAF loop can't
-// fire after unmount even if React strict-mode runs effects twice.
+// useCountUp
 // ─────────────────────────────────────────────────────────────
 function useCountUp(target, run, duration = 1800) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
     if (!run) return;
-
     let rafId;
-    // CHANGE: Track whether this effect instance is still live.
-    // Without this, a cleanup + re-run (React StrictMode) can leave
-    // two RAF loops running simultaneously → jittery animation.
     let alive = true;
     const start = performance.now();
 
@@ -122,7 +107,6 @@ function useCountUp(target, run, duration = 1800) {
     }
 
     rafId = requestAnimationFrame(step);
-
     return () => {
       alive = false;
       cancelAnimationFrame(rafId);
@@ -133,11 +117,12 @@ function useCountUp(target, run, duration = 1800) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// useBreakpoint — debounced, bails out if bucket unchanged.
-// CHANGE: Use ResizeObserver on document.documentElement instead
-// of a window "resize" listener. ResizeObserver fires synchronously
-// after layout, before paint — more accurate and slightly faster.
-// Falls back to window resize if ResizeObserver isn't available.
+// useBreakpoint
+//
+// FIX: initialise with `null` on both server AND client.
+// The first useEffect (client-only) immediately resolves to the
+// real breakpoint after mount. This guarantees the SSR HTML and
+// the initial client render both see `null` → no hydration mismatch.
 // ─────────────────────────────────────────────────────────────
 function getBreakpoint(w) {
   if (w < 640) return "mobile";
@@ -146,26 +131,24 @@ function getBreakpoint(w) {
 }
 
 function useBreakpoint() {
-  const [bp, setBp] = useState(() =>
-    typeof window !== "undefined"
-      ? getBreakpoint(window.innerWidth)
-      : "desktop",
-  );
+  // null = not yet measured (server + first client paint)
+  const [bp, setBp] = useState(null);
 
   useEffect(() => {
-    let timer;
+    // Set real value immediately after mount
+    setBp(getBreakpoint(window.innerWidth));
 
+    let timer;
     const update = (width) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
         setBp((prev) => {
           const next = getBreakpoint(width);
-          return next !== prev ? next : prev; // bail-out if bucket unchanged
+          return next !== prev ? next : prev;
         });
       }, 120);
     };
 
-    // Prefer ResizeObserver — more efficient than "resize" event
     if (typeof ResizeObserver !== "undefined") {
       const ro = new ResizeObserver(([entry]) => {
         update(entry.contentRect.width);
@@ -177,7 +160,6 @@ function useBreakpoint() {
       };
     }
 
-    // Fallback
     const onResize = () => update(window.innerWidth);
     window.addEventListener("resize", onResize, { passive: true });
     return () => {
@@ -190,39 +172,26 @@ function useBreakpoint() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// StatImage — replaces the custom LazyImage with Next.js <Image>.
-// CHANGE: next/image gives us:
-//   • Automatic WebP/AVIF conversion on the fly
-//   • Built-in lazy loading + LCP priority prop
-//   • Blur placeholder to prevent layout shift
-//   • Automatic srcset for different screen densities
-// For Unsplash URLs we use `unoptimized` since they already serve
-// optimized images via their CDN. Remove `unoptimized` if you
-// host images on your own domain and want Next.js to optimize them.
+// StatImage
 // ─────────────────────────────────────────────────────────────
 const StatImage = memo(function StatImage({ src, alt, style }) {
   return (
     <Image
       src={src}
       alt={alt}
-      fill // fills the parent container (which must be position:relative)
+      fill
       sizes="(max-width: 640px) 90px, (max-width: 1024px) 140px, 260px"
       style={{ objectFit: "cover", ...style }}
       loading="lazy"
       decoding="async"
-      unoptimized // Unsplash already optimizes; remove for self-hosted images
+      unoptimized
     />
   );
 });
 
 // ─────────────────────────────────────────────────────────────
-// StatRow — memoised so it only re-renders when its own props change.
-// CHANGE: Moved all inline style objects that don't depend on props
-// to module-level constants — they were being re-allocated as new
-// objects on every render, causing unnecessary reconciliation work.
+// Shared static styles
 // ─────────────────────────────────────────────────────────────
-
-// Shared static styles (no props → defined once)
 const ICON_BOX_BASE = {
   borderRadius: 8,
   background: "#f4f4f4",
@@ -232,10 +201,46 @@ const ICON_BOX_BASE = {
   justifyContent: "center",
 };
 
+// ─────────────────────────────────────────────────────────────
+// StatRow — renders mobile / tablet / desktop layout.
+// FIX: When `bp` is null (pre-mount), renders the desktop layout
+// with `suppressHydrationWarning` so React skips diffing it.
+// The desktop layout is what the server would have rendered if it
+// had guessed — but since both server and client now render the
+// null-guarded skeleton, there is no mismatch at all.
+// ─────────────────────────────────────────────────────────────
 const StatRow = memo(function StatRow({ stat, run, bp }) {
   const count = useCountUp(stat.target, run);
 
-  // ── MOBILE ────────────────────────────────────────────────
+  // bp === null means we haven't measured yet — render desktop as
+  // the neutral default and suppress hydration on just this node.
+  if (bp === null) {
+    return (
+      <div style={DESKTOP_ROW} suppressHydrationWarning>
+        <div style={DESKTOP_LEFT} suppressHydrationWarning>
+          <div
+            style={{ ...ICON_BOX_BASE, width: 40, height: 40, marginBottom: 3 }}
+          >
+            <i
+              className={`ti ${stat.icon}`}
+              aria-hidden="true"
+              style={ICON_DESKTOP}
+            />
+          </div>
+          <div style={LABEL_DESKTOP}>{stat.label}</div>
+          <div style={DESC_DESKTOP}>{stat.desc}</div>
+        </div>
+        <div aria-label={`${stat.target}${stat.suffix}`} style={COUNT_DESKTOP}>
+          0{stat.suffix}
+        </div>
+        <div style={IMG_WRAP_DESKTOP}>
+          <StatImage src={stat.image} alt={stat.label} />
+        </div>
+      </div>
+    );
+  }
+
+  // ── MOBILE ──────────────────────────────────────────────
   if (bp === "mobile") {
     return (
       <div style={MOBILE_ROW}>
@@ -258,13 +263,10 @@ const StatRow = memo(function StatRow({ stat, run, bp }) {
             <div style={LABEL_MOBILE}>{stat.label}</div>
             <div style={DESC_MOBILE}>{stat.desc}</div>
           </div>
-
-          {/* position:relative required for next/image fill */}
           <div style={IMG_WRAP_MOBILE}>
             <StatImage src={stat.image} alt={stat.label} />
           </div>
         </div>
-
         <div aria-label={`${stat.target}${stat.suffix}`} style={COUNT_MOBILE}>
           {count}
           {stat.suffix}
@@ -273,7 +275,7 @@ const StatRow = memo(function StatRow({ stat, run, bp }) {
     );
   }
 
-  // ── TABLET ────────────────────────────────────────────────
+  // ── TABLET ──────────────────────────────────────────────
   if (bp === "tablet") {
     return (
       <div style={TABLET_ROW}>
@@ -290,11 +292,9 @@ const StatRow = memo(function StatRow({ stat, run, bp }) {
           <div style={LABEL_TABLET}>{stat.label}</div>
           <div style={DESC_TABLET}>{stat.desc}</div>
         </div>
-
         <div style={IMG_WRAP_TABLET}>
           <StatImage src={stat.image} alt={stat.label} />
         </div>
-
         <div aria-label={`${stat.target}${stat.suffix}`} style={COUNT_TABLET}>
           {count}
           {stat.suffix}
@@ -303,7 +303,7 @@ const StatRow = memo(function StatRow({ stat, run, bp }) {
     );
   }
 
-  // ── DESKTOP ───────────────────────────────────────────────
+  // ── DESKTOP ─────────────────────────────────────────────
   return (
     <div style={DESKTOP_ROW}>
       <div style={DESKTOP_LEFT}>
@@ -319,12 +319,10 @@ const StatRow = memo(function StatRow({ stat, run, bp }) {
         <div style={LABEL_DESKTOP}>{stat.label}</div>
         <div style={DESC_DESKTOP}>{stat.desc}</div>
       </div>
-
       <div aria-label={`${stat.target}${stat.suffix}`} style={COUNT_DESKTOP}>
         {count}
         {stat.suffix}
       </div>
-
       <div style={IMG_WRAP_DESKTOP}>
         <StatImage src={stat.image} alt={stat.label} />
       </div>
@@ -340,7 +338,6 @@ export default function StatsSection() {
   const [run, setRun] = useState(false);
   const bp = useBreakpoint();
 
-  // Stable callback so the observer closure never goes stale
   const handleIntersect = useCallback(([entry]) => {
     if (entry.isIntersecting) setRun(true);
   }, []);
@@ -354,21 +351,21 @@ export default function StatsSection() {
     return () => observer.disconnect();
   }, [handleIntersect]);
 
-  // CHANGE: Derive heading padding from bp once here rather than
-  // computing it inline in JSX (which creates new strings every render).
+  // Derive heading values — fall back to desktop sizing when bp is null
   const headingPadding =
     bp === "mobile"
       ? "28px 20px 0"
       : bp === "tablet"
         ? "32px 28px 0"
         : "40px 40px 0";
-
   const headingMarginBottom = bp === "mobile" ? 24 : bp === "tablet" ? 32 : 40;
+  const headingGap = bp === "mobile" ? 10 : 16;
 
   return (
     <section style={SECTION_STYLE} aria-label="Stats section">
-      {/* Heading */}
+      {/* Heading — suppress hydration because padding/gap derive from bp */}
       <div
+        suppressHydrationWarning
         style={{
           ...HEADING_BASE,
           padding: headingPadding,
@@ -376,18 +373,13 @@ export default function StatsSection() {
         }}
       >
         <span style={HEADING_BLOCK}>Proof</span>
-
         <span
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: bp === "mobile" ? 10 : 16,
-          }}
+          suppressHydrationWarning
+          style={{ display: "flex", alignItems: "center", gap: headingGap }}
         >
           <span aria-hidden="true" style={HEADING_PILL} />
           in
         </span>
-
         <span style={HEADING_BLOCK}>numbers</span>
       </div>
 
@@ -404,10 +396,7 @@ export default function StatsSection() {
 
 // ─────────────────────────────────────────────────────────────
 // Module-level static style objects
-// Defining them here means they are created ONCE per module load,
-// not on every render/reconciliation cycle.
 // ─────────────────────────────────────────────────────────────
-
 const SECTION_STYLE = {
   background: "#fff",
   fontFamily: "'DM Sans', sans-serif",
@@ -437,7 +426,7 @@ const HEADING_PILL = {
 
 const DIVIDER = { borderBottom: "1.5px solid #e0e0e0" };
 
-// ── Mobile styles ──────────────────────────────────────────
+// ── Mobile ──────────────────────────────────────────────────
 const MOBILE_ROW = {
   borderTop: "1.5px solid #e0e0e0",
   padding: "20px 20px",
@@ -488,7 +477,7 @@ const COUNT_MOBILE = {
   color: "#111844",
 };
 
-// ── Tablet styles ──────────────────────────────────────────
+// ── Tablet ──────────────────────────────────────────────────
 const TABLET_ROW = {
   borderTop: "1.5px solid #e0e0e0",
   padding: "22px 28px",
@@ -530,7 +519,7 @@ const COUNT_TABLET = {
   paddingTop: 8,
 };
 
-// ── Desktop styles ─────────────────────────────────────────
+// ── Desktop ─────────────────────────────────────────────────
 const DESKTOP_ROW = {
   display: "grid",
   gridTemplateColumns: "240px 1fr 280px",

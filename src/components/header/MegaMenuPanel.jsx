@@ -32,24 +32,6 @@ const LABEL_EXIT = Object.freeze({ opacity: 0, y: -4 });
 const LABEL_TRANSITION = Object.freeze({ duration: 0.2 });
 
 // ─── Shared hover handlers ────
-function onHighlightEnter(e) {
-  e.currentTarget.style.background = "rgba(37,99,255,0.14)";
-  e.currentTarget.style.borderColor = "rgba(34,211,238,0.35)";
-}
-function onHighlightLeave(e) {
-  e.currentTarget.style.background = "rgba(37,99,255,0.08)";
-  e.currentTarget.style.borderColor = "rgba(37,99,255,0.2)";
-}
-function onCtaEnter(e) {
-  e.currentTarget.style.background = "#22D3EE";
-  e.currentTarget.style.color = "#020617";
-  e.currentTarget.style.borderColor = "#22D3EE";
-}
-function onCtaLeave(e) {
-  e.currentTarget.style.background = "transparent";
-  e.currentTarget.style.color = "#22D3EE";
-  e.currentTarget.style.borderColor = "rgba(34,211,238,0.4)";
-}
 function onScrollBtnEnter(e) {
   if (e.currentTarget.disabled) return;
   e.currentTarget.style.background = "#22D3EE";
@@ -61,7 +43,7 @@ function onScrollBtnLeave(e) {
   e.currentTarget.style.color = "#22D3EE";
 }
 
-// ─── useBreakpoint ─────────────
+// ─── useIsWide ─────────────────
 function useIsWide() {
   const [isWide, setIsWide] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth >= 1280 : true,
@@ -208,18 +190,16 @@ const Column = memo(function Column({ col, activeLabel, onHover, onClose }) {
 
 // ─── MegaMenuPanel ────────────────────────────────────────────
 const MegaMenuPanel = memo(function MegaMenuPanel({ data, onClose }) {
-  // Derive the flat link list supporting both `data.columns` and `data.links`
   const allLinks = useMemo(() => {
     if (data.links) return data.links;
     if (data.columns) return data.columns.flatMap((col) => col.links);
     return [];
   }, [data]);
 
-  // If flat links are provided, chunk them so the horizontal layout doesn't break
   const displayColumns = useMemo(() => {
     if (data.columns) return data.columns;
     if (data.links) {
-      const chunkSize = 5; // Group links by 5
+      const chunkSize = 5;
       const chunks = [];
       for (let i = 0; i < data.links.length; i += chunkSize) {
         chunks.push({
@@ -467,101 +447,6 @@ const MegaMenuPanel = memo(function MegaMenuPanel({ data, onClose }) {
             </div>
           )}
         </div>
-
-        {/* ── Highlight row ── */}
-        {data.highlight && (
-          <div
-            className="border-t"
-            style={{
-              borderColor: "rgba(248,250,252,0.06)",
-              background: "rgba(11,17,32,0.6)",
-            }}
-          >
-            <div className="max-w-7xl mx-auto px-5 lg:px-8 xl:px-12 py-3">
-              <Link
-                href={data.highlight.href}
-                onClick={onClose}
-                className="group inline-flex items-center gap-3 lg:gap-4 px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl transition-all duration-200"
-                style={{
-                  background: "rgba(37,99,255,0.08)",
-                  border: "1px solid rgba(37,99,255,0.2)",
-                }}
-                onMouseEnter={onHighlightEnter}
-                onMouseLeave={onHighlightLeave}
-              >
-                <span
-                  className="flex-shrink-0 w-7 h-7 lg:w-8 lg:h-8 rounded-lg flex items-center justify-center"
-                  style={{
-                    background: "rgba(37,99,255,0.2)",
-                    color: "#22D3EE",
-                  }}
-                >
-                  {data.highlight.icon}
-                </span>
-                <div>
-                  <p
-                    className="text-[12px] lg:text-[13px] font-semibold"
-                    style={{
-                      color: "#F8FAFC",
-                      fontFamily: "var(--font-jost,'Jost',sans-serif)",
-                    }}
-                  >
-                    {data.highlight.label}
-                  </p>
-                  <p
-                    className="text-[11px] lg:text-[12px]"
-                    style={{
-                      color: "#94A3B8",
-                      fontFamily: "var(--font-jost,'Jost',sans-serif)",
-                    }}
-                  >
-                    {data.highlight.description}
-                  </p>
-                </div>
-                <ChevronDown
-                  className="w-3.5 h-3.5 lg:w-4 lg:h-4 -rotate-90 ml-2"
-                  style={{ color: "#22D3EE" }}
-                />
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* ── Bottom CTA bar ── */}
-        {data.cta && (
-          <div
-            style={{
-              borderTop: "1px solid rgba(248,250,252,0.06)",
-              background: "#020617",
-            }}
-          >
-            <div className="max-w-7xl mx-auto px-5 lg:px-8 xl:px-12 py-3 lg:py-4 flex items-center justify-between gap-4 lg:gap-8">
-              <p
-                className="text-xs lg:text-sm"
-                style={{
-                  color: "#94A3B8",
-                  fontFamily: "var(--font-jost,'Jost',sans-serif)",
-                }}
-              >
-                {data.cta.text}
-              </p>
-              <Link
-                href={data.cta.href}
-                onClick={onClose}
-                className="flex-shrink-0 inline-flex items-center gap-2 px-4 lg:px-5 py-2 lg:py-2.5 rounded-full text-[11px] lg:text-xs font-bold uppercase tracking-wider transition-all duration-200"
-                style={{
-                  border: "1px solid rgba(34,211,238,0.4)",
-                  color: "#22D3EE",
-                  fontFamily: "var(--font-jost,'Jost',sans-serif)",
-                }}
-                onMouseEnter={onCtaEnter}
-                onMouseLeave={onCtaLeave}
-              >
-                {data.cta.buttonLabel}
-              </Link>
-            </div>
-          </div>
-        )}
       </div>
     </motion.div>
   );

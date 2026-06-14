@@ -1,10 +1,9 @@
 "use client";
-import React, { memo, useCallback, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import React, { memo } from "react";
 import { Star } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────
-// Static data — module level, never recreated
+// Static data
 // ─────────────────────────────────────────────────────────────
 const TESTIMONIALS_DATA = [
   {
@@ -45,35 +44,8 @@ const TESTIMONIALS_DATA = [
   },
 ];
 
-// Duplicate once — stable keys prevent React reconciliation issues
-const MARQUEE_ITEMS = [
-  ...TESTIMONIALS_DATA.map((t, i) => ({ ...t, _key: `orig-${i}` })),
-  ...TESTIMONIALS_DATA.map((t, i) => ({ ...t, _key: `clone-${i}` })),
-];
-
-// Pre-built star index array — allocated once
 const FIVE_STARS = Array.from({ length: 5 }, (_, i) => i);
 
-// ─────────────────────────────────────────────────────────────
-// Framer Motion constants — stable references prevent
-// Framer's deep-compare from scheduling unnecessary updates
-// ─────────────────────────────────────────────────────────────
-const MARQUEE_ANIMATE = { x: ["0%", "-50%"] };
-const MARQUEE_TRANSITION = { repeat: Infinity, ease: "linear", duration: 50 };
-
-// CHANGE: `duration: 0` actually causes Framer to fire an instant
-// animation on every re-render. Use `duration: 999999` instead —
-// effectively paused but without the frame-0 jump.
-const MARQUEE_TRANSITION_REDUCED = {
-  repeat: Infinity,
-  ease: "linear",
-  duration: 999999,
-};
-
-// CHANGE: Hoist the marquee style + mask to a single module-level
-// object. The original split it into two separate inline objects
-// (`style` on the wrapper div + `style` on the motion div), both
-// recreated every render. One constant covers both concerns.
 const MARQUEE_WRAPPER_STYLE = {
   WebkitMaskImage:
     "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
@@ -81,34 +53,17 @@ const MARQUEE_WRAPPER_STYLE = {
     "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
 };
 
-const MARQUEE_TRACK_STYLE = { willChange: "transform" };
-
-// CHANGE: Pause/resume animate targets as stable objects.
-// Using `{ animationPlayState: "paused" }` inline causes a new
-// object every render. Constants are zero-cost after first load.
-const MARQUEE_RUNNING = {}; // no override — uses MARQUEE_ANIMATE
-const PAUSED_STYLE = { animationPlayState: "paused" }; // CSS fallback
-
 // ─────────────────────────────────────────────────────────────
 // TestimonialCard — memoised
-// CHANGE: Added aria-label to the star group so screen readers
-// announce "5 stars" instead of reading 5 individual unlabelled
-// SVG icons. Small accessibility win, zero perf cost.
 // ─────────────────────────────────────────────────────────────
 const TestimonialCard = memo(function TestimonialCard({ t }) {
   return (
-    <article
-      className="relative bg-[#151515] border border-gray-800 rounded-xl p-4 sm:p-6 flex flex-col w-[300px] sm:w-[400px] shrink-0 hover:border-gray-600 transition-colors duration-300"
-      // CHANGE: Use <article> — a testimonial is a self-contained
-      // piece of content. Improves semantic HTML and screen reader
-      // landmark navigation with zero visual change.
-    >
+    <article className="relative bg-[#151515] border border-gray-800 rounded-xl p-4 sm:p-6 flex flex-col w-[300px] sm:w-[400px] shrink-0 hover:border-gray-600 transition-colors duration-300">
       {/* Top Row */}
       <div className="flex justify-between items-center mb-3 sm:mb-4">
         <span className="text-xs font-semibold tracking-widest text-gray-500 uppercase">
           Client
         </span>
-        {/* CHANGE: aria-label on the group, aria-hidden on each icon */}
         <div
           className="flex space-x-1"
           role="img"
@@ -126,8 +81,6 @@ const TestimonialCard = memo(function TestimonialCard({ t }) {
 
       {/* Quote */}
       <blockquote className="text-gray-300 leading-relaxed mb-6 sm:mb-8 text-sm flex-grow">
-        {/* CHANGE: <blockquote> is the correct semantic element for
-            a quoted testimonial. No visual change. */}
         "{t.quote}"
       </blockquote>
 
@@ -137,7 +90,7 @@ const TestimonialCard = memo(function TestimonialCard({ t }) {
         <p className="text-sm text-gray-500 mt-1">{t.role}</p>
       </footer>
 
-      {/* Bottom cyan glow — aria-hidden: decorative only */}
+      {/* Bottom cyan glow */}
       <div
         aria-hidden="true"
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[2px] bg-cyan-500/50 blur-[4px]"
@@ -150,25 +103,37 @@ const TestimonialCard = memo(function TestimonialCard({ t }) {
 // Main export
 // ─────────────────────────────────────────────────────────────
 const Testimonials = () => {
-  const prefersReduced = useReducedMotion();
-
-  // CHANGE: Pause marquee on hover — better UX for users who want
-  // to read a card without it scrolling away. Uses Framer Motion's
-  // `animate` prop toggled by a stable boolean → stable object ref.
-  const [isPaused, setIsPaused] = useState(false);
-  const handleMouseEnter = useCallback(() => setIsPaused(true), []);
-  const handleMouseLeave = useCallback(() => setIsPaused(false), []);
-
-  // Combine reduced-motion preference with hover pause
-  const shouldPause = prefersReduced || isPaused;
-
   return (
     <section
       className="py-10 sm:py-16 bg-[#0a0a0a] text-white font-sans overflow-hidden"
-      // CHANGE: aria-label on the section gives screen reader users
-      // a named landmark to navigate to directly.
       aria-label="Client testimonials"
     >
+      {/* Injecting the CSS directly. 
+        This handles the infinite loop and the hover-pause flawlessly. 
+      */}
+      <style>{`
+        @keyframes infinite-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+          display: flex;
+          width: max-content;
+          animation: infinite-scroll 40s linear infinite;
+          will-change: transform;
+        }
+        /* Pauses perfectly without jumping */
+        .marquee-container:hover .marquee-track {
+          animation-play-state: paused;
+        }
+        /* Accessibility standard */
+        @media (prefers-reduced-motion: reduce) {
+          .marquee-track {
+            animation: none;
+          }
+        }
+      `}</style>
+
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 border-b border-gray-800 pb-8">
@@ -189,25 +154,24 @@ const Testimonials = () => {
 
         {/* Scrolling Marquee */}
         <div
-          className="relative w-full overflow-hidden"
+          className="marquee-container relative w-full overflow-hidden"
           style={MARQUEE_WRAPPER_STYLE}
-          // CHANGE: Attach pause handlers to the wrapper so the
-          // entire visible area (including card gaps) triggers pause.
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
         >
-          <motion.div
-            className="flex gap-6 pr-6 w-max"
-            animate={MARQUEE_ANIMATE}
-            transition={
-              shouldPause ? MARQUEE_TRANSITION_REDUCED : MARQUEE_TRANSITION
-            }
-            style={MARQUEE_TRACK_STYLE}
-          >
-            {MARQUEE_ITEMS.map((t) => (
-              <TestimonialCard key={t._key} t={t} />
-            ))}
-          </motion.div>
+          <div className="marquee-track">
+            {/* Group 1 (Original) */}
+            <div className="flex gap-6 pr-6">
+              {TESTIMONIALS_DATA.map((t, i) => (
+                <TestimonialCard key={`orig-${i}`} t={t} />
+              ))}
+            </div>
+
+            {/* Group 2 (Clone for seamless loop) */}
+            <div className="flex gap-6 pr-6" aria-hidden="true">
+              {TESTIMONIALS_DATA.map((t, i) => (
+                <TestimonialCard key={`clone-${i}`} t={t} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

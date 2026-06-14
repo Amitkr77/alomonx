@@ -17,7 +17,7 @@ const ROTATE_CLOSED = { rotate: 0 };
 // Only the `color` key differs between active/inactive states,
 // so we build two frozen objects once and pick between them.
 const BASE_STYLE_INACTIVE = Object.freeze({
-  color: "#94A3B8",
+  color: "#CBD5E1",
   fontFamily: "var(--font-jost,'Jost',sans-serif)",
   fontSize: "clamp(13px, 1vw, 15px)",
   fontWeight: 500,

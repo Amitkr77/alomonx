@@ -1,17 +1,18 @@
 "use client";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
-  BookOpenText,
-  Hammer,
   Info,
   Mail,
   Cpu,
-  Menu,
+  Hammer,
   MessageCircle,
   Home,
   Sparkles,
+  Briefcase,
+  Phone,
+  ChevronDown,
 } from "lucide-react";
 import {
   Sheet,
@@ -21,35 +22,34 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import megaMenuData from "@/data/megaMenuData";
 
-// ─── Nav items — icons as elements at module scope ────────────
-// Defined here so they are created once, not on every render.
-// Using pre-created elements is safe because these icons have no
-// dynamic props; they never need to re-render.
+// ─── Nav items — exactly mirroring NAV_ITEMS in Header.jsx ───
+// Home, Alomonx AI, About, Services, Industries, Portfolio, Contact
 const mobileNavItems = [
   { href: "/", label: "Home", icon: <Home className="w-4 h-4" /> },
   {
-    href: "/ai-services",
     label: "Alomonx AI",
     icon: <Sparkles className="w-4 h-4" />,
+    megaKey: "Alomonx AI",
   },
   { href: "/about", label: "About", icon: <Info className="w-4 h-4" /> },
   {
-    href: "/services",
     label: "Services",
     icon: <Hammer className="w-4 h-4" />,
+    megaKey: "Services",
   },
   {
-    href: "/industries",
     label: "Industries",
     icon: <Cpu className="w-4 h-4" />,
+    megaKey: "Industries",
   },
-  { href: "/blog", label: "Blog", icon: <BookOpenText className="w-4 h-4" /> },
   {
-    href: "/portfolio",
     label: "Portfolio",
-    icon: <Menu className="w-4 h-4" />,
+    icon: <Briefcase className="w-4 h-4" />,
+    megaKey: "Portfolio",
   },
+  { href: "/contact", label: "Contact", icon: <Phone className="w-4 h-4" /> },
 ];
 
 // ─── Framer Motion constants — module-level, never recreated ──
@@ -60,19 +60,22 @@ const PATH_ANIMATE = Object.freeze({ opacity: 1 });
 const PATH_EXIT = Object.freeze({ opacity: 0 });
 const PATH_TRANSITION = Object.freeze({ duration: 0.15 });
 
-// Stagger: pre-build one transition object per nav item so the
-// delay value isn't computed inside the render on every call.
-// Items: 7 nav + 2 contact = 9 total
-const ITEM_VARIANTS = mobileNavItems.map((_, i) =>
-  Object.freeze({ duration: 0.25, delay: i * 0.06 }),
-);
-const CONTACT_TRANSITION_0 = Object.freeze({ duration: 0.25, delay: 0.48 });
-const CONTACT_TRANSITION_1 = Object.freeze({ duration: 0.25, delay: 0.54 });
-
 const SLIDE_INITIAL = Object.freeze({ opacity: 0, x: 16 });
 const SLIDE_ANIMATE = Object.freeze({ opacity: 1, x: 0 });
 
-// ─── Module-level hover handlers (DOM mutation, no re-render) ─
+const ITEM_VARIANTS = mobileNavItems.map((_, i) =>
+  Object.freeze({ duration: 0.25, delay: i * 0.06 }),
+);
+const CONTACT_TRANSITION_0 = Object.freeze({ duration: 0.25, delay: 0.54 });
+const CONTACT_TRANSITION_1 = Object.freeze({ duration: 0.25, delay: 0.6 });
+
+const DROPDOWN_TRANSITION = Object.freeze({
+  duration: 0.25,
+  ease: "easeInOut",
+});
+const CHEVRON_TRANSITION = Object.freeze({ duration: 0.22 });
+
+// ─── Module-level hover handlers ─────────────────────────────
 function onNavLinkEnter(e) {
   e.currentTarget.style.color = "#F8FAFC";
   e.currentTarget.style.background = "rgba(248,250,252,0.04)";
@@ -97,17 +100,145 @@ function onContactBtnLeave(e) {
   e.currentTarget.style.background = "#2563FF";
   e.currentTarget.style.color = "#F8FAFC";
 }
+function onSubLinkEnter(e) {
+  e.currentTarget.style.color = "#F8FAFC";
+  e.currentTarget.style.background = "rgba(248,250,252,0.04)";
+}
+function onSubLinkLeave(e) {
+  e.currentTarget.style.color = "#94A3B8";
+  e.currentTarget.style.background = "transparent";
+}
 
-// ─── NavItem — memoised ───────────────────────────────────────
-// Each nav row only re-renders if its own props change.
-// The onClick is stable because it only depends on module-level
-// data (item) and the two parent callbacks — both wrapped in
-// useCallback in the parent (Header.jsx, already optimised).
-const NavItem = memo(function NavItem({ item, transition, onClose, onTrack }) {
-  const handleClick = useCallback(() => {
+// ─── MegaDropdown ─────────────────────────────────────────────
+const MegaDropdown = memo(function MegaDropdown({ megaKey, onClose, onTrack }) {
+  const data = megaMenuData[megaKey];
+
+  // Flatten all links (supports both columns and flat links)
+  const allLinks = useMemo(() => {
+    if (!data) return [];
+    if (data.links) return data.links;
+    if (data.columns) return data.columns.flatMap((col) => col.links);
+    return [];
+  }, [data]);
+
+  // Build display groups preserving column headings
+  const groups = useMemo(() => {
+    if (!data) return [];
+    if (data.columns) {
+      return data.columns.map((col) => ({
+        heading: col.heading || null,
+        links: col.links,
+      }));
+    }
+    // Flat links (Portfolio) — chunk into groups of 5, no heading
+    const chunks = [];
+    for (let i = 0; i < allLinks.length; i += 5) {
+      chunks.push({ heading: null, links: allLinks.slice(i, i + 5) });
+    }
+    return chunks;
+  }, [data, allLinks]);
+
+  const handleLinkClick = useCallback(
+    (label) => {
+      onTrack("click", `${label} Mobile Dropdown`);
+      onClose(false);
+    },
+    [onTrack, onClose],
+  );
+
+  if (!data || allLinks.length === 0) return null;
+
+  return (
+    <div
+      className="mt-1 mx-1 rounded-xl overflow-hidden"
+      style={{
+        background: "rgba(37,99,255,0.04)",
+        border: "1px solid rgba(37,99,255,0.12)",
+      }}
+    >
+      {/* Link groups */}
+      <div className="py-2">
+        {groups.map((group, gi) => (
+          <div key={gi}>
+            {group.heading && (
+              <p
+                className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-[0.15em]"
+                style={{
+                  color: "#64748B",
+                  fontFamily: "var(--font-jost,'Jost',sans-serif)",
+                }}
+              >
+                {group.heading}
+              </p>
+            )}
+            {group.links.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => handleLinkClick(link.label)}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg mx-1 transition-colors duration-150"
+                style={{
+                  color: "#94A3B8",
+                  fontSize: "13px",
+                  fontFamily: "var(--font-jost,'Jost',sans-serif)",
+                }}
+                onMouseEnter={onSubLinkEnter}
+                onMouseLeave={onSubLinkLeave}
+              >
+                <span
+                  className="w-1 h-1 rounded-full flex-shrink-0"
+                  style={{ background: "rgba(34,211,238,0.5)" }}
+                />
+                <span className="flex-1">{link.label}</span>
+                {link.badge && (
+                  <span
+                    className="text-[9px] font-semibold tracking-wide px-1.5 py-0.5 rounded-full flex-shrink-0"
+                    style={{
+                      background: "rgba(37,99,255,0.15)",
+                      color: "#22D3EE",
+                      border: "1px solid rgba(37,99,255,0.3)",
+                    }}
+                  >
+                    {link.badge}
+                  </span>
+                )}
+              </Link>
+            ))}
+            {/* Separator between groups with headings */}
+            {gi < groups.length - 1 && group.heading && (
+              <div
+                className="mx-4 mt-2"
+                style={{ height: "1px", background: "rgba(248,250,252,0.06)" }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});
+
+// ─── NavItem ──────────────────────────────────────────────────
+const NavItem = memo(function NavItem({
+  item,
+  transition,
+  onClose,
+  onTrack,
+  openDropdown,
+  onToggleDropdown,
+}) {
+  const hasMega = !!(item.megaKey && megaMenuData[item.megaKey]);
+  const isOpen = openDropdown === item.megaKey;
+
+  const handleLinkClick = useCallback(() => {
     onTrack("click", `${item.label} Mobile Menu`);
     onClose(false);
   }, [item.label, onTrack, onClose]);
+
+  const handleTriggerClick = useCallback(() => {
+    onTrack("click", `${item.label} Mobile Dropdown Toggle`);
+    onToggleDropdown(item.megaKey);
+  }, [item.label, item.megaKey, onTrack, onToggleDropdown]);
 
   return (
     <motion.div
@@ -115,46 +246,113 @@ const NavItem = memo(function NavItem({ item, transition, onClose, onTrack }) {
       animate={SLIDE_ANIMATE}
       transition={transition}
     >
-      <Link
-        href={item.href}
-        className="flex items-center gap-3 text-sm sm:text-base font-medium p-2.5 sm:p-3 rounded-xl transition-colors duration-150"
-        style={{
-          color: "#94A3B8",
-          fontFamily: "var(--font-jost,'Jost',sans-serif)",
-        }}
-        onMouseEnter={onNavLinkEnter}
-        onMouseLeave={onNavLinkLeave}
-        onClick={handleClick}
-      >
-        <span
-          className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
-          style={{ background: "rgba(37,99,255,0.12)", color: "#2563FF" }}
+      {hasMega ? (
+        <div>
+          <button
+            type="button"
+            className="w-full flex items-center gap-3 text-sm sm:text-base font-medium p-2.5 sm:p-3 rounded-xl transition-colors duration-150"
+            style={{
+              color: isOpen ? "#F8FAFC" : "#94A3B8",
+              fontFamily: "var(--font-jost,'Jost',sans-serif)",
+              background: isOpen ? "rgba(248,250,252,0.04)" : "transparent",
+            }}
+            onClick={handleTriggerClick}
+            aria-expanded={isOpen}
+          >
+            <span
+              className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{
+                background: isOpen
+                  ? "rgba(37,99,255,0.2)"
+                  : "rgba(37,99,255,0.12)",
+                color: isOpen ? "#22D3EE" : "#2563FF",
+              }}
+            >
+              {item.icon}
+            </span>
+            <span className="flex-1 text-left">{item.label}</span>
+            <motion.span
+              animate={{ rotate: isOpen ? 180 : 0 }}
+              transition={CHEVRON_TRANSITION}
+              className="inline-flex flex-shrink-0"
+              style={{ color: "#64748B" }}
+            >
+              <ChevronDown className="w-4 h-4" />
+            </motion.span>
+          </button>
+
+          <AnimatePresence initial={false}>
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={DROPDOWN_TRANSITION}
+                style={{ overflow: "hidden" }}
+              >
+                <MegaDropdown
+                  megaKey={item.megaKey}
+                  onClose={onClose}
+                  onTrack={onTrack}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      ) : (
+        <Link
+          href={item.href}
+          className="flex items-center gap-3 text-sm sm:text-base font-medium p-2.5 sm:p-3 rounded-xl transition-colors duration-150"
+          style={{
+            color: "#94A3B8",
+            fontFamily: "var(--font-jost,'Jost',sans-serif)",
+          }}
+          onMouseEnter={onNavLinkEnter}
+          onMouseLeave={onNavLinkLeave}
+          onClick={handleLinkClick}
         >
-          {item.icon}
-        </span>
-        {item.label}
-      </Link>
+          <span
+            className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+            style={{ background: "rgba(37,99,255,0.12)", color: "#2563FF" }}
+          >
+            {item.icon}
+          </span>
+          {item.label}
+        </Link>
+      )}
     </motion.div>
   );
 });
 
 // ─── MobileMenu ───────────────────────────────────────────────
-// memo() prevents re-renders when Header re-renders due to scroll
-// or desktop mega-menu hover — the mobile sheet is unrelated.
 const MobileMenu = memo(function MobileMenu({
   isOpen,
   onOpenChange,
   onContactOpen,
   onTrackEvent,
 }) {
-  // Stable contact-button handler — closes sheet then opens modal.
+  const [openDropdown, setOpenDropdown] = useState(null);
+
+  const handleToggleDropdown = useCallback((key) => {
+    setOpenDropdown((prev) => (prev === key ? null : key));
+  }, []);
+
   const handleContactClick = useCallback(() => {
     onOpenChange(false);
     onContactOpen();
   }, [onOpenChange, onContactOpen]);
 
+  // Reset open dropdown when sheet closes
+  const handleOpenChange = useCallback(
+    (v) => {
+      if (!v) setOpenDropdown(null);
+      onOpenChange(v);
+    },
+    [onOpenChange],
+  );
+
   return (
-    <Sheet open={isOpen} onOpenChange={onOpenChange}>
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>
         <motion.button
           whileTap={WHILETAP}
@@ -219,8 +417,6 @@ const MobileMenu = memo(function MobileMenu({
               alt="Alomonx"
               className="h-8"
               style={{ maxWidth: "100px" }}
-              // Sheet logo is below-the-fold until the drawer opens;
-              // lazy + async keeps it off the critical path.
               loading="lazy"
               decoding="async"
             />
@@ -248,11 +444,13 @@ const MobileMenu = memo(function MobileMenu({
         <div className="px-3 sm:px-4 py-4 sm:py-6 space-y-0.5 overflow-y-auto">
           {mobileNavItems.map((item, i) => (
             <NavItem
-              key={item.href}
+              key={item.href || item.megaKey}
               item={item}
               transition={ITEM_VARIANTS[i]}
               onClose={onOpenChange}
               onTrack={onTrackEvent}
+              openDropdown={openDropdown}
+              onToggleDropdown={handleToggleDropdown}
             />
           ))}
 
@@ -270,7 +468,7 @@ const MobileMenu = memo(function MobileMenu({
               transition={CONTACT_TRANSITION_0}
             >
               <a
-                href="mailto:hello@alomonx.com"
+                href="mailto:info@alomonx.com"
                 className="flex items-center gap-3 p-3 sm:p-3.5 rounded-xl transition-colors duration-200"
                 style={{
                   border: "1px solid rgba(248,250,252,0.08)",
@@ -285,7 +483,7 @@ const MobileMenu = memo(function MobileMenu({
                   className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
                   style={{ color: "#22D3EE" }}
                 />
-                <span className="truncate">hello@alomonx.com</span>
+                <span className="truncate">info@alomonx.com</span>
               </a>
             </motion.div>
 
