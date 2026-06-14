@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import ContactForm from "@/components/ContactForm"; // Importing your global ContactForm
+import ContactForm from "@/components/ContactForm";
 
 const MarketingBanner = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -11,20 +11,18 @@ const MarketingBanner = () => {
   return (
     <>
       {/* ─────────────────────────────────────────────
-          MOBILE ONLY LAYOUT
+          MOBILE ONLY LAYOUT (< 640px)
       ───────────────────────────────────────────── */}
-      <div className="flex flex-col w-full md:hidden bg-white relative z-10 -mb-[1px]">
-        {/* Standard image element, NOT a background */}
+      <div className="flex flex-col sm:hidden mx-4 rounded-3xl overflow-hidden bg-white relative z-10 -mb-[1px]">
         <img
           src="/marketing_logo.jpeg"
           alt="Marketing Banner"
           className="w-full h-auto object-contain"
         />
 
-        {/* Content Section Below Image */}
         <div className="px-4 py-2 flex flex-col items-start w-full">
           <h1
-            className="text-2xl font-extrabold leading-[1.10] text-gray-900 mb-4"
+            className="text-2xl font-extrabold leading-[1.10] text-gray-900 mb-4 mt-2"
             style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
           >
             Make Noise.
@@ -61,10 +59,59 @@ const MarketingBanner = () => {
       </div>
 
       {/* ─────────────────────────────────────────────
-          PC ONLY LAYOUT
+          TABLET ONLY LAYOUT (640px – 1023px)
+          Same stacked pattern as mobile, scaled up
+      ───────────────────────────────────────────── */}
+      <div className="hidden sm:flex lg:hidden flex-col mx-6 rounded-3xl overflow-hidden bg-white relative z-10 -mb-[1px]">
+        <img
+          src="/marketing_logo.jpeg"
+          alt="Marketing Banner"
+          className="w-full h-auto object-contain"
+        />
+
+        <div className="px-6 py-4 flex flex-col items-start w-full">
+          <h1
+            className="text-3xl md:text-4xl font-extrabold leading-[1.10] text-gray-900 mb-5 mt-3"
+            style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
+          >
+            Make Noise.
+            <span className="text-[#0057B8]"> Build Trust.</span> <br />
+            Grow Faster.
+          </h1>
+
+          <p className="text-base text-gray-600 leading-relaxed mb-5 max-w-lg">
+            Boost your online presence, generate quality leads, and scale your
+            business with data-driven digital marketing strategies tailored for
+            modern brands.
+          </p>
+
+          <button
+            className="group relative inline-flex justify-center items-center gap-2 bg-[#0057B8] hover:bg-[#0046A0] text-white font-semibold text-base px-10 py-3.5 rounded-full shadow-md shadow-blue-200/60 transition-all duration-200 hover:shadow-lg hover:shadow-blue-300/60 active:scale-[0.97] w-full mb-4"
+            onClick={() => setIsContactOpen(true)}
+          >
+            Grow Your Brand
+            <svg
+              className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────
+          PC ONLY LAYOUT (1024px+)
       ───────────────────────────────────────────── */}
       <section
-        className="hidden md:block relative w-full overflow-hidden"
+        className="hidden lg:block relative rounded-3xl mx-10 overflow-hidden"
         style={{
           backgroundImage: "url('/marketing_logo.jpeg')",
           backgroundSize: "cover",
@@ -72,16 +119,16 @@ const MarketingBanner = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="relative z-10 flex flex-col justify-center h-full px-4 md:px-12 lg:px-15 max-w-[55%] py-7 pt-12">
+        <div className="relative z-10 flex flex-col justify-center h-full px-12 lg:px-15 max-w-[55%] py-7 pt-12">
           <div className="h-[22%] min-h-[90px]" />
           <h1
-            className="text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold leading-tight text-gray-900 mb-4"
+            className="text-4xl lg:text-[2.75rem] font-extrabold leading-tight text-gray-900 mb-4"
             style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
           >
             Make Noise. <span className="text-[#0057B8]">Build Trust.</span>{" "}
             Grow Faster.
           </h1>
-          <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-md mb-8">
+          <p className="text-base text-gray-600 leading-relaxed max-w-md mb-8">
             Boost your online presence, generate quality leads, and scale your
             business with data-driven digital marketing strategies tailored for
             modern brands.
@@ -128,7 +175,6 @@ const MarketingBanner = () => {
               exit={{ scale: 0.95, opacity: 0 }}
               className="relative w-full max-w-6xl max-h-[95vh] overflow-y-auto custom-scrollbar rounded-2xl shadow-2xl"
             >
-              {/* Close Button */}
               <button
                 onClick={() => setIsContactOpen(false)}
                 className="absolute top-4 right-4 z-50 p-2 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full text-white transition-colors"

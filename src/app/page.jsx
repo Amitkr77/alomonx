@@ -14,8 +14,6 @@ import { X } from "lucide-react";
 import StatsSection from "@/components/StatsSection";
 
 // ─── Below-the-fold components: lazy load ───────────────────
-// These are dynamically imported so they don't block the initial bundle.
-// Each one is only downloaded when it's about to enter the viewport.
 const Services = lazy(() => import("@/components/Services"));
 const AlomonxAISection = lazy(() => import("@/components/AlomonxAISection"));
 const EngineerFuture = lazy(() => import("@/components/EngineerFuture"));
@@ -41,8 +39,7 @@ function SectionFallback() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Animation Variants — defined OUTSIDE the component so they
-// are created once (not re-created on every render).
+// Animation Variants
 // ─────────────────────────────────────────────────────────────
 
 const heroContainerVariants = {
@@ -71,7 +68,6 @@ const sectionReveal = {
   },
 };
 
-// lineWipe is a factory — only called 3 times total, result is stable
 const lineWipe = (delay) => ({
   hidden: { clipPath: "inset(0 0 100% 0)", opacity: 0 },
   visible: {
@@ -81,19 +77,16 @@ const lineWipe = (delay) => ({
   },
 });
 
-// Hero headline lines — static data, defined outside component
-// so the array is not rebuilt on every render.
 const HERO_LINES = [
   { text: "Building Future Ready", colored: false },
   { text: "Digital Solutions", colored: true },
   { text: "For Businesses", colored: false },
 ];
 
-// Star SVG — extracted so it isn't redeclared 5× per render
 function StarIcon() {
   return (
     <svg
-      className="w-3.5 h-3.5 md:w-4 md:h-4"
+      className="w-3.5 h-3.5 md:w-4 md:h-4 lg:w-4 lg:h-4"
       style={{ fill: "#22D3EE" }}
       viewBox="0 0 24 24"
       aria-hidden="true"
@@ -113,15 +106,12 @@ export default function Home() {
   const [videoFailed, setVideoFailed] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
 
-  // useCallback so these handlers have stable references and won't
-  // cause unnecessary re-renders in child components that receive them.
   const handleVideoError = useCallback(() => setVideoFailed(true), []);
   const openContact = useCallback(() => setIsContactOpen(true), []);
   const closeContact = useCallback(() => setIsContactOpen(false), []);
 
   const handleExpertiseClick = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    // Delay is fine here — just dispatching an event, no state update
     setTimeout(() => {
       window.dispatchEvent(new CustomEvent("open-services-menu"));
     }, 400);
@@ -133,9 +123,6 @@ export default function Home() {
     offset: ["start start", "end start"],
   });
 
-  // useTransform is already memoized internally by Framer Motion.
-  // Keep the input arrays as module-level constants to prevent new
-  // array allocations on every render.
   const contentOpacity = useTransform(
     heroProgress,
     OPACITY_INPUT,
@@ -171,22 +158,16 @@ export default function Home() {
               muted
               loop
               playsInline
-              // "metadata" instead of "auto": browser fetches just enough
-              // to display the poster/dimensions without buffering the whole
-              // video on slow connections. The video still auto-plays because
-              // autoPlay triggers a fetch once the element is in the DOM.
               preload="metadata"
               poster="/hero_2.jpeg"
               onError={handleVideoError}
               aria-hidden="true"
             >
-              {/* webm first — smaller file, better compression */}
               <source src="/hero-bg.webm" type="video/webm" />
               <source src="/hero-bg.mp4" type="video/mp4" />
             </video>
           )}
 
-          {/* Fallback image (hidden behind video unless video fails) */}
           <div
             className="absolute inset-0 w-full h-full"
             style={{
@@ -194,12 +175,10 @@ export default function Home() {
               backgroundSize: "cover",
               backgroundPosition: "center top",
               backgroundColor: "#020617",
-              // Only visible when video fails; otherwise sits behind it.
               zIndex: videoFailed ? 0 : -1,
             }}
           />
 
-          {/* Gradient overlays — pure CSS, zero JS cost */}
           <div className="absolute inset-0" style={OVERLAY_1} />
           <div className="absolute inset-0" style={OVERLAY_2} />
           <div className="absolute inset-0" style={OVERLAY_3} />
@@ -207,10 +186,9 @@ export default function Home() {
 
         {/* ── Foreground content ──────────────────────────── */}
         <motion.div
-          className="relative z-10 flex flex-col min-h-screen px-6 sm:px-10 lg:px-14"
+          className="relative z-10 flex flex-col min-h-screen px-6 sm:px-10 md:px-12 lg:px-14"
           style={{ opacity: contentOpacity, willChange: "opacity" }}
         >
-          {/* Spacer that pushes content to the bottom */}
           <div className="flex-1" />
 
           {/* Bottom Content */}
@@ -218,12 +196,12 @@ export default function Home() {
             variants={heroContainerVariants}
             initial="hidden"
             animate="visible"
-            className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 md:gap-10 lg:gap-16 pb-16 md:pb-16 lg:pb-20"
+            className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 md:gap-12 lg:gap-16 pb-26 md:pb-20 lg:pb-20"
           >
             {/* Left — headline */}
             <motion.div variants={fadeUp} className="flex-1 min-w-0">
               <h1
-                className="text-[38px] sm:text-[46px] md:text-[clamp(3rem,7.0vw,5.4rem)] font-medium text-[#F8FAFC] leading-[1.1] md:leading-[1.0] tracking-[-0.04em]"
+                className="text-[38px] sm:text-[46px] md:text-[60px] lg:text-[clamp(4rem,6vw,5.4rem)] font-medium text-[#F8FAFC] leading-[1.1] md:leading-[1.05] lg:leading-[1.0] tracking-[-0.04em]"
                 style={{ fontFamily: "var(--font-jost, 'Jost', sans-serif)" }}
               >
                 {HERO_LINES.map((line, i) => (
@@ -248,11 +226,11 @@ export default function Home() {
             {/* Right — CTA column */}
             <motion.div
               variants={fadeUp}
-              className="lg:max-w-[340px] xl:max-w-[380px] flex-shrink-0 flex flex-col gap-5 md:gap-7 lg:pb-1"
+              className="md:max-w-2xl lg:max-w-[340px] xl:max-w-[380px] flex-shrink-0 flex flex-col gap-5 md:gap-6 lg:gap-7 lg:pb-1"
               style={{ fontFamily: "var(--font-jost, 'Jost', sans-serif)" }}
             >
               <motion.p
-                className="text-[#94A3B8] text-[14px] md:text-base sm:text-[17px] leading-relaxed font-light"
+                className="text-[#94A3B8] text-[14px] sm:text-[17px] md:text-[18px] lg:text-base leading-relaxed font-light"
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.75, delay: 0.9 }}
@@ -263,7 +241,7 @@ export default function Home() {
 
               {/* Buttons */}
               <motion.div
-                className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3"
+                className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3 md:gap-4 lg:gap-3"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 1.05 }}
@@ -271,12 +249,12 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={openContact}
-                  className="group inline-flex items-center gap-2 md:gap-3 pl-4 md:pl-6 pr-1 md:pr-2 py-1 md:py-2 rounded-full text-[#F8FAFC] text-[9px] md:text-[11px] font-bold tracking-[0.18em] uppercase transition-all duration-300 w-fit"
+                  className="group inline-flex items-center gap-2 md:gap-4 lg:gap-3 pl-4 md:pl-7 lg:pl-6 pr-1 md:pr-2 py-1 md:py-2 rounded-full text-[#F8FAFC] text-[9px] md:text-[12px] lg:text-[11px] font-bold tracking-[0.18em] uppercase transition-all duration-300 w-fit"
                   style={BTN_PRIMARY_STYLE}
                 >
                   <span>Begin Your Transformation</span>
                   <span
-                    className="flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full"
+                    className="flex items-center justify-center w-6 h-6 md:w-9 md:h-9 lg:w-8 lg:h-8 rounded-full"
                     style={{ background: "#020617", color: "#22D3EE" }}
                   >
                     →
@@ -286,7 +264,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={handleExpertiseClick}
-                  className="inline-flex items-center justify-center px-5 md:px-6 py-2.5 md:py-3 rounded-full text-[9px] md:text-[11px] font-bold uppercase tracking-[0.18em] transition-all duration-300 w-fit"
+                  className="inline-flex items-center justify-center px-5 md:px-8 lg:px-6 py-2.5 md:py-3.5 lg:py-3 rounded-full text-[9px] md:text-[12px] lg:text-[11px] font-bold uppercase tracking-[0.18em] transition-all duration-300 w-fit"
                   style={BTN_OUTLINE_STYLE}
                 >
                   Our Expertise
@@ -295,7 +273,7 @@ export default function Home() {
 
               {/* Review strip */}
               <motion.div
-                className="flex items-center gap-3 md:gap-4 pl-3 md:pl-4 mt-2 md:mt-0"
+                className="flex items-center gap-3 md:gap-4 pl-3 md:pl-4 mt-2 md:mt-2 lg:mt-0"
                 style={{ borderLeft: "2px solid rgba(34,211,238,0.4)" }}
                 initial={{ opacity: 0, x: -16 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -303,7 +281,7 @@ export default function Home() {
               >
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-0.5">{STARS}</div>
-                  <span className="text-[#94A3B8] text-[10px] md:text-xs font-medium">
+                  <span className="text-[#94A3B8] text-[10px] md:text-[13px] lg:text-xs font-medium">
                     100+ Positive Client Reviews
                   </span>
                 </div>
@@ -332,11 +310,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ─── Below-fold sections ─────────────────────────────
-          Each is wrapped in Suspense so the page doesn't wait
-          for every chunk before showing anything.
-          viewport={{ once: true }} means the animation fires
-          only once — no re-triggering on scroll back up.       */}
+      {/* ─── Below-fold sections ───────────────────────────── */}
 
       <StatsSection />
 

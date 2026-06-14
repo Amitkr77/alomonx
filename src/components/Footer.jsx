@@ -2,49 +2,17 @@
 
 import React, { useState, useEffect, useCallback, memo } from "react";
 import Link from "next/link";
-import {
-  ChevronRight,
-  Monitor,
-  Smartphone,
-  Globe,
-  Terminal,
-  Palette,
-} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import {
   FaWhatsapp,
   FaInstagram,
   FaFacebook,
   FaLinkedin,
 } from "react-icons/fa";
+import { allServices } from "@/lib/services-data";
 
 // ─── Static data — defined once at module level, never recreated ─────────────
-const services = [
-  {
-    id: 1,
-    title: "Web Application Development",
-    slug: "web-application-development",
-    Icon: Monitor,
-  },
-  {
-    id: 2,
-    title: "App Development",
-    slug: "app-development",
-    Icon: Smartphone,
-  },
-  {
-    id: 3,
-    title: "SharePoint Development",
-    slug: "sharepoint-development",
-    Icon: Globe,
-  },
-  {
-    id: 4,
-    title: "Custom Software Development",
-    slug: "custom-software-development",
-    Icon: Terminal,
-  },
-  { id: 5, title: "UI/UX Design", slug: "ui-ux-design", Icon: Palette },
-];
+const services = allServices.slice(0, 5);
 
 // Computed once at module load — never changes for the lifetime of the page
 const COPYRIGHT_YEAR = new Date().getFullYear();
@@ -73,10 +41,7 @@ const socialLinks = [
 ];
 
 // ─── Digital Clock ────────────────────────────────────────────────────────────
-// Isolated in its own memo'd component so its 1-second setState never triggers
-// a re-render in any other part of the footer.
 const DigitalClock = memo(function DigitalClock() {
-  // Single state object — avoids two separate setState calls on mount
   const [clockState, setClockState] = useState({
     mounted: false,
     time: null,
@@ -84,7 +49,6 @@ const DigitalClock = memo(function DigitalClock() {
   });
 
   useEffect(() => {
-    // Initialise with current time immediately on mount
     setClockState((prev) => ({ ...prev, mounted: true, time: new Date() }));
 
     const timer = setInterval(() => {
@@ -94,7 +58,6 @@ const DigitalClock = memo(function DigitalClock() {
     return () => clearInterval(timer);
   }, []);
 
-  // Stable toggle callbacks — not recreated on every tick
   const set12h = useCallback(
     () => setClockState((prev) => ({ ...prev, is24Hour: false })),
     [],
@@ -211,13 +174,13 @@ const ServiceLinks = memo(function ServiceLinks() {
         Services
       </h4>
       <ul className="space-y-2 text-[#A3A3A3] text-sm font-medium">
-        {services.map(({ id, slug, title }) => (
-          <li key={id}>
+        {services.map(({ label, href }) => (
+          <li key={href}>
             <Link
-              href={`/services/${slug}`}
+              href={href}
               className="hover:text-white transition-colors block truncate"
             >
-              {title}
+              {label}
             </Link>
           </li>
         ))}

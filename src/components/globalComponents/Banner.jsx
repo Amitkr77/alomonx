@@ -6,28 +6,62 @@ import { X } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 
 export default function Banner({ details }) {
-  const [isContactOpen, setIsContactOpen] = useState(false); // Modal state added
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   // Safety check: Don't render if data hasn't loaded yet
   if (!details) return null;
 
   return (
     <>
-      <div className="p-9">
+      {/* ─────────────────────────────────────────────
+          MOBILE ONLY LAYOUT
+      ───────────────────────────────────────────── */}
+      {/* 1. Removed 'w-full' to prevent horizontal scroll
+        2. Added 'mx-4' for side margins
+        3. Added 'rounded-3xl' for the rounded corners
+        4. Added 'overflow-hidden' to clip the image's top corners
+      */}
+      <div className="flex flex-col md:hidden mx-4 rounded-3xl overflow-hidden bg-white relative z-10 -mb-[1px]">
+        {/* Standard image element instead of background to prevent cropping */}
+        <img
+          src={details.bannerImage}
+          alt={details.title || "Banner Image"}
+          className="w-full h-auto object-contain"
+        />
+
+        {/* Content Section Below Image */}
+        <div className="px-4 py-6 flex flex-col items-start w-full">
+          <h1 className="text-2xl font-bold leading-tight text-gray-900 mb-3">
+            {details.title}
+          </h1>
+
+          <p className="text-sm text-gray-600 leading-relaxed mb-6">
+            {details.description}
+          </p>
+
+          <button
+            onClick={() => setIsContactOpen(true)}
+            className="w-full inline-block rounded-full bg-blue-900 px-8 py-3.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-blue-800 active:scale-[0.97]"
+          >
+            Start a conversation
+          </button>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────
+          PC ONLY LAYOUT (Unchanged)
+      ───────────────────────────────────────────── */}
+      <div className="hidden md:block p-9">
         <header
           className="relative flex w-full min-h-[420px] items-center justify-start bg-cover bg-center bg-no-repeat px-4 md:px-[3%] rounded-3xl overflow-hidden"
           style={{ backgroundImage: `url('${details.bannerImage}')` }}
         >
-          {/* Text Container 
-          - Mobile: Centered, blurred dark background for readability 
-          - Desktop: Left-aligned, transparent background, max-width to avoid covering the doctor
-        */}
+          {/* Text Container */}
           <div className="z-10 w-full max-w-full rounded-2xl p-4 backdrop-blur-md md:max-w-[65%] md:bg-transparent md:p-0 md:text-left md:backdrop-blur-none lg:max-w-[45%]">
             <h1 className="mb-2 text-2xl font-bold leading-tight text-white drop-shadow-md md:text-3xl lg:text-[2.25rem]">
               {details.title}
             </h1>
 
-            {/* Added mb-6 here to create a gap before the button */}
             <p className="mb-6 text-base leading-relaxed text-[#ffffff] md:text-lg lg:text-[1.0rem]">
               {details.description}
             </p>

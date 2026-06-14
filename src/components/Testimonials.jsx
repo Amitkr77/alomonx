@@ -58,14 +58,14 @@ const MARQUEE_WRAPPER_STYLE = {
 // ─────────────────────────────────────────────────────────────
 const TestimonialCard = memo(function TestimonialCard({ t }) {
   return (
-    <article className="relative bg-[#151515] border border-gray-800 rounded-xl p-4 sm:p-6 flex flex-col w-[300px] sm:w-[400px] shrink-0 hover:border-gray-600 transition-colors duration-300">
+    <article className="relative bg-[#151515] border border-gray-800 rounded-xl p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col w-[220px] sm:w-[280px] md:w-[320px] lg:w-[400px] shrink-0 hover:border-gray-600 transition-colors duration-300">
       {/* Top Row */}
-      <div className="flex justify-between items-center mb-3 sm:mb-4">
-        <span className="text-xs font-semibold tracking-widest text-gray-500 uppercase">
+      <div className="flex justify-between items-center mb-2 sm:mb-3 md:mb-4">
+        <span className="text-[10px] sm:text-xs font-semibold tracking-widest text-gray-500 uppercase">
           Client
         </span>
         <div
-          className="flex space-x-1"
+          className="flex space-x-0.5 sm:space-x-1"
           role="img"
           aria-label="5 out of 5 stars"
         >
@@ -73,21 +73,25 @@ const TestimonialCard = memo(function TestimonialCard({ t }) {
             <Star
               key={i}
               aria-hidden="true"
-              className="w-3.5 h-3.5 fill-orange-500 text-orange-500"
+              className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 fill-orange-500 text-orange-500"
             />
           ))}
         </div>
       </div>
 
       {/* Quote */}
-      <blockquote className="text-gray-300 leading-relaxed mb-6 sm:mb-8 text-sm flex-grow">
+      <blockquote className="text-gray-300 leading-relaxed mb-4 sm:mb-5 md:mb-6 lg:mb-8 text-[11px] sm:text-xs md:text-sm flex-grow line-clamp-5 sm:line-clamp-6 md:line-clamp-none">
         "{t.quote}"
       </blockquote>
 
       {/* Author */}
-      <footer className="border-t border-gray-800 pt-4 sm:pt-6 mt-auto">
-        <h3 className="text-base font-semibold text-white">{t.name}</h3>
-        <p className="text-sm text-gray-500 mt-1">{t.role}</p>
+      <footer className="border-t border-gray-800 pt-3 sm:pt-4 md:pt-5 lg:pt-6 mt-auto">
+        <h3 className="text-sm sm:text-sm md:text-base font-semibold text-white">
+          {t.name}
+        </h3>
+        <p className="text-[11px] sm:text-xs md:text-sm text-gray-500 mt-0.5 sm:mt-1">
+          {t.role}
+        </p>
       </footer>
 
       {/* Bottom cyan glow */}
@@ -105,12 +109,9 @@ const TestimonialCard = memo(function TestimonialCard({ t }) {
 const Testimonials = () => {
   return (
     <section
-      className="py-10 sm:py-16 bg-[#0a0a0a] text-white font-sans overflow-hidden"
+      className="py-8 sm:py-12 md:py-14 lg:py-16 bg-[#0a0a0a] text-white font-sans overflow-hidden"
       aria-label="Client testimonials"
     >
-      {/* Injecting the CSS directly. 
-        This handles the infinite loop and the hover-pause flawlessly. 
-      */}
       <style>{`
         @keyframes infinite-scroll {
           0% { transform: translateX(0); }
@@ -122,11 +123,9 @@ const Testimonials = () => {
           animation: infinite-scroll 40s linear infinite;
           will-change: transform;
         }
-        /* Pauses perfectly without jumping */
         .marquee-container:hover .marquee-track {
           animation-play-state: paused;
         }
-        /* Accessibility standard */
         @media (prefers-reduced-motion: reduce) {
           .marquee-track {
             animation: none;
@@ -136,16 +135,16 @@ const Testimonials = () => {
 
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 border-b border-gray-800 pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 md:mb-12 lg:mb-16 border-b border-gray-800 pb-6 sm:pb-7 md:pb-8">
           <div>
-            <span className="text-blue-900 text-sm font-bold tracking-[0.2em] uppercase mb-3 block">
+            <span className="text-blue-900 text-[10px] sm:text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-2 sm:mb-3 block">
               Reviews
             </span>
-            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">
               What they think about us :
             </h2>
           </div>
-          <p className="mt-6 md:mt-0 text-sm text-white max-w-xl md:text-right leading-relaxed">
+          <p className="mt-4 md:mt-0 text-xs sm:text-sm text-white max-w-xl md:text-right leading-relaxed">
             Real feedback from companies that choose us for their digital
             strategies and campaign execution. Hear from our clients who have
             transformed their presence.
@@ -159,14 +158,17 @@ const Testimonials = () => {
         >
           <div className="marquee-track">
             {/* Group 1 (Original) */}
-            <div className="flex gap-6 pr-6">
+            <div className="flex gap-3 sm:gap-4 md:gap-5 lg:gap-6 pr-3 sm:pr-4 md:pr-5 lg:pr-6">
               {TESTIMONIALS_DATA.map((t, i) => (
                 <TestimonialCard key={`orig-${i}`} t={t} />
               ))}
             </div>
 
             {/* Group 2 (Clone for seamless loop) */}
-            <div className="flex gap-6 pr-6" aria-hidden="true">
+            <div
+              className="flex gap-3 sm:gap-4 md:gap-5 lg:gap-6 pr-3 sm:pr-4 md:pr-5 lg:pr-6"
+              aria-hidden="true"
+            >
               {TESTIMONIALS_DATA.map((t, i) => (
                 <TestimonialCard key={`clone-${i}`} t={t} />
               ))}

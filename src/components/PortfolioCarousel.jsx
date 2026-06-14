@@ -26,8 +26,6 @@ import { homepage } from "@/lib/portfolio_data";
 // ─────────────────────────────────────────────────────────────
 const ACCENT = "#00FFCC";
 
-// CHANGE: Derive carousel items once. Filter empty images here
-// so PremiumCard never receives undefined src values.
 const carouselItems = homepage.map((p) => ({
   id: p.slug,
   title: p.title,
@@ -49,6 +47,19 @@ const DESKTOP_LAYOUT = {
   isMobile: false,
 };
 
+// NEW: Tablet layout configuration
+const TABLET_LAYOUT = {
+  cardWidth: 300,
+  gap: 16,
+  widthClass: "w-[300px]",
+  heightClass: "h-[480px]",
+  topClass: "-top-[240px]",
+  leftClass: "-left-[150px]",
+  trackHeight: "h-[500px]",
+  containerHeight: "min-h-[700px]",
+  isMobile: false,
+};
+
 const MOBILE_LAYOUT = {
   cardWidth: 260,
   gap: 14,
@@ -61,25 +72,18 @@ const MOBILE_LAYOUT = {
   isMobile: true,
 };
 
-// CHANGE: Static spring config defined once — was inside useMemo
-// which still allocates a new object reference each time the memo
-// recalculates. Module-level is truly zero-cost.
 const SPRING_CFG = { damping: 20, stiffness: 400, mass: 0.2 };
 const CURSOR_SPRING = { damping: 22, stiffness: 300 };
 
-// CHANGE: Cursor animate targets as stable objects — Framer Motion
-// compares these by reference; new objects per render cause extra work.
 const CURSOR_VISIBLE = { opacity: 1, scale: 1 };
 const CURSOR_HIDDEN = { opacity: 0, scale: 0.2 };
 
-// CHANGE: Image transition defined once — was inlined inside
-// AnimatePresence causing a new object every render.
 const IMG_TRANSITION = { duration: 1.5, ease: "easeInOut" };
 const HOVER_SCALE = { scale: 1.06 };
 const HOVER_TRANSITION = { duration: 0.6, ease: [0.4, 0, 0.2, 1] };
 
 // ─────────────────────────────────────────────────────────────
-// rAF-throttled mousemove hook — unchanged, already optimal
+// rAF-throttled mousemove hook
 // ─────────────────────────────────────────────────────────────
 function useRafMouseMove(mvX, mvY, containerRef) {
   const rafId = useRef(null);
@@ -99,14 +103,7 @@ function useRafMouseMove(mvX, mvY, containerRef) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// useCardTransforms — centralises all per-card MotionValue
-// math into a single useTransform call per card.
-//
-// CHANGE (critical): The original created TWO useTransform calls
-// per card (xOffset + scale), both subscribing to dragX.
-// With 8 cards that's 16 transform subscriptions firing on
-// every drag event. Now each card has ONE subscription that
-// returns both values together.
+// useCardTransforms
 // ─────────────────────────────────────────────────────────────
 function useCardTransform(dragX, index, STEP, TOTAL_WIDTH) {
   const xOffset = useTransform(dragX, (v) => {
@@ -117,9 +114,6 @@ function useCardTransform(dragX, index, STEP, TOTAL_WIDTH) {
     return wrapped;
   });
 
-  // CHANGE: Derive scale from xOffset rather than dragX.
-  // This chains the transforms so scale only recomputes when
-  // xOffset changes — and xOffset already debounces small moves.
   const scale = useTransform(
     xOffset,
     [-STEP * 1.5, 0, STEP * 1.5],
@@ -130,13 +124,7 @@ function useCardTransform(dragX, index, STEP, TOTAL_WIDTH) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// ImageCycler — isolated so only the image subtree re-renders
-// when imgIndex changes, not the entire card.
-//
-// CHANGE: The original had the image index state and interval
-// inside PremiumCard. Every setImgIndex caused the whole card
-// (title, desc, nav button, dots) to re-render. Now only the
-// image layer re-renders on slide change.
+// ImageCycler
 // ─────────────────────────────────────────────────────────────
 const ImageCycler = memo(function ImageCycler({ images, title, isVisible }) {
   const [imgIndex, setImgIndex] = useState(0);
@@ -152,7 +140,6 @@ const ImageCycler = memo(function ImageCycler({ images, title, isVisible }) {
 
   return (
     <>
-      {/* Image layer */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <AnimatePresence mode="sync">
           <motion.div
@@ -163,12 +150,6 @@ const ImageCycler = memo(function ImageCycler({ images, title, isVisible }) {
             transition={IMG_TRANSITION}
             className="absolute inset-0 w-full h-full"
           >
-            {/* CHANGE: next/image instead of <img>.
-                Gives automatic WebP/AVIF, proper srcset, and
-                prevents layout shift. `fill` + relative parent
-                replaces absolute positioning.
-                `unoptimized` used for external URLs — remove if
-                you proxy images through Next.js image optimization. */}
             <motion.div
               whileHover={HOVER_SCALE}
               transition={HOVER_TRANSITION}
@@ -178,11 +159,11 @@ const ImageCycler = memo(function ImageCycler({ images, title, isVisible }) {
                 src={images[imgIndex]}
                 alt={title}
                 fill
-                sizes="(max-width: 768px) 260px, 350px"
+                sizes="(max-width: 768px) 260px, (max-width: 1024px) 300px, 350px"
                 className="object-cover"
                 loading="lazy"
                 decoding="async"
-                unoptimized // remove if images are self-hosted
+                unoptimized
               />
             </motion.div>
           </motion.div>
@@ -190,8 +171,7 @@ const ImageCycler = memo(function ImageCycler({ images, title, isVisible }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/60" />
       </div>
 
-      {/* Dot indicators — live here since they depend on imgIndex */}
-      <div className="absolute bottom-5 left-5 md:bottom-7 md:left-7 flex gap-1.5">
+      <div className="absolute bottom-5 left-5 md:bottom-7 md:left-7 flex gap-1.5 z-20">
         {images.map((_, i) => (
           <div
             key={i}
@@ -206,13 +186,14 @@ const ImageCycler = memo(function ImageCycler({ images, title, isVisible }) {
 });
 
 // ─────────────────────────────────────────────────────────────
-// NavButton — extracted so router.push doesn't live in the card
-// and the button can be independently memoised.
+// NavButton
 // ─────────────────────────────────────────────────────────────
 const NavButton = memo(function NavButton({ id, title }) {
   const router = useRouter();
+
   const handleClick = useCallback(
     (e) => {
+      e.preventDefault();
       e.stopPropagation();
       router.push(`/portfolio/${id}`);
     },
@@ -222,13 +203,17 @@ const NavButton = memo(function NavButton({ id, title }) {
   return (
     <button
       onClick={handleClick}
+      // Stop pointer down events so framer-motion doesn't interpret it as a drag
+      onPointerDown={(e) => e.stopPropagation()}
       aria-label={`View ${title}`}
       style={{ color: ACCENT, borderColor: `${ACCENT}40` }}
-      className="flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full border bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-black/50 cursor-pointer"
+      // CHANGED: opacity-100 base ensures it shows on mobile/tablet.
+      // md:opacity-0 and md:group-hover:opacity-100 applies the hover effect strictly on larger screens
+      className="relative z-50 flex items-center justify-center w-10 h-10 md:w-9 md:h-9 rounded-full border bg-black/60 md:bg-black/30 backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-black/50 cursor-pointer pointer-events-auto"
     >
       <svg
-        width="13"
-        height="13"
+        width="14"
+        height="14"
         viewBox="0 0 14 14"
         fill="none"
         aria-hidden="true"
@@ -236,7 +221,7 @@ const NavButton = memo(function NavButton({ id, title }) {
         <path
           d="M2 12L12 2M12 2H5M12 2v7"
           stroke="currentColor"
-          strokeWidth="1.6"
+          strokeWidth="1.8"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -246,9 +231,7 @@ const NavButton = memo(function NavButton({ id, title }) {
 });
 
 // ─────────────────────────────────────────────────────────────
-// PremiumCard — now much leaner. Image cycling and navigation
-// are in their own memoised children, so hover/nav events
-// don't re-render the card shell.
+// PremiumCard
 // ─────────────────────────────────────────────────────────────
 const PremiumCard = memo(function PremiumCard({
   item,
@@ -272,20 +255,19 @@ const PremiumCard = memo(function PremiumCard({
       onMouseLeave={onMouseLeave}
       className={`absolute ${layout.topClass} ${layout.leftClass} ${layout.widthClass} ${layout.heightClass} rounded-[24px] md:rounded-[28px] overflow-hidden shadow-2xl group`}
     >
-      {/* Image cycling isolated — only this subtree re-renders on slide */}
       <ImageCycler
         images={item.images}
         title={item.title}
         isVisible={isVisible}
       />
 
-      {/* Static card UI — never re-renders after mount */}
       <div className="absolute inset-0 p-5 md:p-7 flex flex-col justify-between text-white pointer-events-none">
-        <div className="flex justify-end items-start w-full pointer-events-auto">
+        <div className="flex justify-end items-start w-full pointer-events-none">
+          {/* Button handles its own pointer-events-auto */}
           <NavButton id={item.id} title={item.title} />
         </div>
 
-        <div className="flex flex-col gap-1.5 md:gap-2 pb-8">
+        <div className="flex flex-col gap-1.5 md:gap-2 pb-8 pointer-events-none z-10">
           <h3 className="text-xl md:text-2xl font-extrabold tracking-tight leading-tight">
             {item.title}
           </h3>
@@ -300,8 +282,7 @@ const PremiumCard = memo(function PremiumCard({
 });
 
 // ─────────────────────────────────────────────────────────────
-// NavTabs — memoised and extracted so activeIndex changes
-// don't re-render the drag track or cards.
+// NavTabs
 // ─────────────────────────────────────────────────────────────
 const NavTabs = memo(function NavTabs({ activeIndex, onNav, isMobile }) {
   return (
@@ -335,7 +316,7 @@ const NavTabs = memo(function NavTabs({ activeIndex, onNav, isMobile }) {
 });
 
 // ─────────────────────────────────────────────────────────────
-// SectionHeader — completely static, renders once
+// SectionHeader
 // ─────────────────────────────────────────────────────────────
 const SectionHeader = memo(function SectionHeader({ isMobile }) {
   return (
@@ -388,7 +369,6 @@ function CarouselCore({ layout }) {
   const STEP = layout.cardWidth + layout.gap;
   const TOTAL_WIDTH = TOTAL_CARDS * STEP;
 
-  // ── Visibility observer ────────────────────────────────────
   const sectionRef = useRef(null);
   useEffect(() => {
     const el = sectionRef.current;
@@ -401,19 +381,16 @@ function CarouselCore({ layout }) {
     return () => obs.disconnect();
   }, []);
 
-  // ── Active index tracking ──────────────────────────────────
   useMotionValueEvent(dragX, "change", (latest) => {
     let next = Math.round(-latest / STEP);
     next = ((next % TOTAL_CARDS) + TOTAL_CARDS) % TOTAL_CARDS;
     if (next !== activeIndex) setActiveIndex(next);
   });
 
-  // ── Custom cursor ──────────────────────────────────────────
   const containerRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // CHANGE: Removed useMemo for spring config — it's a module constant now.
   const cursorX = useSpring(mouseX, CURSOR_SPRING);
   const cursorY = useSpring(mouseY, CURSOR_SPRING);
 
@@ -423,12 +400,8 @@ function CarouselCore({ layout }) {
   const handleCardEnter = useCallback(() => setIsCardHovered(true), []);
   const handleCardLeave = useCallback(() => setIsCardHovered(false), []);
 
-  // CHANGE: Compute showDragCursor here so the cursor animate
-  // target can use stable object references (CURSOR_VISIBLE /
-  // CURSOR_HIDDEN) instead of inline objects per render.
-  const showDragCursor = isHovered && !isCardHovered;
+  const showDragCursor = isHovered && !isCardHovered && !layout.isMobile;
 
-  // ── Pan handlers ───────────────────────────────────────────
   const handlePan = useCallback(
     (_, info) => {
       dragX.set(dragX.get() + info.delta.x * 1.2);
@@ -475,14 +448,12 @@ function CarouselCore({ layout }) {
     >
       <SectionHeader isMobile={layout.isMobile} />
 
-      {/* CHANGE: NavTabs is isolated — activeIndex changes only re-render tabs */}
       <NavTabs
         activeIndex={activeIndex}
         onNav={handleNavClick}
         isMobile={layout.isMobile}
       />
 
-      {/* Drag track */}
       <motion.div
         ref={containerRef}
         onMouseMove={handleMouseMove}
@@ -493,7 +464,6 @@ function CarouselCore({ layout }) {
         style={{ touchAction: "pan-y" }}
         className={`relative w-full ${layout.trackHeight} flex justify-center items-center cursor-grab active:cursor-grabbing`}
       >
-        {/* Custom drag cursor — desktop only */}
         {!layout.isMobile && (
           <motion.div
             style={{
@@ -502,8 +472,6 @@ function CarouselCore({ layout }) {
               translateX: "-50%",
               translateY: "-50%",
             }}
-            // CHANGE: Stable object references prevent Framer Motion
-            // from treating the animate target as "changed" every render.
             animate={showDragCursor ? CURSOR_VISIBLE : CURSOR_HIDDEN}
             className="hidden md:flex absolute top-0 left-0 z-[100] pointer-events-none w-[80px] h-[80px] bg-white/5 backdrop-blur-xl rounded-full items-center justify-center border border-white/20 shadow-[0_0_40px_rgba(255,255,255,0.1)]"
           >
@@ -539,17 +507,27 @@ function CarouselCore({ layout }) {
 // Root wrapper — handles SSR hydration & responsive layout swap
 // ─────────────────────────────────────────────────────────────
 export default function PremiumCarousel() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [layoutType, setLayoutType] = useState(null);
 
   useEffect(() => {
-    setMounted(true);
-    setIsMobile(window.innerWidth < 768);
+    const checkLayout = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setLayoutType("mobile");
+      } else if (width < 1024) {
+        setLayoutType("tablet");
+      } else {
+        setLayoutType("desktop");
+      }
+    };
+
+    // Initial check
+    checkLayout();
 
     let debounceId;
     const onResize = () => {
       clearTimeout(debounceId);
-      debounceId = setTimeout(() => setIsMobile(window.innerWidth < 768), 150);
+      debounceId = setTimeout(checkLayout, 150);
     };
 
     window.addEventListener("resize", onResize, { passive: true });
@@ -559,10 +537,7 @@ export default function PremiumCarousel() {
     };
   }, []);
 
-  // CHANGE: Skeleton matches the section's min-height so no layout
-  // shift occurs when the carousel mounts. Background matches the
-  // page background so there's no flash of white.
-  if (!mounted) {
+  if (!layoutType) {
     return (
       <div
         className="min-h-[820px] w-full"
@@ -572,14 +547,14 @@ export default function PremiumCarousel() {
     );
   }
 
-  return (
-    <CarouselCore
-      layout={isMobile ? MOBILE_LAYOUT : DESKTOP_LAYOUT}
-      // key forces a full remount when layout tier changes,
-      // resetting all motion values cleanly.
-      key={isMobile ? "mobile" : "desktop"}
-    />
-  );
+  const activeLayout =
+    layoutType === "mobile"
+      ? MOBILE_LAYOUT
+      : layoutType === "tablet"
+        ? TABLET_LAYOUT
+        : DESKTOP_LAYOUT;
+
+  return <CarouselCore layout={activeLayout} key={layoutType} />;
 }
 
 // ─────────────────────────────────────────────────────────────
