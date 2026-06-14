@@ -78,10 +78,10 @@ const StairItem = memo(function StairItem({
 
   return (
     <div
-      className="relative flex items-start pb-10 md:pb-12"
+      className="relative flex items-start pb-8 md:pb-12"
       style={{ marginLeft: `calc(${index} * var(--step-width))` }}
     >
-      {/* Glowing node */}
+      {/* Glowing node (Size kept consistent so the connector lines match up perfectly) */}
       <div className="relative mt-1 shrink-0 z-10">
         <div className="w-[14px] h-[14px] rounded-full bg-[#050505] border-2 border-white/20" />
         <motion.div
@@ -90,15 +90,15 @@ const StairItem = memo(function StairItem({
         />
       </div>
 
-      {/* Text content */}
+      {/* Text content - scaled down for mobile */}
       <motion.div
         style={{ opacity: textOpacity, x: textX }}
-        className="ml-6 md:ml-10 flex-1"
+        className="ml-4 sm:ml-6 md:ml-10 flex-1"
       >
-        <span className="block text-white/50 font-mono text-xs font-bold tracking-widest mb-2">
+        <span className="block text-white/50 font-mono text-[10px] md:text-xs font-bold tracking-widest mb-1 sm:mb-2">
           Outcome // {label}
         </span>
-        <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-white leading-snug max-w-2xl">
+        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium text-white leading-snug max-w-2xl">
           {benefit}
         </h3>
       </motion.div>
@@ -139,8 +139,9 @@ export default function BusinessOutcomes({ benefits, meta }) {
 
   return (
     <section
-      className="relative w-full bg-[#050505] py-14 lg:py-20 overflow-hidden"
-      style={{ "--step-width": "clamp(32px, 7vw, 180px)" }}
+      // UPDATED: Using Tailwind arbitrary properties to handle viewport-specific step widths
+      // Mobile: 16px | Tablet: 4vw | Desktop: Original clamp(32px,7vw,180px)
+      className="relative w-full bg-[#050505] py-12 md:py-16 lg:py-20 overflow-hidden [--step-width:16px] md:[--step-width:4vw] lg:[--step-width:clamp(32px,7vw,180px)]"
     >
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         {/* Section header */}
@@ -149,15 +150,15 @@ export default function BusinessOutcomes({ benefits, meta }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="mb-12 md:mb-18"
+          className="mb-10 md:mb-14 lg:mb-18"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-[2px] bg-white/20" />
-            <span className="text-gray-400 text-sm font-mono uppercase tracking-[0.2em] font-bold">
+          <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+            <span className="w-6 md:w-8 h-[2px] bg-white/20" />
+            <span className="text-gray-400 text-xs md:text-sm font-mono uppercase tracking-[0.2em] font-bold">
               Business Outcomes
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1]">
             Why It{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/30">
               Matters.
@@ -166,7 +167,10 @@ export default function BusinessOutcomes({ benefits, meta }) {
         </motion.div>
 
         {/* Staircase list */}
-        <div ref={listRef} className="flex flex-col w-full relative pb-2 pt-4">
+        <div
+          ref={listRef}
+          className="flex flex-col w-full relative pb-2 pt-2 sm:pt-4"
+        >
           {benefits.map((benefit, index) => (
             <StairItem
               key={index}

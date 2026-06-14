@@ -32,24 +32,25 @@ const FeatureRow = memo(function FeatureRow({
       whileInView={ANIMATE_STATE}
       viewport={VIEWPORT_CONFIG}
       transition={transition}
-      className="group relative flex items-center justify-between py-5 border-b border-gray-400 hover:border-gray-500 transition-colors duration-300 cursor-default"
+      // Reduced vertical padding on mobile
+      className="group relative flex items-center justify-between py-3 lg:py-5 border-b border-gray-400 hover:border-gray-500 transition-colors duration-300 cursor-default"
     >
-      <div className="flex items-center gap-5">
-        {/* Index Number */}
-        <span className="text-xs font-mono text-gray-500 group-hover:text-[#0a101e] transition-colors duration-300">
+      <div className="flex items-center gap-2 lg:gap-5 pr-2">
+        {/* Index Number: Smaller on mobile */}
+        <span className="text-[10px] lg:text-xs font-mono text-gray-500 group-hover:text-[#0a101e] transition-colors duration-300">
           {formattedNum}
         </span>
-        {/* Feature Text */}
-        <span className="text-base md:text-lg text-gray-700 group-hover:text-[#040810] transition-colors duration-300 font-semibold tracking-tight">
+        {/* Feature Text: Scaled down for 2-column mobile view */}
+        <span className="text-xs sm:text-sm lg:text-lg text-gray-700 group-hover:text-[#040810] transition-colors duration-300 font-semibold tracking-tight leading-tight">
           {text}
         </span>
       </div>
 
-      {/* Check indicator */}
+      {/* Check indicator: Scaled down on mobile */}
       <div
-        className={`w-6 h-6 rounded-full border border-transparent group-hover:border-gray-300 flex items-center justify-center bg-transparent group-hover:bg-gray-50 transition-all duration-300 ${metaColor}`}
+        className={`shrink-0 w-4 h-4 lg:w-6 lg:h-6 rounded-full border border-transparent group-hover:border-gray-300 flex items-center justify-center bg-transparent group-hover:bg-gray-50 transition-all duration-300 ${metaColor}`}
       >
-        <Check className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-50 group-hover:scale-100" />
+        <Check className="w-2 h-2 lg:w-3 lg:h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-50 group-hover:scale-100" />
       </div>
 
       {/* Animated bottom highlight */}
@@ -97,37 +98,39 @@ export default function KeyFeatures({ keyFeatures, meta }) {
   return (
     <section
       ref={containerRef}
-      className="relative w-full bg-white py-16 border-t border-gray-200 overflow-hidden"
+      className="relative w-full bg-white py-12 lg:py-16 border-t border-gray-200 overflow-hidden"
     >
-      <div className="max-w-8xl mx-auto px-16 lg:px-22">
+      {/* Reduced horizontal padding for mobile/tablet (px-4), kept original for desktop (lg:px-22) */}
+      <div className="max-w-8xl mx-auto px-4 lg:px-22">
         {/* Header with scroll parallax */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 lg:mb-18">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 lg:gap-8 mb-10 lg:mb-18">
           <motion.div
             style={{ y: headerY, opacity: headerOpacity }}
             className="max-w-2xl"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <span className="w-8 h-[2px] bg-gray-300" />
-              <span className="text-gray-500 text-sm font-mono uppercase tracking-[0.2em] font-bold">
+            <div className="flex items-center gap-2 lg:gap-3 mb-4 lg:mb-6">
+              <span className="w-6 lg:w-8 h-[2px] bg-gray-300" />
+              <span className="text-gray-500 text-xs lg:text-sm font-mono uppercase tracking-[0.2em] font-bold">
                 What's Included
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-[#0F172A] tracking-tight leading-[1.1]">
+            {/* Reduced heading size on mobile */}
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0F172A] tracking-tight leading-[1.1]">
               Core Capabilities
             </h2>
           </motion.div>
 
           <motion.p
             style={{ y: headerY, opacity: headerOpacity }}
-            className="text-gray-500 max-w-sm md:text-right font-medium"
+            className="text-gray-500 text-sm lg:text-base max-w-sm md:text-right font-medium"
           >
             Enterprise-grade features built directly into your solution out of
             the box.
           </motion.p>
         </div>
 
-        {/* Feature grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-2">
+        {/* Feature grid: Forced to 2 columns on mobile/tablet, 3 on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 sm:gap-x-8 lg:gap-x-12 gap-y-1 lg:gap-y-2">
           {items.map(({ text, formattedNum, transition }) => (
             <FeatureRow
               key={formattedNum}

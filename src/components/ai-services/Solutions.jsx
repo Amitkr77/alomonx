@@ -1,6 +1,13 @@
 "use client";
 
-import React, { useRef, memo, useMemo } from "react";
+import React, {
+  useRef,
+  memo,
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import {
@@ -12,6 +19,8 @@ import {
   Layers,
   TrendingUp,
   BrainCircuit,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 // --- Constants ---
@@ -41,8 +50,8 @@ const MOBILE_TRANSITION = { duration: 0.5, ease: "easeOut" };
 const CinematicCard = memo(function CinematicCard({
   solution,
   Icon,
-  label, // pre-computed "Solution // 01"
-  isFirst, // only first card gets priority loading
+  label,
+  isFirst,
 }) {
   return (
     <div className="w-[85vw] md:w-[60vw] lg:w-[45vw] h-[60vh] max-h-[650px] shrink-0 relative group rounded-3xl overflow-hidden border border-white/10 bg-[#0F172A] shadow-2xl flex flex-col justify-end">
@@ -90,7 +99,7 @@ const CinematicCard = memo(function CinematicCard({
   );
 });
 
-// --- Sub-component: Mobile Card ---
+// --- Sub-component: Mobile/Tablet Card ---
 const MobileCard = memo(function MobileCard({ solution, Icon }) {
   return (
     <motion.div
@@ -98,10 +107,9 @@ const MobileCard = memo(function MobileCard({ solution, Icon }) {
       whileInView={MOBILE_ANIMATE}
       viewport={MOBILE_VIEWPORT}
       transition={MOBILE_TRANSITION}
-      className="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-[#0F172A] flex flex-col mb-6"
+      className="relative w-[85vw] sm:w-[70vw] md:w-[60vw] shrink-0 snap-center rounded-xl md:rounded-2xl overflow-hidden border border-white/10 bg-[#0F172A] flex flex-col mb-4 md:mb-6"
     >
-      <div className="relative h-56 w-full overflow-hidden">
-        {/* All mobile cards are below the fold — lazy load all */}
+      <div className="relative h-40 sm:h-48 md:h-60 w-full overflow-hidden">
         <Image
           src={solution.image}
           alt={solution.title}
@@ -113,14 +121,16 @@ const MobileCard = memo(function MobileCard({ solution, Icon }) {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] to-transparent" />
       </div>
 
-      <div className="relative z-10 p-6 -mt-12">
-        <div className="inline-flex p-3 rounded-xl bg-[#050505]/50 border border-white/10 backdrop-blur-md mb-4 shadow-xl">
-          <Icon className="w-5 h-5 text-white" />
+      <div className="relative z-10 p-4 sm:p-5 md:p-8 -mt-8 sm:-mt-10 md:-mt-12">
+        <div className="inline-flex p-2 md:p-3 rounded-lg md:rounded-xl bg-[#050505]/50 border border-white/10 backdrop-blur-md mb-3 md:mb-4 shadow-xl">
+          <Icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
         </div>
-        <h4 className="text-2xl font-bold text-white mb-2 tracking-tight">
+        <h4 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 md:mb-3 tracking-tight">
           {solution.title}
         </h4>
-        <p className="text-gray-400 leading-relaxed">{solution.description}</p>
+        <p className="text-sm md:text-base text-gray-400 leading-relaxed">
+          {solution.description}
+        </p>
       </div>
     </motion.div>
   );
@@ -129,6 +139,11 @@ const MobileCard = memo(function MobileCard({ solution, Icon }) {
 // --- Main Section Component ---
 export default function Solutions({ solutions, meta }) {
   const targetRef = useRef(null);
+  const mobileCarouselRef = useRef(null);
+
+  // States for Mobile Arrows
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -138,7 +153,6 @@ export default function Solutions({ solutions, meta }) {
   const smoothProgress = useSpring(scrollYProgress, SPRING_CONFIG);
   const x = useTransform(smoothProgress, X_TRANSFORM_INPUT, X_TRANSFORM_OUTPUT);
 
-  // Pre-derive all per-card data in one pass — no work inside render loops
   const items = useMemo(() => {
     if (!solutions?.length) return [];
     return solutions.map((solution, i) => ({
@@ -149,18 +163,35 @@ export default function Solutions({ solutions, meta }) {
     }));
   }, [solutions]);
 
+  // Check scroll position for arrows
+  const checkScroll = useCallback(() => {
+    if (mobileCarouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } =
+        mobileCarouselRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      // Math.ceil handles fractional pixel calculations on some mobile screens
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+    }
+  }, []);
+
+  // Initialize and attach listeners for scroll updates
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, [checkScroll]);
+
   if (!items.length) return null;
 
   return (
     <section className="bg-[#050505] relative isolate">
-      {/* DESKTOP: Horizontal scroll (hidden on mobile) */}
+      {/* DESKTOP: Horizontal scroll (hidden on mobile/tablet) */}
       <div
         ref={targetRef}
         style={{ height: `${items.length * 65}vh` }}
         className="hidden lg:block relative"
       >
         <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden py-12">
-          {/* Section header */}
           <div className="w-full px-12 lg:px-24 mb-8 z-50 pointer-events-none shrink-0">
             <div className="flex items-center gap-3 mb-4">
               <span className="w-8 h-[2px] bg-white/20" />
@@ -173,7 +204,6 @@ export default function Solutions({ solutions, meta }) {
             </h2>
           </div>
 
-          {/* Scrolling track */}
           <motion.div
             style={{ x }}
             className="flex items-center gap-8 px-12 lg:px-24 w-max will-change-transform"
@@ -189,7 +219,6 @@ export default function Solutions({ solutions, meta }) {
             ))}
           </motion.div>
 
-          {/* Scroll progress bar */}
           <div className="w-full px-12 lg:px-24 mt-10 z-50 flex items-center gap-6 pointer-events-none shrink-0">
             <span className="text-white/50 text-xs font-mono uppercase tracking-widest shrink-0">
               Scroll to explore
@@ -204,25 +233,51 @@ export default function Solutions({ solutions, meta }) {
         </div>
       </div>
 
-      {/* MOBILE: Vertical stack (hidden on desktop) */}
-      <div className="block lg:hidden w-full px-6 py-24">
-        <div className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-[2px] bg-white/20" />
-            <span className="text-gray-400 text-sm font-mono uppercase tracking-[0.2em] font-bold">
+      {/* MOBILE/TABLET: Horizontal Swipe Carousel */}
+      <div className="block lg:hidden w-full py-16 md:py-24 overflow-hidden relative">
+        <div className="px-4 sm:px-6 md:px-10 mb-8 md:mb-12">
+          <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+            <span className="w-6 md:w-8 h-[2px] bg-white/20" />
+            <span className="text-gray-400 text-xs md:text-sm font-mono uppercase tracking-[0.2em] font-bold">
               What We Build
             </span>
           </div>
-          <h2 className="text-4xl font-black text-white tracking-tight mb-2">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight mb-2 md:mb-3">
             Our Solutions
           </h2>
-          <p className="text-gray-400">Swipe down to view our capabilities.</p>
+          <p className="text-sm md:text-base text-gray-400">
+            Swipe left to view our capabilities.
+          </p>
         </div>
 
-        <div className="flex flex-col gap-4">
-          {items.map(({ solution, Icon, label }) => (
-            <MobileCard key={label} solution={solution} Icon={Icon} />
-          ))}
+        {/* Carousel Wrapper with Arrows */}
+        <div className="relative">
+          {/* Left Blinking Arrow (No Circle Background) */}
+          {canScrollLeft && (
+            <div className="absolute left-2 sm:left-4 top-[40%] -translate-y-1/2 z-20 pointer-events-none animate-pulse transition-opacity duration-300">
+              <ChevronLeft className="w-8 h-8 text-white drop-shadow-lg" />
+            </div>
+          )}
+
+          {/* Right Blinking Arrow (No Circle Background) */}
+          {canScrollRight && (
+            <div className="absolute right-2 sm:right-4 top-[40%] -translate-y-1/2 z-20 pointer-events-none animate-pulse transition-opacity duration-300">
+              <ChevronRight className="w-8 h-8 text-white drop-shadow-lg" />
+            </div>
+          )}
+
+          {/* Native scroll container */}
+          <div
+            ref={mobileCarouselRef}
+            onScroll={checkScroll}
+            className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 md:px-10 pb-8 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {items.map(({ solution, Icon, label }) => (
+              <MobileCard key={label} solution={solution} Icon={Icon} />
+            ))}
+            {/* Invisible spacer so the last card can be swiped to the center */}
+            <div className="w-[4vw] shrink-0" />
+          </div>
         </div>
       </div>
     </section>
