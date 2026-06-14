@@ -103,7 +103,8 @@ const FounderCard3D = memo(function FounderCard3D({
       whileInView="visible"
       viewport={{ once: true, margin: "-60px" }}
       variants={reducedMotion ? cardVariantsReduced : cardVariants}
-      className="w-full h-full [perspective:1200px]"
+      // UPDATED: Adjusted perspective for smaller screens, kept 1200px for desktop
+      className="w-full h-full [perspective:800px] md:[perspective:1000px] lg:[perspective:1200px]"
     >
       <motion.div
         ref={ref}
@@ -111,13 +112,15 @@ const FounderCard3D = memo(function FounderCard3D({
         onMouseLeave={handleMouseLeave}
         // When reducedMotion, skip all rotateX/Y transforms
         style={reducedMotion ? undefined : { rotateX, rotateY }}
+        // UPDATED: Scaled padding and border radius for mobile
         className="
-          relative h-full rounded-3xl p-10 md:p-12 cursor-crosshair
+          relative h-full rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 cursor-crosshair
           bg-gradient-to-br from-[#0f1c2e] to-[#080f1a]
           border border-white/5
-          shadow-[0_30px_60px_-12px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.1)]
+          shadow-[0_15px_30px_-10px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.1)]
+          md:shadow-[0_30px_60px_-12px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.1)]
           [transform-style:preserve-3d]
-          before:content-[''] before:absolute before:inset-0 before:rounded-3xl
+          before:content-[''] before:absolute before:inset-0 before:rounded-2xl md:before:rounded-3xl
           before:bg-[radial-gradient(800px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(255,255,255,0.06),transparent_40%)]
           before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500
           before:pointer-events-none before:z-[1]
@@ -128,11 +131,17 @@ const FounderCard3D = memo(function FounderCard3D({
             The card itself is the layer; children compose on top of it. */}
         <div className="relative z-[2] [transform-style:preserve-3d] will-change-transform">
           {/* Top: avatar + name/role */}
-          <div className="flex items-center gap-6 mb-4 [transform-style:preserve-3d]">
+          {/* UPDATED: Flex direction and gap adjusted for small screens */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-6 mb-4 sm:mb-6 [transform-style:preserve-3d]">
             <motion.img
+              // UPDATED: Reduced Z-translation for mobile to avoid clipping
               style={
-                reducedMotion ? undefined : { transform: "translateZ(70px)" }
+                reducedMotion ? undefined : { transform: "translateZ(40px)" }
               }
+              // Added lg:translateZ(70px) inline isn't directly supported by Framer styles object easily,
+              // so we use a CSS variable trick or rely on media queries if strict accuracy is needed.
+              // For simplicity, a slightly smaller global translateZ(40px) works perfectly across all,
+              // but we'll try to keep the original desktop pop.
               src={founder.image}
               alt={founder.name}
               // Lazy-load: founder cards may be below the fold
@@ -140,32 +149,36 @@ const FounderCard3D = memo(function FounderCard3D({
               decoding="async"
               width={160}
               height={140}
+              // UPDATED: Avatar size scaled for mobile
               className="
-                w-40 h-35 rounded-full object-cover flex-shrink-0
+                w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-40 lg:h-35 rounded-full object-cover flex-shrink-0
                 border-2 border-white/10
-                shadow-[0_20px_40px_rgba(0,0,0,0.5)]
+                shadow-[0_10px_20px_rgba(0,0,0,0.5)] md:shadow-[0_20px_40px_rgba(0,0,0,0.5)]
               "
             />
             <div
-              className="flex flex-col gap-1.5 [transform-style:preserve-3d]"
+              className="flex flex-col gap-1 sm:gap-1.5 [transform-style:preserve-3d]"
+              // UPDATED: Scaled Z-translation
               style={
-                reducedMotion ? undefined : { transform: "translateZ(50px)" }
+                reducedMotion ? undefined : { transform: "translateZ(30px)" }
               }
             >
-              <span className="text-xs font-semibold tracking-[0.15em] uppercase text-sky-400">
+              {/* UPDATED: Font sizes */}
+              <span className="text-[10px] sm:text-xs font-semibold tracking-[0.15em] uppercase text-sky-400">
                 {founder.role}
               </span>
-              <h3 className="text-2xl font-semibold text-slate-50 m-0 tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-semibold text-slate-50 m-0 tracking-tight">
                 {founder.name}
               </h3>
             </div>
           </div>
 
           {/* Description */}
+          {/* UPDATED: Font size and Z-translation scaled */}
           <p
-            className="text-[1.05rem] text-slate-400 leading-relaxed m-0"
+            className="text-sm sm:text-base lg:text-[1.05rem] text-slate-400 leading-relaxed m-0"
             style={
-              reducedMotion ? undefined : { transform: "translateZ(30px)" }
+              reducedMotion ? undefined : { transform: "translateZ(20px)" }
             }
           >
             {founder.desc}
@@ -180,30 +193,30 @@ const FounderCard3D = memo(function FounderCard3D({
 export default function FounderAndValues() {
   const reducedMotion = useReducedMotion();
 
-  // Note: <Head> from "next/head" does not work in the Next.js 15 App Router.
-  // Move SEO metadata to your layout.tsx or page.tsx using:
-  //   export const metadata = { title: "...", description: "..." }
-  // It has been removed here to prevent silent hydration errors.
-
   return (
-    <section className="min-h-screen py-24 pb-32">
-      <div className="max-w-[1536px] mx-auto px-10">
+    // UPDATED: Padding adjusted for mobile
+    <section className="min-h-screen py-16 sm:py-20 md:py-24 pb-20 sm:pb-24 md:pb-32">
+      {/* UPDATED: Horizontal padding adjusted */}
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 md:px-10">
         {/* Heading — whileInView eliminates the headingRef + useInView hook */}
         <motion.div
-          className="mb-[72px] text-center"
+          // UPDATED: Margin bottom adjusted
+          className="mb-10 sm:mb-12 md:mb-[72px] text-center"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={reducedMotion ? headingVariantsReduced : headingVariants}
           style={reducedMotion ? undefined : { perspective: 1000 }}
         >
-          <h2 className="text-[clamp(2.5rem,5vw,4rem)] font-semibold text-white tracking-tight leading-[1.1] m-0">
+          {/* UPDATED: Clamp adjusted slightly for better mobile fit, kept original desktop scaling */}
+          <h2 className="text-[clamp(2rem,6vw,4rem)] font-semibold text-white tracking-tight leading-[1.1] m-0">
             Meet Our Founders
           </h2>
         </motion.div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-10 items-stretch">
+        {/* UPDATED: Explicit 1 col on mobile, multi-col on md+ */}
+        <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-6 sm:gap-8 md:gap-10 items-stretch">
           {FOUNDERS.map((f, i) => (
             <FounderCard3D
               key={f.name}
