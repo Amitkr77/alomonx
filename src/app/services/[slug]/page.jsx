@@ -7,17 +7,23 @@ import { ArrowLeft } from "lucide-react";
 import HeroSection from "@/components/service-detail/HeroSection";
 import DetailOverview from "@/components/service-detail/DetailOverview";
 import KeyFeatures from "@/components/service-detail/KeyFeatures";
-import Technologies from "@/components/globalComponents/Technologies";
+import TechCapabilities from "@/components/TechCapabilities";
 import EngineerFuture from "@/components/EngineerFuture";
 import PresentationSection from "@/components/PresentationSection";
 import WhyChooseUs from "@/components/globalComponents/WhyChooseUs";
 import CTABanner from "@/components/globalComponents/CTABanner";
 
 // Local data fetcher
-import { getServiceBySlug, categoryMeta, allServices } from "@/lib/services-data";
+import {
+  getServiceBySlug,
+  categoryMeta,
+  allServices,
+} from "@/lib/services-data";
 
 // Client Components (Below the fold - Lazy Loaded)
-const PortfolioCarousel = dynamic(() => import("@/components/PortfolioCarousel"));
+const PortfolioCarousel = dynamic(
+  () => import("@/components/PortfolioCarousel"),
+);
 const FAQ = dynamic(() => import("@/components/globalComponents/FAQ"));
 const Benefits = dynamic(() => import("@/components/service-detail/Benefits"));
 
@@ -31,7 +37,7 @@ export async function generateStaticParams() {
 
 // 2. Next.js passes `params` directly to page components; no need for useParams()
 export default async function ServiceDetailPage({ params }) {
-  // In Next.js 15+, params should be awaited if they are promises, though accessing synchronously might work depending on your exact setup. 
+  // In Next.js 15+, params should be awaited if they are promises, though accessing synchronously might work depending on your exact setup.
   // We'll safely destructure it.
   const { slug } = await params;
   const service = getServiceBySlug(slug);
@@ -80,15 +86,15 @@ export default async function ServiceDetailPage({ params }) {
         features={details.features}
         featureDescriptions={details.featureDescriptions}
       />
-      <Technologies technologies={details.technologies} meta={meta} />
+      <TechCapabilities technologies={details.technologies} />
       <PresentationSection />
       <EngineerFuture steps={formattedProcessData} />
-      
+
       {/* Lazy-loaded components down here */}
       <PortfolioCarousel />
       <WhyChooseUs items={details.whyChooseUs} />
       <Benefits benefits={details.benefits} />
-      
+
       <FAQ faqs={details.faqs} />
       <CTABanner details={details} />
     </div>

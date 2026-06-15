@@ -56,7 +56,8 @@ function ImageCarousel() {
   const next = () => setCurrent((c) => (c + 1) % SLIDES.length);
 
   return (
-    <div className="relative w-full h-full min-h-[520px] overflow-hidden rounded-2xl">
+    // RESPONSIVE: Adjusted heights so it doesn't take over the whole mobile screen
+    <div className="relative w-full h-[400px] sm:h-[450px] lg:h-full lg:min-h-[520px] overflow-hidden">
       {/* Slides */}
       <AnimatePresence mode="wait">
         <motion.img
@@ -72,11 +73,11 @@ function ImageCarousel() {
       </AnimatePresence>
 
       {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#050810]/90 via-[#050810]/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050810] via-[#050810]/40 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#050810]/30 to-transparent" />
 
       {/* Heading overlay */}
-      <div className="absolute top-0 left-0 right-0 p-7">
+      <div className="absolute top-0 left-0 right-0 p-5 md:p-7">
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -89,7 +90,7 @@ function ImageCarousel() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-2xl font-bold text-white leading-snug"
+          className="text-xl md:text-2xl font-bold text-white leading-snug"
         >
           Ready to Build Your
           <br />
@@ -101,7 +102,7 @@ function ImageCarousel() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="mt-2 text-sm text-white/60 max-w-xs font-bold"
+          className="mt-2 text-xs md:text-sm text-white/60 max-w-xs font-bold"
         >
           Collaborate with a globally recognized, award-winning development
           team.
@@ -109,17 +110,18 @@ function ImageCarousel() {
       </div>
 
       {/* Stats bar */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <div className="grid grid-cols-4 gap-2">
+      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+        {/* RESPONSIVE: 2 cols on mobile, 4 on md screens */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 + i * 0.07, ease: [0.4, 0, 0.2, 1] }}
-              className="flex flex-col items-center text-center p-2.5 rounded-xl bg-white/[0.06] backdrop-blur-md border border-white/10"
+              className="flex flex-col items-center text-center p-2 md:p-2.5 rounded-xl bg-white/[0.06] backdrop-blur-md border border-white/10"
             >
-              <span className="text-lg font-bold bg-gradient-to-r from-violet-400 to-sky-400 bg-clip-text text-transparent leading-none">
+              <span className="text-base md:text-lg font-bold bg-gradient-to-r from-violet-400 to-sky-400 bg-clip-text text-transparent leading-none">
                 {stat.value}
               </span>
               <span className="mt-1 text-[10px] font-medium text-white/55 leading-tight">
@@ -233,7 +235,7 @@ function ContactFormPanel() {
   const errClass = "border-red-500/60 focus:border-red-500/80";
 
   return (
-    <div className="relative h-full flex flex-col justify-center px-2">
+    <div className="relative h-full flex flex-col justify-center w-full">
       <AnimatePresence mode="wait">
         {!submitted ? (
           <motion.div
@@ -242,9 +244,10 @@ function ContactFormPanel() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.4 }}
+            className="w-full"
           >
             {/* Header */}
-            <div className="mb-7">
+            <div className="mb-6 md:mb-7">
               <p className="text-xs font-semibold tracking-[0.18em] text-violet-500 uppercase mb-2">
                 Get in Touch
               </p>
@@ -257,8 +260,8 @@ function ContactFormPanel() {
               </p>
             </div>
 
-            {/* Row 1: Name + Email */}
-            <div className="grid grid-cols-2 gap-3 mb-3">
+            {/* Row 1: Name + Email (RESPONSIVE: Stack on small phones, side-by-side on sm+) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
               <div>
                 <input
                   placeholder="Name *"
@@ -288,21 +291,21 @@ function ContactFormPanel() {
               </div>
             </div>
 
-            {/* Row 2: Phone + Company */}
+            {/* Row 2: Phone */}
             <div className="mb-3">
               <div
-                className={`flex gap-0 rounded-xl border overflow-hidden transition-all duration-200 ${errors.phone ? "border-red-500/60" : "border-white/10 focus-within:border-violet-500/60"}`}
+                className={`flex rounded-xl border overflow-hidden transition-all duration-200 ${errors.phone ? "border-red-500/60" : "border-white/10 focus-within:border-violet-500/60"}`}
               >
                 <select
                   value={values.countryCode}
                   onChange={set("countryCode")}
-                  className="bg-white/[0.08] text-white/80 text-sm px-3 py-3 outline-none border-r border-white/10 cursor-pointer"
+                  className="bg-white/[0.08] text-white/80 text-sm px-3 py-3 outline-none border-r border-white/10 cursor-pointer w-24 md:w-auto"
                 >
                   {COUNTRY_CODES.map((c) => (
                     <option
                       key={c.code}
                       value={c.code}
-                      className="bg-[#0d1117]"
+                      className="bg-[#0d1117] text-white"
                     >
                       {c.flag} {c.code}
                     </option>
@@ -310,9 +313,10 @@ function ContactFormPanel() {
                 </select>
                 <input
                   placeholder="Contact Number *"
+                  type="tel"
                   value={values.phone}
                   onChange={set("phone")}
-                  className="flex-1 bg-white/[0.05] px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none"
+                  className="flex-1 bg-white/[0.05] px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none w-full"
                 />
               </div>
               {errors.phone && (
@@ -323,7 +327,7 @@ function ContactFormPanel() {
             {/* Describe project */}
             <div className="mb-5">
               <textarea
-                placeholder="Describe your project  (Help us come back better prepared)"
+                placeholder="Describe your project (Help us come back better prepared)"
                 value={values.message}
                 onChange={set("message")}
                 rows={4}
@@ -366,7 +370,7 @@ function ContactFormPanel() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="text-center py-16"
+            className="text-center py-12 md:py-16"
           >
             <div className="w-16 h-16 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center mx-auto mb-5">
               <CheckCircle className="h-8 w-8 text-violet-400" />
@@ -374,7 +378,7 @@ function ContactFormPanel() {
             <h3 className="text-xl font-bold text-white mb-2">
               Message Received!
             </h3>
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-white/50 px-4">
               We'll reach out within 2 minutes with technical insights and next
               steps.
             </p>
@@ -386,13 +390,10 @@ function ContactFormPanel() {
 }
 
 // ─── Root Component ───────────────────────────────────────────────────────────
-// ─── Root Component ───────────────────────────────────────────────────────────
 export default function ContactForm() {
   return (
     <div
-      // CHANGED: Replaced lg:grid-cols-2 with lg:grid-cols-[60%_40%]
-      // You can adjust these percentages (e.g., [65%_35%] or [55%_45%]) to your liking.
-      className="w-full grid grid-cols-1 lg:grid-cols-[60%_40%] gap-0 rounded-2xl overflow-hidden bg-black"
+      className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[60%_40%] gap-0 rounded-2xl overflow-hidden bg-black"
       style={{
         boxShadow:
           "0 0 0 1px rgba(255,255,255,0.1), 0 32px 80px rgba(0,0,0,0.6)",
@@ -405,10 +406,8 @@ export default function ContactForm() {
 
       {/* Right – Form */}
       <div
-        className="relative p-8 lg:p-12 bg-black"
-        style={{
-          borderLeft: "1px solid rgba(255,255,255,0.1)",
-        }}
+        // RESPONSIVE: Tailwind borders handle stack vs side-by-side gracefully
+        className="relative p-6 sm:p-8 lg:p-12 bg-black border-t lg:border-t-0 lg:border-l border-white/10"
       >
         {/* Ambient glow */}
         <div

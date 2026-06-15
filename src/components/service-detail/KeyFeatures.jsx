@@ -20,7 +20,6 @@ import {
   Cpu,
 } from "lucide-react";
 
-// Zero-layout-shift fonts
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "900"],
@@ -61,26 +60,35 @@ function getIcon(featureName = "") {
   return match ? match.Icon : Star;
 }
 
+// Desktop bento sizing — only used on md+
 const SIZE_PATTERN = [
-  "col-span-2 row-span-1",
-  "col-span-1 row-span-2",
-  "col-span-1 row-span-1",
-  "col-span-1 row-span-1",
-  "col-span-2 row-span-1",
-  "col-span-1 row-span-2",
-  "col-span-1 row-span-1",
-  "col-span-1 row-span-2",
-  "col-span-1 row-span-2",
+  "md:col-span-2 md:row-span-1",
+  "md:col-span-1 md:row-span-2",
+  "md:col-span-1 md:row-span-1",
+  "md:col-span-1 md:row-span-1",
+  "md:col-span-2 md:row-span-1",
+  "md:col-span-1 md:row-span-2",
+  "md:col-span-1 md:row-span-1",
+  "md:col-span-1 md:row-span-2",
+  "md:col-span-1 md:row-span-2",
 ];
 
-// OPTIMIZATION: Extracted card component prevents the whole grid from re-rendering on hover
-const FeatureCard = memo(function FeatureCard({ data }) {
+const FeatureCard = memo(function FeatureCard({ data, isMobile }) {
   const [isHovered, setIsHovered] = useState(false);
   const { feature, Icon, desc, sizeClass, isWide, isTall, index } = data;
 
+  // On mobile every card is flat row layout — no tall/wide bento logic
+  const showDesc = isMobile ? true : isTall || isWide || isHovered;
+  const flexDir = isMobile
+    ? "flex-row items-center gap-4"
+    : isTall
+      ? "flex-col justify-between"
+      : "flex-row items-center gap-5";
+  const minH = isMobile ? "auto" : isTall ? "220px" : "100px";
+
   return (
     <motion.div
-      className={`relative overflow-hidden rounded-2xl cursor-default group ${sizeClass}`}
+      className={`relative overflow-hidden rounded-2xl cursor-default group ${isMobile ? "col-span-1" : sizeClass}`}
       style={{
         background: isHovered
           ? "linear-gradient(135deg, #0f1829 0%, #111c35 100%)"
@@ -88,7 +96,7 @@ const FeatureCard = memo(function FeatureCard({ data }) {
         border: isHovered
           ? "1px solid rgba(59,130,246,0.18)"
           : "1px solid rgba(255,255,255,0.08)",
-        minHeight: isTall ? "220px" : "100px",
+        minHeight: minH,
         transition: "background 0.35s ease, border-color 0.35s ease",
       }}
       onHoverStart={() => setIsHovered(true)}
@@ -124,16 +132,10 @@ const FeatureCard = memo(function FeatureCard({ data }) {
       )}
 
       {/* Card content */}
-      <div
-        className={`relative z-10 flex h-full ${
-          isTall ? "flex-col justify-between" : "flex-row items-center gap-5"
-        } p-5`}
-      >
+      <div className={`relative z-10 flex h-full ${flexDir} p-4 md:p-5`}>
         {/* Icon + title group */}
         <div
-          className={`flex ${
-            isTall ? "flex-col gap-4" : "flex-row items-center gap-4"
-          } flex-1 min-w-0`}
+          className={`flex ${isTall && !isMobile ? "flex-col gap-4" : "flex-row items-center gap-3 md:gap-4"} flex-1 min-w-0`}
         >
           {/* Icon box */}
           <motion.div
@@ -144,11 +146,11 @@ const FeatureCard = memo(function FeatureCard({ data }) {
                 : "rgba(255,255,255,0.05)",
             }}
             transition={{ duration: 0.3 }}
-            className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center"
+            className="flex-shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-xl flex items-center justify-center"
           >
             <Icon
               strokeWidth={1.8}
-              className="w-5 h-5 transition-colors duration-300"
+              className="w-4 h-4 md:w-5 md:h-5 transition-colors duration-300"
               style={{
                 color: isHovered ? "#60a5fa" : "rgba(255,255,255,0.35)",
               }}
@@ -160,20 +162,23 @@ const FeatureCard = memo(function FeatureCard({ data }) {
             <h3
               className="font-bold leading-tight transition-colors duration-300"
               style={{
-                fontSize: isTall || isWide ? "1.15rem" : "1.05rem",
+                fontSize: isMobile
+                  ? "0.95rem"
+                  : isTall || isWide
+                    ? "1.15rem"
+                    : "1.05rem",
                 color: isHovered ? "#ffffff" : "rgba(255,255,255,0.65)",
               }}
             >
               {feature}
             </h3>
 
-            {/* Description — shown only on tall/wide or hovered */}
-            {desc && (isTall || isWide || isHovered) && (
+            {desc && showDesc && (
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className="text-white/45 text-sm leading-relaxed mt-2"
+                className="text-white/45 text-xs md:text-sm leading-relaxed mt-1.5"
                 style={{ maxWidth: "36ch" }}
               >
                 {desc}
@@ -182,13 +187,10 @@ const FeatureCard = memo(function FeatureCard({ data }) {
           </div>
         </div>
 
-        {/* Arrow indicator — tall cards only */}
-        {isTall && (
+        {/* Arrow — tall cards only, desktop only */}
+        {isTall && !isMobile && (
           <motion.div
-            animate={{
-              x: isHovered ? 4 : 0,
-              opacity: isHovered ? 1 : 0.3,
-            }}
+            animate={{ x: isHovered ? 4 : 0, opacity: isHovered ? 1 : 0.3 }}
             transition={{ duration: 0.25 }}
             className="flex-shrink-0 w-8 h-8 rounded-full border border-white/10 flex items-center justify-center self-end"
             style={{
@@ -214,7 +216,7 @@ const FeatureCard = memo(function FeatureCard({ data }) {
         )}
       </div>
 
-      {/* Bottom accent line on hover */}
+      {/* Bottom accent line */}
       <motion.div
         className="absolute bottom-0 left-0 h-[2px] bg-blue-500 rounded-full"
         animate={{ width: isHovered ? "100%" : "0%" }}
@@ -228,7 +230,17 @@ export default function KeyFeatures({
   features = [],
   featureDescriptions = [],
 }) {
-  // OPTIMIZATION: Parse grid sizing and icon mapping only once on mount
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect breakpoint — md = 768px
+  useState(() => {
+    if (typeof window === "undefined") return;
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  });
+
   const processedFeatures = useMemo(() => {
     return features.map((feature, i) => {
       const sizeClass = SIZE_PATTERN[i % SIZE_PATTERN.length];
@@ -247,12 +259,14 @@ export default function KeyFeatures({
   if (!features.length) return null;
 
   return (
-    <div className={`w-full max-w-7xl mx-auto py-10 ${dmSans.className}`}>
-      {/* ── Section Header ── */}
+    <div
+      className={`w-full max-w-7xl mx-auto py-10 px-4 md:px-0 ${dmSans.className}`}
+    >
+      {/* Section Header */}
       <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
         <div>
           <h2
-            className={`text-5xl md:text-6xl font-black text-white leading-[1.1] tracking-tight ${dmSerif.className}`}
+            className={`text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight ${dmSerif.className}`}
           >
             Key Features
             <span className="text-blue-900"> ...</span>
@@ -264,13 +278,39 @@ export default function KeyFeatures({
         </p>
       </div>
 
-      {/* ── Bento Grid ── */}
+      {/* Mobile grid — 1 col, flat cards */}
+      <div className="grid grid-cols-1 gap-[7px] md:hidden">
+        {processedFeatures.map((data) => (
+          <FeatureCard key={data.index} data={data} isMobile={true} />
+        ))}
+      </div>
+
+      {/* Tablet grid — 2 cols, no bento */}
       <div
-        className="grid gap-[7px]"
+        className="hidden md:grid lg:hidden gap-[7px]"
+        style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
+      >
+        {processedFeatures.map((data) => (
+          <FeatureCard
+            key={data.index}
+            data={{
+              ...data,
+              sizeClass: "col-span-1",
+              isWide: false,
+              isTall: false,
+            }}
+            isMobile={false}
+          />
+        ))}
+      </div>
+
+      {/* Desktop bento grid — 3 cols with size pattern */}
+      <div
+        className="hidden lg:grid gap-[7px]"
         style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
       >
         {processedFeatures.map((data) => (
-          <FeatureCard key={data.index} data={data} />
+          <FeatureCard key={data.index} data={data} isMobile={false} />
         ))}
       </div>
     </div>

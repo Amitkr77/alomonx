@@ -31,9 +31,7 @@ const FullOverview = dynamic(
   () => import("@/components/globalComponents/FullOverview"),
 );
 const Solutions = dynamic(() => import("@/components/industries/Solutions"));
-const Technologies = dynamic(
-  () => import("@/components/globalComponents/Technologies"),
-);
+const TechCapabilities = dynamic(() => import("@/components/TechCapabilities"));
 const KeyBenefits = dynamic(
   () => import("@/components/industries/KeyBenefits"),
 );
@@ -116,12 +114,13 @@ export default async function IndustryDetailPage({ params }) {
       {/* Solutions */}
       <Solutions solutions={details.solutions} label={label} meta={meta} />
 
-      <Divider />
-
-      {/* Technologies */}
-      <Technologies technologies={details.technologies} meta={meta} />
-
-      <Divider />
+      {details.technologies?.length > 0 && (
+        <>
+          <Divider />
+          <TechCapabilities technologies={details.technologies} />
+          <Divider />
+        </>
+      )}
 
       <KeyBenefits benefits={details.benefits} meta={meta} />
       <UseCases useCases={details.useCases} meta={meta} />

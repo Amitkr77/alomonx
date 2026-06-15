@@ -12,8 +12,8 @@ import BusinessChallenges from "@/components/ai-services/BusinessChallenges";
 import Solutions from "@/components/ai-services/Solutions";
 import KeyFeatures from "@/components/ai-services/KeyFeatures";
 import BusinessOutcomes from "@/components/ai-services/BusinessOutcomes";
-import Technologies from "@/components/globalComponents/Technologies";
 import UseCases from "@/components/ai-services/UseCases";
+import TechCapabilities from "@/components/TechCapabilities";
 
 // Lazy-loaded — split into separate chunks, fetched after critical content
 const EngineerFuture = dynamic(() => import("@/components/EngineerFuture"));
@@ -99,7 +99,7 @@ export default async function AiServiceDetailPage({ params }) {
       <BusinessOutcomes benefits={details.benefits} meta={meta} />
 
       <Divider />
-      <Technologies technologies={details.technologyStack} meta={meta} />
+      <TechCapabilities technologies={details.technologyStack} />
 
       <Divider />
       <UseCases useCases={details.useCases} meta={meta} />
