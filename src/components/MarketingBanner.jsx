@@ -111,7 +111,7 @@ const MarketingBanner = () => {
           PC ONLY LAYOUT (1024px+)
       ───────────────────────────────────────────── */}
       <section
-        className="hidden lg:block relative rounded-3xl mx-10 overflow-hidden"
+        className="hidden lg:block relative rounded-3xl mx-10 overflow-hidden px-7"
         style={{
           backgroundImage: "url('/marketing_logo.jpeg')",
           backgroundSize: "cover",
@@ -119,7 +119,7 @@ const MarketingBanner = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="relative z-10 flex flex-col justify-center h-full px-12 lg:px-15 max-w-[55%] py-7 pt-12">
+        <div className="relative z-10 flex flex-col justify-center h-full px-12 lg:px-0 max-w-[50%] py-7 pt-12">
           <div className="h-[22%] min-h-[90px]" />
           <h1
             className="text-4xl lg:text-[2.75rem] font-extrabold leading-tight text-gray-900 mb-4"
