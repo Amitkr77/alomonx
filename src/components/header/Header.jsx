@@ -39,6 +39,7 @@ function onMailLeave(e) {
 // ─── Nav item definitions — stable, defined once ──────────────
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
+  { name: "Alomonx Digital", href: "/digital" },
   { name: "Alomonx AI" },
   { name: "About", href: "/about" },
   { name: "Services" },
@@ -177,7 +178,7 @@ export default function Header() {
 
           {/* Desktop nav — lg and above */}
           <nav
-            className="hidden lg:flex items-center gap-6 xl:gap-8"
+            className="hidden lg:flex items-center gap-4 xl:gap-5"
             role="navigation"
             aria-label="Main navigation"
           >

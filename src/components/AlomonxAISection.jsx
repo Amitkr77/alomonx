@@ -109,7 +109,7 @@ export default function AlomonxAISection() {
             <div className="relative w-full h-full flex-grow rounded-2xl md:rounded-3xl overflow-hidden bg-[#111] border border-white/[0.08] shadow-2xl">
               <video
                 src="/ai_section_clip_5.mp4"
-                poster="/images/hero_2.jpeg"
+                poster="/hero_2.jpeg"
                 className="absolute inset-0 w-full h-full object-cover"
                 autoPlay
                 muted

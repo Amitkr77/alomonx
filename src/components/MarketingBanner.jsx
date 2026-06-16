@@ -113,14 +113,24 @@ const MarketingBanner = () => {
       <section
         className="hidden lg:block relative rounded-3xl mx-10 overflow-hidden px-7"
         style={{
-          backgroundImage: "url('/marketing_logo.jpeg')",
+          backgroundImage: "url('/marketing.jpeg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="relative z-10 flex flex-col justify-center h-full px-12 lg:px-0 max-w-[50%] py-7 pt-12">
-          <div className="h-[22%] min-h-[90px]" />
+        {/* Added 'items-start' to force everything to align perfectly to the left edge */}
+        <div className="relative z-10 flex flex-col justify-center items-start h-full px-12 lg:px-12 max-w-[50%] py-5 pt-6">
+          {/* Kept the reduced top spacer for smaller height */}
+          <div className="h-[12%] min-h-[46px]" />
+
+          {/* Added 'self-start' to lock the logo to the far left edge */}
+          <img
+            src="/alomonx.png"
+            alt="Brand Logo"
+            className="h-14 w-auto object-contain mb-3 self-start"
+          />
+
           <h1
             className="text-4xl lg:text-[2.75rem] font-extrabold leading-tight text-gray-900 mb-4"
             style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
@@ -128,11 +138,13 @@ const MarketingBanner = () => {
             Make Noise. <span className="text-[#0057B8]">Build Trust.</span>{" "}
             Grow Faster.
           </h1>
-          <p className="text-base text-gray-600 leading-relaxed max-w-md mb-8">
+
+          <p className="text-base text-gray-600 leading-relaxed max-w-md mb-6">
             Boost your online presence, generate quality leads, and scale your
             business with data-driven digital marketing strategies tailored for
             modern brands.
           </p>
+
           <div className="flex flex-wrap gap-3">
             <button
               className="group relative inline-flex items-center gap-2 bg-[#0057B8] hover:bg-[#0046A0] text-white font-semibold text-sm px-7 py-3.5 rounded-full shadow-md shadow-blue-200/60 transition-all duration-200 hover:shadow-lg hover:shadow-blue-300/60 active:scale-[0.97]"
@@ -154,7 +166,8 @@ const MarketingBanner = () => {
               </svg>
             </button>
           </div>
-          <div className="h-[8%] min-h-[32px]" />
+
+          <div className="h-[4%] min-h-[16px]" />
         </div>
       </section>
 

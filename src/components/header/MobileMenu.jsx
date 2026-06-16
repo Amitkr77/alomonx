@@ -13,6 +13,7 @@ import {
   Briefcase,
   Phone,
   ChevronDown,
+  Megaphone,
 } from "lucide-react";
 import {
   Sheet,
@@ -32,6 +33,11 @@ const mobileNavItems = [
     label: "Alomonx AI",
     icon: <Sparkles className="w-4 h-4" />,
     megaKey: "Alomonx AI",
+  },
+  {
+    href: "/digital",
+    label: "Alomonx Digital",
+    icon: <Megaphone className="w-4 h-4" />,
   },
   { href: "/about", label: "About", icon: <Info className="w-4 h-4" /> },
   {
