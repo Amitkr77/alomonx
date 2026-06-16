@@ -821,7 +821,7 @@ Our education technology solutions help institutions improve student engagement,
 
   {
     slug: "politics",
-    label: "Political & Election Campaign",
+    label: "Political Campaign",
     href: "/industries/politics",
     category: "Core Sectors",
     icon: "Vote",
@@ -1843,7 +1843,7 @@ Our education technology solutions help institutions improve student engagement,
   },
   {
     slug: "social-media",
-    label: "Social Media & Digital Marketing",
+    label: "Social Media",
     href: "/industries/social-media",
     category: "Consumer & Lifestyle",
     icon: "Megaphone",
@@ -1852,7 +1852,7 @@ Our education technology solutions help institutions improve student engagement,
     description:
       "Technology Solutions for Social Media Growth, Digital Marketing Automation & Audience Engagement.",
     details: {
-      heroTag: "Social Media & Digital Marketing Solutions",
+      heroTag: "Social Media Solutions",
       heroTitle: "Helping Brands Grow Through Digital Innovation",
       overview:
         "Alomonx Technology helps marketing agencies, influencers, content creators, startups, brands, and enterprises build powerful digital ecosystems that enhance audience engagement, streamline marketing operations, and drive measurable business growth.",

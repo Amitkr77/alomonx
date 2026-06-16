@@ -1,13 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
-import ContactForm from "@/components/ContactForm";
+import React from "react";
 
 const MarketingBanner = () => {
-  const [isContactOpen, setIsContactOpen] = useState(false);
-
   return (
     <>
       {/* ─────────────────────────────────────────────
@@ -36,9 +31,9 @@ const MarketingBanner = () => {
             modern brands.
           </p>
 
-          <button
+          <a
+            href="/digital"
             className="group relative inline-flex justify-center items-center gap-2 bg-[#0057B8] hover:bg-[#0046A0] text-white font-semibold text-sm px-8 py-3 rounded-full shadow-md shadow-blue-200/60 transition-all duration-200 hover:shadow-lg hover:shadow-blue-300/60 active:scale-[0.97] w-full mb-3"
-            onClick={() => setIsContactOpen(true)}
           >
             Grow Your Brand
             <svg
@@ -54,7 +49,7 @@ const MarketingBanner = () => {
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </button>
+          </a>
         </div>
       </div>
 
@@ -85,9 +80,9 @@ const MarketingBanner = () => {
             modern brands.
           </p>
 
-          <button
+          <a
+            href="/digital"
             className="group relative inline-flex justify-center items-center gap-2 bg-[#0057B8] hover:bg-[#0046A0] text-white font-semibold text-base px-10 py-3.5 rounded-full shadow-md shadow-blue-200/60 transition-all duration-200 hover:shadow-lg hover:shadow-blue-300/60 active:scale-[0.97] w-full mb-4"
-            onClick={() => setIsContactOpen(true)}
           >
             Grow Your Brand
             <svg
@@ -103,7 +98,7 @@ const MarketingBanner = () => {
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </button>
+          </a>
         </div>
       </div>
 
@@ -119,16 +114,13 @@ const MarketingBanner = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Added 'items-start' to force everything to align perfectly to the left edge */}
-        <div className="relative z-10 flex flex-col justify-center items-start h-full px-12 lg:px-12 max-w-[50%] py-5 pt-6">
-          {/* Kept the reduced top spacer for smaller height */}
+        <div className="relative z-10 flex flex-col justify-center items-start h-full px-12 lg:px-12 max-w-[50%] py-3 pt-3">
           <div className="h-[12%] min-h-[46px]" />
 
-          {/* Added 'self-start' to lock the logo to the far left edge */}
           <img
-            src="/alomonx.png"
+            src="/alomonx_digital.png"
             alt="Brand Logo"
-            className="h-14 w-auto object-contain mb-3 self-start"
+            className="h-16 w-auto object-contain mb-3 self-start"
           />
 
           <h1
@@ -146,9 +138,9 @@ const MarketingBanner = () => {
           </p>
 
           <div className="flex flex-wrap gap-3">
-            <button
+            <a
+              href="/digital"
               className="group relative inline-flex items-center gap-2 bg-[#0057B8] hover:bg-[#0046A0] text-white font-semibold text-sm px-7 py-3.5 rounded-full shadow-md shadow-blue-200/60 transition-all duration-200 hover:shadow-lg hover:shadow-blue-300/60 active:scale-[0.97]"
-              onClick={() => setIsContactOpen(true)}
             >
               Grow Your Brand
               <svg
@@ -164,43 +156,12 @@ const MarketingBanner = () => {
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </button>
+            </a>
           </div>
 
           <div className="h-[4%] min-h-[16px]" />
         </div>
       </section>
-
-      {/* ─────────────────────────────────────────────
-          Modal Overlay for Contact Form
-      ───────────────────────────────────────────── */}
-      <AnimatePresence>
-        {isContactOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm"
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="relative w-full max-w-6xl max-h-[95vh] overflow-y-auto custom-scrollbar rounded-2xl shadow-2xl"
-            >
-              <button
-                onClick={() => setIsContactOpen(false)}
-                className="absolute top-4 right-4 z-50 p-2 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full text-white transition-colors"
-                aria-label="Close Contact Form"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <ContactForm />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 };
