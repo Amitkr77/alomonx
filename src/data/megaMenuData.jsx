@@ -1,4 +1,4 @@
-import { Info, Cpu, Settings2, Palette, Share2, Code2 } from "lucide-react";
+import { Info, Cpu, Settings2, Palette, Share2, Code2, User } from "lucide-react";
 
 import { portfolioData } from "@/lib/portfolio_data";
 import { allAiServices } from "@/lib/ai-services-data";
@@ -11,6 +11,7 @@ const SERVICE_COLUMN_ICONS = {
   "Custom Software": <Settings2 className="w-4 h-4" />,
   "UI/UX Design": <Palette className="w-4 h-4" />,
   SharePoint: <Share2 className="w-4 h-4" />,
+  "IT Services": <User className="w-4 h-4" />,
 };
 
 // ── Icon map for Industries column headings ───────────────────

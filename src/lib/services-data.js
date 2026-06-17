@@ -4444,6 +4444,264 @@ From administration and troubleshooting to security management, upgrades, govern
       },
     },
   },
+
+  {
+    label: "IT Outsourcing Services",
+    href: "/services/it-outsourcing-services",
+    slug: "it-outsourcing-services",
+    category: "IT Services",
+    image:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+
+    icon: "Users",
+
+    details: {
+      heroTag: "IT Outsourcing Services",
+
+      heroTitle: "Build, Scale & Innovate with Expert IT Outsourcing",
+
+      heroSubtitle:
+        "Reduce Costs, Access Skilled Technology Professionals & Accelerate Digital Transformation",
+
+      overview:
+        "Alomonx Technology helps businesses reduce costs, access skilled technology professionals, and accelerate digital transformation through flexible IT outsourcing solutions.",
+
+      fullOverview: `
+Alomonx Technology provides reliable and scalable IT outsourcing services for startups, SMEs, enterprises, and government organizations. From dedicated developers to complete project delivery, we help businesses achieve their technology goals efficiently and affordably.
+
+Whether you need a dedicated development team, technical support specialists, software engineers, QA professionals, or complete end-to-end project execution, our outsourcing solutions are designed to deliver quality, flexibility, and long-term value.
+
+We combine technical expertise, agile methodologies, transparent communication, and strong security practices to ensure successful project delivery and business growth.
+`,
+
+      features: [
+        "Dedicated Development Teams",
+        "Software & Application Development",
+        "IT Technical Support",
+        "Project-Based Outsourcing",
+        "Resource Augmentation",
+        "Quality Assurance Services",
+        "Cloud & Infrastructure Support",
+        "DevOps & Automation",
+        "Maintenance & Support",
+        "Business Process Optimization",
+        "Technology Consulting",
+        "Digital Transformation Support",
+      ],
+
+      featureDescriptions: [
+        "Hire dedicated developers, designers, QA engineers, and project managers who work as an extension of your team.",
+        "Custom web applications, mobile apps, enterprise software, SaaS platforms, and API integrations.",
+        "24/7 helpdesk support, issue resolution, infrastructure monitoring, and technical assistance.",
+        "Complete end-to-end project delivery managed by experienced technology professionals.",
+        "Quickly scale your workforce with specialized talent based on project requirements.",
+        "Comprehensive software testing, quality assurance, and performance validation.",
+        "Cloud management, infrastructure optimization, and operational support services.",
+        "CI/CD implementation, deployment automation, and operational efficiency improvements.",
+        "Ongoing updates, monitoring, maintenance, and technical support services.",
+        "Optimize business workflows and operational processes through technology solutions.",
+        "Strategic technology guidance, planning, and implementation support.",
+        "Accelerate modernization initiatives and digital transformation programs.",
+      ],
+
+      technologies: [
+        "Java",
+        ".NET",
+        "Python",
+        "Node.js",
+        "React",
+        "Angular",
+        "Flutter",
+        "Spring Boot",
+        "AWS",
+        "Microsoft Azure",
+        "Google Cloud Platform",
+        "Docker",
+        "Kubernetes",
+        "Power Platform",
+        "Power Apps",
+        "Power Automate",
+        "SharePoint",
+        "SQL Server",
+        "PostgreSQL",
+        "MySQL",
+        "REST APIs",
+        "Microservices",
+        "AI/ML",
+        "Generative AI",
+      ],
+
+      process: [
+        {
+          title: "Discovery",
+          description:
+            "Understanding business objectives, project scope, resource requirements, and technology needs.",
+        },
+        {
+          title: "Planning",
+          description:
+            "Defining engagement models, timelines, team structure, and delivery strategy.",
+        },
+        {
+          title: "Team Allocation",
+          description:
+            "Assigning skilled professionals with the required expertise and experience.",
+        },
+        {
+          title: "Development & Execution",
+          description:
+            "Agile development, collaboration, implementation, and continuous progress tracking.",
+        },
+        {
+          title: "Quality Assurance",
+          description:
+            "Testing, validation, security reviews, and performance optimization.",
+        },
+        {
+          title: "Deployment",
+          description:
+            "Production deployment, infrastructure setup, and go-live support.",
+        },
+        {
+          title: "Ongoing Support",
+          description:
+            "Continuous maintenance, monitoring, enhancements, and technical support.",
+        },
+      ],
+
+      benefits: [
+        "Reduced operational and hiring costs",
+        "Access to specialized technology professionals",
+        "Faster project delivery and time-to-market",
+        "Flexible team scaling based on business needs",
+        "Improved operational efficiency",
+        "Focus on core business objectives",
+        "Reduced technology management burden",
+        "Higher productivity and resource utilization",
+      ],
+
+      whyChooseUs: [
+        {
+          title: "Experienced Technology Professionals",
+          description:
+            "Skilled engineers, developers, architects, and consultants delivering high-quality solutions.",
+          image:
+            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Flexible Hiring Models",
+          description:
+            "Choose dedicated teams, fixed-price projects, time & material, or project-based outsourcing.",
+          image:
+            "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Cost Optimization",
+          description:
+            "Reduce recruitment, infrastructure, training, and operational expenses.",
+          image:
+            "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Agile Development Approach",
+          description:
+            "Efficient collaboration, faster delivery cycles, and continuous improvement.",
+          image:
+            "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Strong Security Practices",
+          description:
+            "Secure development processes, data protection, and compliance-focused operations.",
+          image:
+            "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Transparent Communication",
+          description:
+            "Regular updates, clear reporting, and complete project visibility.",
+          image:
+            "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Fast Project Delivery",
+          description:
+            "Optimized processes and experienced teams ensure timely project completion.",
+          image:
+            "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Long-Term Partnership Focus",
+          description:
+            "Building lasting relationships through reliable support and continuous improvement.",
+          image:
+            "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+        },
+      ],
+
+      faqs: [
+        {
+          question: "What is IT outsourcing?",
+          answer:
+            "IT outsourcing is the practice of delegating technology tasks, teams, or projects to an external technology partner to improve efficiency and reduce costs.",
+        },
+        {
+          question: "Do you provide dedicated developers?",
+          answer:
+            "Yes. We provide dedicated developers, QA engineers, designers, project managers, and complete technology teams.",
+        },
+        {
+          question: "Which engagement model is best?",
+          answer:
+            "The ideal model depends on your project scope, budget, timeline, and business requirements.",
+        },
+        {
+          question: "Do you support global clients?",
+          answer:
+            "Yes. We provide IT outsourcing services to businesses and organizations worldwide.",
+        },
+        {
+          question: "Do you provide post-launch support?",
+          answer:
+            "Yes. We offer ongoing maintenance, technical support, monitoring, and continuous improvements.",
+        },
+        {
+          question: "Can I scale the team later?",
+          answer:
+            "Absolutely. Our engagement models are flexible and allow you to scale resources as your project grows.",
+        },
+        {
+          question: "What industries do you serve?",
+          answer:
+            "We serve healthcare, finance, retail, manufacturing, education, logistics, government, startups, and SaaS businesses.",
+        },
+        {
+          question: "Do you offer technical support services?",
+          answer:
+            "Yes. We provide 24/7 technical support, helpdesk services, infrastructure monitoring, and issue resolution.",
+        },
+        {
+          question: "How do you ensure security?",
+          answer:
+            "We follow strict security standards, access controls, secure development practices, and confidentiality agreements.",
+        },
+        {
+          question: "Why choose Alomonx Technology for IT outsourcing?",
+          answer:
+            "We combine technical expertise, flexible engagement models, transparent communication, cost efficiency, and long-term partnership commitment to deliver measurable business value.",
+        },
+      ],
+
+      cta: {
+        title: "Ready to Scale Your Technology Team?",
+        description:
+          "Partner with Alomonx Technology for reliable, cost-effective, and future-ready IT outsourcing services. Whether you need dedicated developers, complete project teams, or ongoing technical support, we are ready to help.",
+        buttonText: "Get a Free Consultation Today",
+        footer:
+          "Let's build, scale, and innovate together with flexible IT outsourcing solutions that accelerate growth and digital transformation.",
+      },
+    },
+  },
 ];
 
 export const categoryMeta = {
