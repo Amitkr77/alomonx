@@ -786,6 +786,524 @@ From strategy and design through deployment and ongoing support, we provide end-
       },
     },
   },
+
+  {
+    label: "IT Outsourcing Services",
+    href: "/services/it-outsourcing-services",
+    slug: "it-outsourcing-services",
+    category: "IT Management",
+    image:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+
+    icon: "Users",
+
+    details: {
+      heroTag: "IT Outsourcing Services",
+
+      heroTitle: "Build, Scale & Innovate with Expert IT Outsourcing",
+
+      heroSubtitle:
+        "Reduce Costs, Access Skilled Technology Professionals & Accelerate Digital Transformation",
+
+      overview:
+        "Alomonx Technology helps businesses reduce costs, access skilled technology professionals, and accelerate digital transformation through flexible IT outsourcing solutions.",
+
+      fullOverview: `
+Alomonx Technology provides reliable and scalable IT outsourcing services for startups, SMEs, enterprises, and government organizations. From dedicated developers to complete project delivery, we help businesses achieve their technology goals efficiently and affordably.
+
+Whether you need a dedicated development team, technical support specialists, software engineers, QA professionals, or complete end-to-end project execution, our outsourcing solutions are designed to deliver quality, flexibility, and long-term value.
+
+We combine technical expertise, agile methodologies, transparent communication, and strong security practices to ensure successful project delivery and business growth.
+`,
+
+      features: [
+        "Dedicated Development Teams",
+        "Software & Application Development",
+        "IT Technical Support",
+        "Project-Based Outsourcing",
+        "Resource Augmentation",
+        "Quality Assurance Services",
+        "Cloud & Infrastructure Support",
+        "DevOps & Automation",
+        "Maintenance & Support",
+        "Business Process Optimization",
+        "Technology Consulting",
+        "Digital Transformation Support",
+      ],
+
+      featureDescriptions: [
+        "Hire dedicated developers, designers, QA engineers, and project managers who work as an extension of your team.",
+        "Custom web applications, mobile apps, enterprise software, SaaS platforms, and API integrations.",
+        "24/7 helpdesk support, issue resolution, infrastructure monitoring, and technical assistance.",
+        "Complete end-to-end project delivery managed by experienced technology professionals.",
+        "Quickly scale your workforce with specialized talent based on project requirements.",
+        "Comprehensive software testing, quality assurance, and performance validation.",
+        "Cloud management, infrastructure optimization, and operational support services.",
+        "CI/CD implementation, deployment automation, and operational efficiency improvements.",
+        "Ongoing updates, monitoring, maintenance, and technical support services.",
+        "Optimize business workflows and operational processes through technology solutions.",
+        "Strategic technology guidance, planning, and implementation support.",
+        "Accelerate modernization initiatives and digital transformation programs.",
+      ],
+
+      technologies: [
+        "Java",
+        ".NET",
+        "Python",
+        "Node.js",
+        "React",
+        "Angular",
+        "Flutter",
+        "Spring Boot",
+        "AWS",
+        "Microsoft Azure",
+        "Google Cloud Platform",
+        "Docker",
+        "Kubernetes",
+        "Power Platform",
+        "Power Apps",
+        "Power Automate",
+        "SharePoint",
+        "SQL Server",
+        "PostgreSQL",
+        "MySQL",
+        "REST APIs",
+        "Microservices",
+        "AI/ML",
+        "Generative AI",
+      ],
+
+      process: [
+        {
+          title: "Discovery",
+          description:
+            "Understanding business objectives, project scope, resource requirements, and technology needs.",
+        },
+        {
+          title: "Planning",
+          description:
+            "Defining engagement models, timelines, team structure, and delivery strategy.",
+        },
+        {
+          title: "Team Allocation",
+          description:
+            "Assigning skilled professionals with the required expertise and experience.",
+        },
+        {
+          title: "Development & Execution",
+          description:
+            "Agile development, collaboration, implementation, and continuous progress tracking.",
+        },
+        {
+          title: "Quality Assurance",
+          description:
+            "Testing, validation, security reviews, and performance optimization.",
+        },
+        {
+          title: "Deployment",
+          description:
+            "Production deployment, infrastructure setup, and go-live support.",
+        },
+        {
+          title: "Ongoing Support",
+          description:
+            "Continuous maintenance, monitoring, enhancements, and technical support.",
+        },
+      ],
+
+      benefits: [
+        "Reduced operational and hiring costs",
+        "Access to specialized technology professionals",
+        "Faster project delivery and time-to-market",
+        "Flexible team scaling based on business needs",
+        "Improved operational efficiency",
+        "Focus on core business objectives",
+        "Reduced technology management burden",
+        "Higher productivity and resource utilization",
+      ],
+
+      whyChooseUs: [
+        {
+          title: "Experienced Technology Professionals",
+          description:
+            "Skilled engineers, developers, architects, and consultants delivering high-quality solutions.",
+          image:
+            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Flexible Hiring Models",
+          description:
+            "Choose dedicated teams, fixed-price projects, time & material, or project-based outsourcing.",
+          image:
+            "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Cost Optimization",
+          description:
+            "Reduce recruitment, infrastructure, training, and operational expenses.",
+          image:
+            "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Agile Development Approach",
+          description:
+            "Efficient collaboration, faster delivery cycles, and continuous improvement.",
+          image:
+            "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Strong Security Practices",
+          description:
+            "Secure development processes, data protection, and compliance-focused operations.",
+          image:
+            "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Transparent Communication",
+          description:
+            "Regular updates, clear reporting, and complete project visibility.",
+          image:
+            "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Fast Project Delivery",
+          description:
+            "Optimized processes and experienced teams ensure timely project completion.",
+          image:
+            "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Long-Term Partnership Focus",
+          description:
+            "Building lasting relationships through reliable support and continuous improvement.",
+          image:
+            "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+        },
+      ],
+
+      faqs: [
+        {
+          question: "What is IT outsourcing?",
+          answer:
+            "IT outsourcing is the practice of delegating technology tasks, teams, or projects to an external technology partner to improve efficiency and reduce costs.",
+        },
+        {
+          question: "Do you provide dedicated developers?",
+          answer:
+            "Yes. We provide dedicated developers, QA engineers, designers, project managers, and complete technology teams.",
+        },
+        {
+          question: "Which engagement model is best?",
+          answer:
+            "The ideal model depends on your project scope, budget, timeline, and business requirements.",
+        },
+        {
+          question: "Do you support global clients?",
+          answer:
+            "Yes. We provide IT outsourcing services to businesses and organizations worldwide.",
+        },
+        {
+          question: "Do you provide post-launch support?",
+          answer:
+            "Yes. We offer ongoing maintenance, technical support, monitoring, and continuous improvements.",
+        },
+        {
+          question: "Can I scale the team later?",
+          answer:
+            "Absolutely. Our engagement models are flexible and allow you to scale resources as your project grows.",
+        },
+        {
+          question: "What industries do you serve?",
+          answer:
+            "We serve healthcare, finance, retail, manufacturing, education, logistics, government, startups, and SaaS businesses.",
+        },
+        {
+          question: "Do you offer technical support services?",
+          answer:
+            "Yes. We provide 24/7 technical support, helpdesk services, infrastructure monitoring, and issue resolution.",
+        },
+        {
+          question: "How do you ensure security?",
+          answer:
+            "We follow strict security standards, access controls, secure development practices, and confidentiality agreements.",
+        },
+        {
+          question: "Why choose Alomonx Technology for IT outsourcing?",
+          answer:
+            "We combine technical expertise, flexible engagement models, transparent communication, cost efficiency, and long-term partnership commitment to deliver measurable business value.",
+        },
+      ],
+
+      cta: {
+        title: "Ready to Scale Your Technology Team?",
+        description:
+          "Partner with Alomonx Technology for reliable, cost-effective, and future-ready IT outsourcing services. Whether you need dedicated developers, complete project teams, or ongoing technical support, we are ready to help.",
+        buttonText: "Get a Free Consultation Today",
+        footer:
+          "Let's build, scale, and innovate together with flexible IT outsourcing solutions that accelerate growth and digital transformation.",
+      },
+    },
+  },
+
+  {
+    label: "Custom SharePoint Site Development",
+    href: "/services/sharepoint-site-development",
+    slug: "sharepoint-site-development",
+    category: "SharePoint",
+    image:
+      "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781342909/Gemini_Generated_Image_gj58m2gj58m2gj58_awhc26.png",
+
+    icon: "Share2",
+
+    details: {
+      heroTag: "Custom SharePoint Site Development Services",
+
+      heroTitle: "Build a Smarter Digital Workplace with SharePoint",
+
+      heroSubtitle:
+        "Custom SharePoint Solutions for Collaboration, Document Management & Business Process Automation",
+
+      overview:
+        "Alomonx Technology develops secure, scalable, and user-friendly SharePoint solutions that improve collaboration, streamline document management, automate workflows, and centralize business information.",
+
+      fullOverview: `
+Modern organizations need efficient collaboration platforms to share information, manage documents, automate workflows, and work seamlessly across departments and locations.
+
+At Alomonx Technology, we specialize in Custom SharePoint Development that helps organizations build intelligent digital workplaces — improving productivity, simplifying knowledge management, and enhancing internal communication.
+
+Whether you need a corporate intranet, document management system, employee portal, project hub, or workflow automation platform, we deliver tailored SharePoint solutions built around your unique business requirements.
+
+By integrating SharePoint with Microsoft 365 — Teams, Outlook, Power BI, OneDrive, and Power Automate — we create connected digital ecosystems that drive collaboration and operational efficiency.
+`,
+
+      features: [
+        "SharePoint Intranet Development",
+        "Document Management Systems",
+        "Workflow Automation",
+        "Team Collaboration Portals",
+        "Custom SharePoint Solutions",
+        "Microsoft 365 Integration",
+        "Knowledge Management Systems",
+        "Custom Forms & Applications",
+        "Role-Based Access Control",
+        "Advanced Search Functionality",
+        "Reporting & Dashboards",
+        "Secure Cloud Deployment",
+      ],
+
+      featureDescriptions: [
+        "Create modern intranet portals for employee communication, company announcements, policies, and collaboration.",
+        "Organize, store, manage, and securely share business documents across departments and teams.",
+        "Automate approvals, notifications, requests, and business workflows using SharePoint and Power Automate.",
+        "Enable seamless collaboration through project sites, shared workspaces, and communication hubs.",
+        "Develop customized SharePoint applications, dashboards, workflows, and business-specific solutions.",
+        "Integrate SharePoint with Microsoft Teams, Outlook, OneDrive, Power BI, and other Microsoft 365 services.",
+        "Centralize organizational knowledge, resources, documentation, and best practices for easy access.",
+        "Build custom forms, employee self-service portals, request systems, and business applications.",
+        "Protect sensitive business information with permission-based access and security controls.",
+        "Enable powerful search capabilities to quickly locate documents, records, and business information.",
+        "Provide real-time insights through dashboards, reports, KPIs, and business intelligence tools.",
+        "Deploy secure cloud-based SharePoint environments with enterprise-grade reliability and scalability.",
+      ],
+
+      technologies: [
+        "Microsoft SharePoint Online",
+        "Microsoft SharePoint Server",
+        "Microsoft 365",
+        "Power Automate",
+        "Power Apps",
+        "Power BI",
+        "Microsoft Teams",
+        "OneDrive",
+        "Microsoft Graph API",
+        "Azure Active Directory",
+        "Azure Logic Apps",
+        "C#",
+        ".NET",
+        "ASP.NET",
+        "React.js",
+        "SPFx (SharePoint Framework)",
+        "TypeScript",
+        "JavaScript",
+        "SQL Server",
+        "Azure Cloud",
+      ],
+
+      process: [
+        {
+          title: "Requirement Analysis",
+          description:
+            "Understanding business goals, collaboration challenges, document management requirements, and workflow needs.",
+        },
+        {
+          title: "Planning & Architecture",
+          description:
+            "Designing SharePoint site structures, permissions, workflows, governance, and implementation strategy.",
+        },
+        {
+          title: "UI/UX Design",
+          description:
+            "Creating intuitive SharePoint experiences optimized for employee productivity and usability.",
+        },
+        {
+          title: "Development & Customization",
+          description:
+            "Building custom SharePoint sites, portals, applications, workflows, and business solutions.",
+        },
+        {
+          title: "Integration & Testing",
+          description:
+            "Integrating Microsoft services and validating performance, security, usability, and reliability.",
+        },
+        {
+          title: "Deployment & Migration",
+          description:
+            "Launching SharePoint environments and migrating existing content, documents, and workflows.",
+        },
+        {
+          title: "Support & Optimization",
+          description:
+            "Providing maintenance, updates, monitoring, training, and continuous platform improvements.",
+        },
+      ],
+
+      benefits: [
+        "Improved employee collaboration and communication",
+        "Centralized document and knowledge management",
+        "Automated business processes and workflows",
+        "Enhanced organizational productivity",
+        "Secure information sharing and access control",
+        "Reduced manual work and operational overhead",
+        "Better visibility into business operations",
+        "Seamless Microsoft 365 ecosystem integration",
+        "Scalable enterprise-ready collaboration platform",
+        "Improved digital workplace experience",
+      ],
+
+      whyChooseUs: [
+        {
+          title: "Microsoft SharePoint Expertise",
+          description:
+            "Extensive experience developing custom SharePoint solutions for organizations of all sizes.",
+          image:
+            "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Customized Digital Workplace Solutions",
+          description:
+            "SharePoint environments tailored specifically to your business processes and organizational needs.",
+          image:
+            "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Microsoft 365 Integration Specialists",
+          description:
+            "Seamlessly connect SharePoint with Teams, Power BI, Outlook, OneDrive, and other Microsoft services.",
+          image:
+            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Workflow Automation Expertise",
+          description:
+            "Automate repetitive tasks and streamline complex business processes using SharePoint technologies.",
+          image:
+            "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Enterprise-Grade Security",
+          description:
+            "Implement robust access controls, governance policies, compliance measures, and security best practices.",
+          image:
+            "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Modern SharePoint Experiences",
+          description:
+            "Build engaging and user-friendly SharePoint interfaces using modern design and development approaches.",
+          image:
+            "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Migration & Modernization Services",
+          description:
+            "Upgrade legacy SharePoint environments and migrate existing business systems efficiently.",
+          image:
+            "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+        },
+        {
+          title: "Dedicated Support & Maintenance",
+          description:
+            "Continuous monitoring, optimization, training, support, and platform enhancement services.",
+          image:
+            "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+        },
+      ],
+
+      faqs: [
+        {
+          question: "Can you develop custom SharePoint intranet portals?",
+          answer:
+            "Yes. We build fully customized SharePoint intranet portals designed for communication, collaboration, knowledge sharing, and employee engagement.",
+        },
+        {
+          question: "Do you support SharePoint Online and On-Premises?",
+          answer:
+            "Yes. We work with SharePoint Online, Microsoft 365 environments, and on-premises SharePoint Server deployments.",
+        },
+        {
+          question: "Can SharePoint integrate with Microsoft Teams?",
+          answer:
+            "Absolutely. We integrate SharePoint with Teams, Outlook, Power BI, OneDrive, Power Apps, and other Microsoft 365 services.",
+        },
+        {
+          question: "Do you provide migration services?",
+          answer:
+            "Yes. We assist with SharePoint migration, modernization, upgrades, content migration, and platform transformation projects.",
+        },
+        {
+          question: "Do you offer ongoing support?",
+          answer:
+            "Yes. We provide maintenance, optimization, monitoring, troubleshooting, and technical support services.",
+        },
+        {
+          question: "Can SharePoint automate business workflows?",
+          answer:
+            "Yes. We develop workflow automation solutions for approvals, requests, document routing, notifications, and operational processes.",
+        },
+        {
+          question: "Can SharePoint be used as a document management system?",
+          answer:
+            "Absolutely. SharePoint is an excellent platform for document storage, version control, collaboration, and secure document sharing.",
+        },
+        {
+          question: "Do you build custom SharePoint applications?",
+          answer:
+            "Yes. We create custom forms, dashboards, employee portals, business applications, and specialized SharePoint solutions.",
+        },
+        {
+          question: "Is SharePoint secure for enterprise use?",
+          answer:
+            "Yes. SharePoint provides enterprise-grade security, access controls, governance capabilities, and compliance features.",
+        },
+        {
+          question:
+            "Why choose Alomonx Technology for Custom SharePoint Site Development?",
+          answer:
+            "We combine SharePoint expertise, Microsoft ecosystem knowledge, workflow automation capabilities, and enterprise development experience to deliver secure and scalable digital workplace solutions.",
+        },
+      ],
+
+      cta: {
+        title: "Ready to Modernize Your Workplace?",
+        description:
+          "Empower your teams with a secure, collaborative, and intelligent SharePoint environment that improves productivity, communication, and operational efficiency.",
+        buttonText: "Get a Free Consultation Today",
+        footer:
+          "Partner with Alomonx Technology to build custom SharePoint solutions that streamline collaboration, centralize information, and transform your digital workplace.",
+      },
+    },
+  },
+
   {
     label: "CRM Software Development",
     href: "/services/crm-software",
@@ -1049,6 +1567,7 @@ Whether you're a startup or a large enterprise, we deliver scalable CRM software
       },
     },
   },
+
   {
     label: "ERP Software Development",
     href: "/services/erp-systems",
@@ -1313,6 +1832,7 @@ From finance and inventory to HR, procurement, and operations, we deliver ERP so
       },
     },
   },
+
   {
     label: "Billing & Inventory Management Software",
     href: "/services/billing-inventory-software",
@@ -2627,6 +3147,7 @@ From wireframes and prototypes to complete design systems and developer handoff 
       },
     },
   },
+
   {
     label: "Mobile App UI Design",
     href: "/services/mobile-app-ui-design",
@@ -3400,265 +3921,6 @@ From user personas and journey mapping to design systems and developer-ready ass
         buttonText: "Get a Free Consultation Today",
         footer:
           "Partner with Alomonx Technology to create SaaS experiences that delight users, accelerate adoption, and drive long-term business success.",
-      },
-    },
-  },
-
-  {
-    label: "Custom SharePoint Site Development",
-    href: "/services/sharepoint-site-development",
-    slug: "sharepoint-site-development",
-    category: "SharePoint",
-    image:
-      "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781342909/Gemini_Generated_Image_gj58m2gj58m2gj58_awhc26.png",
-
-    icon: "Share2",
-
-    details: {
-      heroTag: "Custom SharePoint Site Development Services",
-
-      heroTitle: "Build a Smarter Digital Workplace with SharePoint",
-
-      heroSubtitle:
-        "Custom SharePoint Solutions for Collaboration, Document Management & Business Process Automation",
-
-      overview:
-        "Alomonx Technology develops secure, scalable, and user-friendly SharePoint solutions that improve collaboration, streamline document management, automate workflows, and centralize business information.",
-
-      fullOverview: `
-Modern organizations need efficient collaboration platforms to share information, manage documents, automate workflows, and work seamlessly across departments and locations.
-
-At Alomonx Technology, we specialize in Custom SharePoint Development that helps organizations build intelligent digital workplaces — improving productivity, simplifying knowledge management, and enhancing internal communication.
-
-Whether you need a corporate intranet, document management system, employee portal, project hub, or workflow automation platform, we deliver tailored SharePoint solutions built around your unique business requirements.
-
-By integrating SharePoint with Microsoft 365 — Teams, Outlook, Power BI, OneDrive, and Power Automate — we create connected digital ecosystems that drive collaboration and operational efficiency.
-`,
-
-      features: [
-        "SharePoint Intranet Development",
-        "Document Management Systems",
-        "Workflow Automation",
-        "Team Collaboration Portals",
-        "Custom SharePoint Solutions",
-        "Microsoft 365 Integration",
-        "Knowledge Management Systems",
-        "Custom Forms & Applications",
-        "Role-Based Access Control",
-        "Advanced Search Functionality",
-        "Reporting & Dashboards",
-        "Secure Cloud Deployment",
-      ],
-
-      featureDescriptions: [
-        "Create modern intranet portals for employee communication, company announcements, policies, and collaboration.",
-        "Organize, store, manage, and securely share business documents across departments and teams.",
-        "Automate approvals, notifications, requests, and business workflows using SharePoint and Power Automate.",
-        "Enable seamless collaboration through project sites, shared workspaces, and communication hubs.",
-        "Develop customized SharePoint applications, dashboards, workflows, and business-specific solutions.",
-        "Integrate SharePoint with Microsoft Teams, Outlook, OneDrive, Power BI, and other Microsoft 365 services.",
-        "Centralize organizational knowledge, resources, documentation, and best practices for easy access.",
-        "Build custom forms, employee self-service portals, request systems, and business applications.",
-        "Protect sensitive business information with permission-based access and security controls.",
-        "Enable powerful search capabilities to quickly locate documents, records, and business information.",
-        "Provide real-time insights through dashboards, reports, KPIs, and business intelligence tools.",
-        "Deploy secure cloud-based SharePoint environments with enterprise-grade reliability and scalability.",
-      ],
-
-      technologies: [
-        "Microsoft SharePoint Online",
-        "Microsoft SharePoint Server",
-        "Microsoft 365",
-        "Power Automate",
-        "Power Apps",
-        "Power BI",
-        "Microsoft Teams",
-        "OneDrive",
-        "Microsoft Graph API",
-        "Azure Active Directory",
-        "Azure Logic Apps",
-        "C#",
-        ".NET",
-        "ASP.NET",
-        "React.js",
-        "SPFx (SharePoint Framework)",
-        "TypeScript",
-        "JavaScript",
-        "SQL Server",
-        "Azure Cloud",
-      ],
-
-      process: [
-        {
-          title: "Requirement Analysis",
-          description:
-            "Understanding business goals, collaboration challenges, document management requirements, and workflow needs.",
-        },
-        {
-          title: "Planning & Architecture",
-          description:
-            "Designing SharePoint site structures, permissions, workflows, governance, and implementation strategy.",
-        },
-        {
-          title: "UI/UX Design",
-          description:
-            "Creating intuitive SharePoint experiences optimized for employee productivity and usability.",
-        },
-        {
-          title: "Development & Customization",
-          description:
-            "Building custom SharePoint sites, portals, applications, workflows, and business solutions.",
-        },
-        {
-          title: "Integration & Testing",
-          description:
-            "Integrating Microsoft services and validating performance, security, usability, and reliability.",
-        },
-        {
-          title: "Deployment & Migration",
-          description:
-            "Launching SharePoint environments and migrating existing content, documents, and workflows.",
-        },
-        {
-          title: "Support & Optimization",
-          description:
-            "Providing maintenance, updates, monitoring, training, and continuous platform improvements.",
-        },
-      ],
-
-      benefits: [
-        "Improved employee collaboration and communication",
-        "Centralized document and knowledge management",
-        "Automated business processes and workflows",
-        "Enhanced organizational productivity",
-        "Secure information sharing and access control",
-        "Reduced manual work and operational overhead",
-        "Better visibility into business operations",
-        "Seamless Microsoft 365 ecosystem integration",
-        "Scalable enterprise-ready collaboration platform",
-        "Improved digital workplace experience",
-      ],
-
-      whyChooseUs: [
-        {
-          title: "Microsoft SharePoint Expertise",
-          description:
-            "Extensive experience developing custom SharePoint solutions for organizations of all sizes.",
-          image:
-            "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Customized Digital Workplace Solutions",
-          description:
-            "SharePoint environments tailored specifically to your business processes and organizational needs.",
-          image:
-            "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Microsoft 365 Integration Specialists",
-          description:
-            "Seamlessly connect SharePoint with Teams, Power BI, Outlook, OneDrive, and other Microsoft services.",
-          image:
-            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Workflow Automation Expertise",
-          description:
-            "Automate repetitive tasks and streamline complex business processes using SharePoint technologies.",
-          image:
-            "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Enterprise-Grade Security",
-          description:
-            "Implement robust access controls, governance policies, compliance measures, and security best practices.",
-          image:
-            "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Modern SharePoint Experiences",
-          description:
-            "Build engaging and user-friendly SharePoint interfaces using modern design and development approaches.",
-          image:
-            "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Migration & Modernization Services",
-          description:
-            "Upgrade legacy SharePoint environments and migrate existing business systems efficiently.",
-          image:
-            "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Dedicated Support & Maintenance",
-          description:
-            "Continuous monitoring, optimization, training, support, and platform enhancement services.",
-          image:
-            "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-        },
-      ],
-
-      faqs: [
-        {
-          question: "Can you develop custom SharePoint intranet portals?",
-          answer:
-            "Yes. We build fully customized SharePoint intranet portals designed for communication, collaboration, knowledge sharing, and employee engagement.",
-        },
-        {
-          question: "Do you support SharePoint Online and On-Premises?",
-          answer:
-            "Yes. We work with SharePoint Online, Microsoft 365 environments, and on-premises SharePoint Server deployments.",
-        },
-        {
-          question: "Can SharePoint integrate with Microsoft Teams?",
-          answer:
-            "Absolutely. We integrate SharePoint with Teams, Outlook, Power BI, OneDrive, Power Apps, and other Microsoft 365 services.",
-        },
-        {
-          question: "Do you provide migration services?",
-          answer:
-            "Yes. We assist with SharePoint migration, modernization, upgrades, content migration, and platform transformation projects.",
-        },
-        {
-          question: "Do you offer ongoing support?",
-          answer:
-            "Yes. We provide maintenance, optimization, monitoring, troubleshooting, and technical support services.",
-        },
-        {
-          question: "Can SharePoint automate business workflows?",
-          answer:
-            "Yes. We develop workflow automation solutions for approvals, requests, document routing, notifications, and operational processes.",
-        },
-        {
-          question: "Can SharePoint be used as a document management system?",
-          answer:
-            "Absolutely. SharePoint is an excellent platform for document storage, version control, collaboration, and secure document sharing.",
-        },
-        {
-          question: "Do you build custom SharePoint applications?",
-          answer:
-            "Yes. We create custom forms, dashboards, employee portals, business applications, and specialized SharePoint solutions.",
-        },
-        {
-          question: "Is SharePoint secure for enterprise use?",
-          answer:
-            "Yes. SharePoint provides enterprise-grade security, access controls, governance capabilities, and compliance features.",
-        },
-        {
-          question:
-            "Why choose Alomonx Technology for Custom SharePoint Site Development?",
-          answer:
-            "We combine SharePoint expertise, Microsoft ecosystem knowledge, workflow automation capabilities, and enterprise development experience to deliver secure and scalable digital workplace solutions.",
-        },
-      ],
-
-      cta: {
-        title: "Ready to Modernize Your Workplace?",
-        description:
-          "Empower your teams with a secure, collaborative, and intelligent SharePoint environment that improves productivity, communication, and operational efficiency.",
-        buttonText: "Get a Free Consultation Today",
-        footer:
-          "Partner with Alomonx Technology to build custom SharePoint solutions that streamline collaboration, centralize information, and transform your digital workplace.",
       },
     },
   },
@@ -4441,264 +4703,6 @@ From administration and troubleshooting to security management, upgrades, govern
         buttonText: "Get a Free Consultation Today",
         footer:
           "Partner with Alomonx Technology for reliable SharePoint support, proactive maintenance, and enterprise-grade managed services that maximize the value of your SharePoint investment.",
-      },
-    },
-  },
-
-  {
-    label: "IT Outsourcing Services",
-    href: "/services/it-outsourcing-services",
-    slug: "it-outsourcing-services",
-    category: "IT Services",
-    image:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
-
-    icon: "Users",
-
-    details: {
-      heroTag: "IT Outsourcing Services",
-
-      heroTitle: "Build, Scale & Innovate with Expert IT Outsourcing",
-
-      heroSubtitle:
-        "Reduce Costs, Access Skilled Technology Professionals & Accelerate Digital Transformation",
-
-      overview:
-        "Alomonx Technology helps businesses reduce costs, access skilled technology professionals, and accelerate digital transformation through flexible IT outsourcing solutions.",
-
-      fullOverview: `
-Alomonx Technology provides reliable and scalable IT outsourcing services for startups, SMEs, enterprises, and government organizations. From dedicated developers to complete project delivery, we help businesses achieve their technology goals efficiently and affordably.
-
-Whether you need a dedicated development team, technical support specialists, software engineers, QA professionals, or complete end-to-end project execution, our outsourcing solutions are designed to deliver quality, flexibility, and long-term value.
-
-We combine technical expertise, agile methodologies, transparent communication, and strong security practices to ensure successful project delivery and business growth.
-`,
-
-      features: [
-        "Dedicated Development Teams",
-        "Software & Application Development",
-        "IT Technical Support",
-        "Project-Based Outsourcing",
-        "Resource Augmentation",
-        "Quality Assurance Services",
-        "Cloud & Infrastructure Support",
-        "DevOps & Automation",
-        "Maintenance & Support",
-        "Business Process Optimization",
-        "Technology Consulting",
-        "Digital Transformation Support",
-      ],
-
-      featureDescriptions: [
-        "Hire dedicated developers, designers, QA engineers, and project managers who work as an extension of your team.",
-        "Custom web applications, mobile apps, enterprise software, SaaS platforms, and API integrations.",
-        "24/7 helpdesk support, issue resolution, infrastructure monitoring, and technical assistance.",
-        "Complete end-to-end project delivery managed by experienced technology professionals.",
-        "Quickly scale your workforce with specialized talent based on project requirements.",
-        "Comprehensive software testing, quality assurance, and performance validation.",
-        "Cloud management, infrastructure optimization, and operational support services.",
-        "CI/CD implementation, deployment automation, and operational efficiency improvements.",
-        "Ongoing updates, monitoring, maintenance, and technical support services.",
-        "Optimize business workflows and operational processes through technology solutions.",
-        "Strategic technology guidance, planning, and implementation support.",
-        "Accelerate modernization initiatives and digital transformation programs.",
-      ],
-
-      technologies: [
-        "Java",
-        ".NET",
-        "Python",
-        "Node.js",
-        "React",
-        "Angular",
-        "Flutter",
-        "Spring Boot",
-        "AWS",
-        "Microsoft Azure",
-        "Google Cloud Platform",
-        "Docker",
-        "Kubernetes",
-        "Power Platform",
-        "Power Apps",
-        "Power Automate",
-        "SharePoint",
-        "SQL Server",
-        "PostgreSQL",
-        "MySQL",
-        "REST APIs",
-        "Microservices",
-        "AI/ML",
-        "Generative AI",
-      ],
-
-      process: [
-        {
-          title: "Discovery",
-          description:
-            "Understanding business objectives, project scope, resource requirements, and technology needs.",
-        },
-        {
-          title: "Planning",
-          description:
-            "Defining engagement models, timelines, team structure, and delivery strategy.",
-        },
-        {
-          title: "Team Allocation",
-          description:
-            "Assigning skilled professionals with the required expertise and experience.",
-        },
-        {
-          title: "Development & Execution",
-          description:
-            "Agile development, collaboration, implementation, and continuous progress tracking.",
-        },
-        {
-          title: "Quality Assurance",
-          description:
-            "Testing, validation, security reviews, and performance optimization.",
-        },
-        {
-          title: "Deployment",
-          description:
-            "Production deployment, infrastructure setup, and go-live support.",
-        },
-        {
-          title: "Ongoing Support",
-          description:
-            "Continuous maintenance, monitoring, enhancements, and technical support.",
-        },
-      ],
-
-      benefits: [
-        "Reduced operational and hiring costs",
-        "Access to specialized technology professionals",
-        "Faster project delivery and time-to-market",
-        "Flexible team scaling based on business needs",
-        "Improved operational efficiency",
-        "Focus on core business objectives",
-        "Reduced technology management burden",
-        "Higher productivity and resource utilization",
-      ],
-
-      whyChooseUs: [
-        {
-          title: "Experienced Technology Professionals",
-          description:
-            "Skilled engineers, developers, architects, and consultants delivering high-quality solutions.",
-          image:
-            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Flexible Hiring Models",
-          description:
-            "Choose dedicated teams, fixed-price projects, time & material, or project-based outsourcing.",
-          image:
-            "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Cost Optimization",
-          description:
-            "Reduce recruitment, infrastructure, training, and operational expenses.",
-          image:
-            "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Agile Development Approach",
-          description:
-            "Efficient collaboration, faster delivery cycles, and continuous improvement.",
-          image:
-            "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Strong Security Practices",
-          description:
-            "Secure development processes, data protection, and compliance-focused operations.",
-          image:
-            "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Transparent Communication",
-          description:
-            "Regular updates, clear reporting, and complete project visibility.",
-          image:
-            "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Fast Project Delivery",
-          description:
-            "Optimized processes and experienced teams ensure timely project completion.",
-          image:
-            "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          title: "Long-Term Partnership Focus",
-          description:
-            "Building lasting relationships through reliable support and continuous improvement.",
-          image:
-            "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-        },
-      ],
-
-      faqs: [
-        {
-          question: "What is IT outsourcing?",
-          answer:
-            "IT outsourcing is the practice of delegating technology tasks, teams, or projects to an external technology partner to improve efficiency and reduce costs.",
-        },
-        {
-          question: "Do you provide dedicated developers?",
-          answer:
-            "Yes. We provide dedicated developers, QA engineers, designers, project managers, and complete technology teams.",
-        },
-        {
-          question: "Which engagement model is best?",
-          answer:
-            "The ideal model depends on your project scope, budget, timeline, and business requirements.",
-        },
-        {
-          question: "Do you support global clients?",
-          answer:
-            "Yes. We provide IT outsourcing services to businesses and organizations worldwide.",
-        },
-        {
-          question: "Do you provide post-launch support?",
-          answer:
-            "Yes. We offer ongoing maintenance, technical support, monitoring, and continuous improvements.",
-        },
-        {
-          question: "Can I scale the team later?",
-          answer:
-            "Absolutely. Our engagement models are flexible and allow you to scale resources as your project grows.",
-        },
-        {
-          question: "What industries do you serve?",
-          answer:
-            "We serve healthcare, finance, retail, manufacturing, education, logistics, government, startups, and SaaS businesses.",
-        },
-        {
-          question: "Do you offer technical support services?",
-          answer:
-            "Yes. We provide 24/7 technical support, helpdesk services, infrastructure monitoring, and issue resolution.",
-        },
-        {
-          question: "How do you ensure security?",
-          answer:
-            "We follow strict security standards, access controls, secure development practices, and confidentiality agreements.",
-        },
-        {
-          question: "Why choose Alomonx Technology for IT outsourcing?",
-          answer:
-            "We combine technical expertise, flexible engagement models, transparent communication, cost efficiency, and long-term partnership commitment to deliver measurable business value.",
-        },
-      ],
-
-      cta: {
-        title: "Ready to Scale Your Technology Team?",
-        description:
-          "Partner with Alomonx Technology for reliable, cost-effective, and future-ready IT outsourcing services. Whether you need dedicated developers, complete project teams, or ongoing technical support, we are ready to help.",
-        buttonText: "Get a Free Consultation Today",
-        footer:
-          "Let's build, scale, and innovate together with flexible IT outsourcing solutions that accelerate growth and digital transformation.",
       },
     },
   },

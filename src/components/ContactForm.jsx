@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 // ─── Carousel images (replace src with real assets) ───────────────────────────
 const SLIDES = [
@@ -78,14 +79,21 @@ function ImageCarousel() {
 
       {/* Heading overlay */}
       <div className="absolute top-0 left-0 right-0 p-5 md:p-7">
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-xs font-semibold tracking-[0.2em] text-violet-700 uppercase mb-2"
+          className="mb-3"
         >
-          Alomonx Technology
-        </motion.p>
+          <Image
+            src="/alomonx_white.png"
+            alt="Alomonx Technology"
+            width={180}
+            height={46}
+            className="h-8 md:h-10 w-auto object-contain"
+            priority
+          />
+        </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -94,7 +102,7 @@ function ImageCarousel() {
         >
           Ready to Build Your
           <br />
-          <span className="bg-gradient-to-r from-violet-400 to-sky-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-blue-900 to-sky-700 bg-clip-text text-transparent">
             Next Digital Product?
           </span>
         </motion.h2>
@@ -121,7 +129,7 @@ function ImageCarousel() {
               transition={{ delay: 0.3 + i * 0.07, ease: [0.4, 0, 0.2, 1] }}
               className="flex flex-col items-center text-center p-2 md:p-2.5 rounded-xl bg-white/[0.06] backdrop-blur-md border border-white/10"
             >
-              <span className="text-base md:text-lg font-bold bg-gradient-to-r from-violet-400 to-sky-400 bg-clip-text text-transparent leading-none">
+              <span className="text-base md:text-lg font-bold bg-gradient-to-r from-blue-900 to-sky-700 bg-clip-text text-transparent leading-none">
                 {stat.value}
               </span>
               <span className="mt-1 text-[10px] font-medium text-white/55 leading-tight">
@@ -248,7 +256,7 @@ function ContactFormPanel() {
           >
             {/* Header */}
             <div className="mb-6 md:mb-7">
-              <p className="text-xs font-semibold tracking-[0.18em] text-violet-500 uppercase mb-2">
+              <p className="text-xs font-semibold tracking-[0.18em] text-blue-900 uppercase mb-2">
                 Get in Touch
               </p>
               <h3 className="text-xl font-bold text-white">
@@ -349,10 +357,10 @@ function ContactFormPanel() {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="w-full relative overflow-hidden rounded-xl py-3.5 text-sm font-semibold text-white transition-all duration-300 disabled:opacity-60 group"
+              className="w-full relative overflow-hidden rounded-xl py-3.5 text-sm font-semibold text-white transition-all duration-300 disabled:opacity-60 group cursor-pointer"
               style={{
                 background:
-                  "linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #0ea5e9 100%)",
+                  "linear-gradient(135deg, #112E81 0%, #112E81 50%, #112E81 100%)",
               }}
             >
               <span className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-300" />

@@ -8,7 +8,7 @@ import {
   useSpring,
   AnimatePresence,
 } from "framer-motion";
-import { X } from "lucide-react";
+import { X, ArrowRight } from "lucide-react";
 
 // ─── Critical above-the-fold components: load eagerly ───────
 import StatsSection from "@/components/StatsSection";
@@ -249,22 +249,29 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={openContact}
-                  className="group inline-flex items-center gap-2 md:gap-4 lg:gap-3 pl-4 md:pl-7 lg:pl-6 pr-1 md:pr-2 py-1 md:py-2 rounded-full text-[#F8FAFC] text-[9px] md:text-[12px] lg:text-[11px] font-bold tracking-[0.18em] uppercase transition-all duration-300 w-fit"
+                  className="group inline-flex items-center gap-2 md:gap-4 lg:gap-3 pl-4 md:pl-7 lg:pl-6 pr-1 md:pr-2 py-1 md:py-2 rounded-full text-[#F8FAFC] text-[9px] md:text-[12px] lg:text-[11px] font-bold tracking-[0.18em] uppercase transition-all duration-300 w-fit cursor-pointer"
                   style={BTN_PRIMARY_STYLE}
                 >
                   <span>Begin Your Transformation</span>
                   <span
-                    className="flex items-center justify-center w-6 h-6 md:w-9 md:h-9 lg:w-8 lg:h-8 rounded-full"
+                    className="relative flex items-center justify-center w-8 h-6 md:w-11 md:h-9 lg:w-14 lg:h-8 rounded-full overflow-hidden"
                     style={{ background: "#020617", color: "#22D3EE" }}
                   >
-                    →
+                    <ArrowRight
+                      className="absolute w-5 h-4 md:w-7 md:h-6 lg:w-7 lg:h-5 transition-transform duration-300 ease-out group-hover:translate-x-full"
+                      strokeWidth={2.5}
+                    />
+                    <ArrowRight
+                      className="absolute w-5 h-4 md:w-7 md:h-6 lg:w-7 lg:h-5 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
+                      strokeWidth={2.5}
+                    />
                   </span>
                 </button>
 
                 <button
                   type="button"
                   onClick={handleExpertiseClick}
-                  className="inline-flex items-center justify-center px-5 md:px-8 lg:px-6 py-2.5 md:py-3.5 lg:py-3 rounded-full text-[9px] md:text-[12px] lg:text-[11px] font-bold uppercase tracking-[0.18em] transition-all duration-300 w-fit"
+                  className="inline-flex items-center justify-center px-5 md:px-8 lg:px-6 py-2.5 md:py-3.5 lg:py-3 rounded-full text-[9px] md:text-[12px] lg:text-[11px] font-bold uppercase tracking-[0.18em] transition-all duration-300 w-fit cursor-pointer"
                   style={BTN_OUTLINE_STYLE}
                 >
                   Our Expertise

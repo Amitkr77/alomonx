@@ -218,7 +218,7 @@ export default function Header() {
             <button
               type="button"
               onClick={openContact}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 cursor-pointer"
               style={{
                 background: "#2563FF",
                 color: "#F8FAFC",

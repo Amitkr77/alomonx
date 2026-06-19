@@ -11,7 +11,7 @@ const SERVICE_COLUMN_ICONS = {
   "Custom Software": <Settings2 className="w-4 h-4" />,
   "UI/UX Design": <Palette className="w-4 h-4" />,
   SharePoint: <Share2 className="w-4 h-4" />,
-  "IT Services": <User className="w-4 h-4" />,
+  "IT Management": <User className="w-4 h-4" />,
 };
 
 // ── Icon map for Industries column headings ───────────────────
