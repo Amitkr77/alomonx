@@ -258,11 +258,11 @@ export default function Home() {
                     style={{ background: "#020617", color: "#22D3EE" }}
                   >
                     <ArrowRight
-                      className="absolute w-5 h-4 md:w-7 md:h-6 lg:w-7 lg:h-5 transition-transform duration-300 ease-out group-hover:translate-x-full"
+                      className="absolute w-7 h-4 md:w-7 md:h-6 lg:w-7 lg:h-5 transition-transform duration-300 ease-out group-hover:translate-x-full"
                       strokeWidth={2.5}
                     />
                     <ArrowRight
-                      className="absolute w-5 h-4 md:w-7 md:h-6 lg:w-7 lg:h-5 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
+                      className="absolute w-7 h-4 md:w-7 md:h-6 lg:w-7 lg:h-5 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
                       strokeWidth={2.5}
                     />
                   </span>
