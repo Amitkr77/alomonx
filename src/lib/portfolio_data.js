@@ -1210,6 +1210,148 @@ With intelligent workload distribution, automated routing, and role-based access
         "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781262276/ChatGPT_Image_Jun_12_2026_04_28_55_PM_rqilti.png",
     },
   },
+
+  {
+    slug: "tulipcrop",
+    title: "TulipCrop",
+    category: "AgriTech Platforms",
+    client: "TulipCrop Science Pvt. Ltd.",
+    heroImage:
+      "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781842668/ChatGPT_Image_Jun_19_2026_09_43_52_AM_h8su1w.png",
+
+    shortDescription:
+      "AI-powered agrochemical and crop protection platform helping farmers, dealers, and distributors discover products, access support, and improve agricultural productivity.",
+
+    fullDescription: {
+      title: "Smart Agrochemical & Crop Protection Platform",
+      overview: `
+TulipCrop Science Pvt. Ltd. is an ISO 9001:2015 certified agrochemical company providing advanced crop protection solutions for modern agriculture.
+
+Alomonx Technology developed a scalable, AI-powered digital platform that enhances product visibility, farmer engagement, and dealer connectivity through a modern web experience. The platform enables users to explore crop protection products, access technical specifications, connect with distributors, and receive intelligent assistance for agricultural guidance and support.`,
+    },
+
+    techStack: [
+      "React.js",
+      "Vite",
+      "Tailwind CSS",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Cloudinary",
+      "GROQ AI",
+    ],
+
+    features: [
+      {
+        title: "Agrochemical Product Showcase",
+        image:
+          "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        title: "Product Categories & Specifications",
+        image:
+          "https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        title: "AI-Powered Agriculture Chatbot",
+        image:
+          "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        title: "Dealer & Distributor Inquiry System",
+        image:
+          "https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        title: "Scalable Product Management",
+        image:
+          "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        title: "Real-Time Customer Support",
+        image:
+          "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        title: "Mobile Responsive Experience",
+        image:
+          "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop",
+      },
+    ],
+
+    gallery: {
+      desktop: [
+        {
+          title: "Homepage & Product Catalog",
+          image:
+            "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781842693/Screenshot_2026-06-19_093702_cdkk6c.png",
+          url: "tulipcrop.in",
+        },
+        {
+          title: "Product Details Page",
+          image:
+            "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781842693/Screenshot_2026-06-19_093738_qm2qgq.png",
+          url: "tulipcrop.in",
+        },
+      ],
+
+      mobile: [
+        {
+          title: "Mobile Home Screen",
+          image:
+            "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781842693/Screenshot_2026-06-19_093859_wm31ec.png",
+        },
+        {
+          title: "Product Browsing",
+          image:
+            "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781842693/Screenshot_2026-06-19_093924_carmlj.png",
+        },
+        {
+          title: "Dealer Inquiry Form",
+          image:
+            "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781842693/Screenshot_2026-06-19_094050_jrpuhn.png",
+        },
+      ],
+
+      website_url: "https://tulipcrop.in/",
+    },
+
+    outcomes: [
+      "Improved digital brand presence and credibility",
+      "Increased farmer and dealer engagement",
+      "Enhanced customer support through AI assistance",
+      "Generated more qualified product inquiries",
+      "Improved product discoverability and online visibility",
+      "Built a scalable platform for future business growth",
+    ],
+
+    challenges: [
+      {
+        title: "Limited Digital Presence & Product Awareness",
+        icon: "Globe",
+      },
+      {
+        title: "Complex Product Discovery Process",
+        icon: "Search",
+      },
+      {
+        title: "Lack of Instant Customer Guidance",
+        icon: "MessageCircle",
+      },
+      {
+        title: "Need for Scalable Lead Generation System",
+        icon: "TrendingUp",
+      },
+    ],
+
+    banner: {
+      title: "AI-Powered Agrochemical & Crop Protection Platform",
+      description:
+        "Designed to help farmers, dealers, and distributors easily discover crop protection products, access technical information, connect with suppliers, and receive intelligent agricultural support through a modern digital experience.",
+      bannerImage:
+        "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781843012/ChatGPT_Image_Jun_19_2026_09_53_13_AM_rirrf0.png",
+    },
+  },
 ];
 
 export const homepage = [
@@ -1345,6 +1487,18 @@ export const homepage = [
         "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781262274/ChatGPT_Image_Jun_12_2026_04_30_52_PM_t4hzbh.png",
       image_3:
         "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781262274/ChatGPT_Image_Jun_12_2026_04_33_58_PM_abazpg.png",
+    },
+  },
+
+  {
+    slug: "tulipcrop",
+    title: "TulipCrop",
+    shortDescription:
+      "AI-powered agrochemical and crop protection platform helping farmers, dealers, and distributors discover products, access support, and improve agricultural productivity.",
+    images: {
+      image_1: "",
+      image_2: "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781842693/Screenshot_2026-06-19_093859_wm31ec.png",
+      image_3: "https://res.cloudinary.com/dtrhtdngp/image/upload/q_auto/f_auto/v1781842693/Screenshot_2026-06-19_093924_carmlj.png",
     },
   },
 ];
