@@ -155,6 +155,7 @@ const QuickLinks = memo(function QuickLinks() {
           { href: "/about", label: "About" },
           { href: "/#portfolio", label: "Portfolio" },
           { href: "/contact", label: "Contact us" },
+          { href: "/careers", label: "Careers" },
         ].map(({ href, label }) => (
           <li key={href}>
             <Link href={href} className="hover:text-white transition-colors">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import {
   motion,
   AnimatePresence,
@@ -10,12 +10,25 @@ import {
   useSpring,
 } from "framer-motion";
 
-export default function KeyBenefits({ benefits = [] }) {
+// ─── Default header content (module-level — preserves old "Key Benefits" copy) ─
+const DEFAULT_HEADER = {
+  eyebrow: "Key Benefits",
+  title: null,
+  description: null,
+};
+
+export default function KeyBenefits({ benefits = [], header }) {
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const currentIndexRef = useRef(0);
   const totalItems = benefits.length;
+
+  // UPDATED: merge incoming header with defaults so old call sites need zero changes
+  const headerContent = useMemo(
+    () => ({ ...DEFAULT_HEADER, ...header }),
+    [header],
+  );
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -44,6 +57,10 @@ export default function KeyBenefits({ benefits = [] }) {
 
   if (!benefits?.length) return null;
 
+  const hasHeaderCopy = Boolean(
+    headerContent.title || headerContent.description,
+  );
+
   return (
     <section
       ref={containerRef}
@@ -54,14 +71,14 @@ export default function KeyBenefits({ benefits = [] }) {
         {/* AMBIENT GLOW */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-white/5 blur-[80px] rounded-full pointer-events-none" />
 
-        {/* ── MOBILE LAYOUT (hidden on lg+) ───────────────────────── */}
-        <div className="lg:hidden flex flex-col h-full px-5 pt-8 pb-6 relative z-20">
+        {/* ── MOBILE / TABLET LAYOUT (hidden on lg+) ──────────────── */}
+        <div className="lg:hidden flex flex-col h-full px-5 sm:px-8 pt-8 sm:pt-10 pb-6 relative z-20">
           {/* Top bar — label + counter */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-5 sm:mb-6">
             <div className="flex items-center gap-2">
               <div className="h-[1px] w-5 bg-white/30" />
-              <span className="text-[10px] tracking-[0.4em] uppercase text-white/50 font-mono">
-                Key Benefits
+              <span className="text-[10px] sm:text-xs tracking-[0.4em] uppercase text-white/50 font-mono">
+                {headerContent.eyebrow}
               </span>
             </div>
             <div className="flex items-center gap-1 text-white/40 font-mono text-xs">
@@ -73,9 +90,25 @@ export default function KeyBenefits({ benefits = [] }) {
             </div>
           </div>
 
+          {/* Section title + description (mobile/tablet) */}
+          {hasHeaderCopy && (
+            <div className="mb-5 sm:mb-6 max-w-md">
+              {headerContent.title && (
+                <h2 className="text-white font-medium text-xl sm:text-2xl md:text-3xl tracking-tight mb-2 text-balance">
+                  {headerContent.title}
+                </h2>
+              )}
+              {headerContent.description && (
+                <p className="text-white/50 text-xs sm:text-sm md:text-base font-light leading-relaxed">
+                  {headerContent.description}
+                </p>
+              )}
+            </div>
+          )}
+
           {/* Mini orb */}
-          <div className="flex justify-center mb-6">
-            <div className="relative w-[120px] h-[120px]">
+          <div className="flex justify-center mb-5 sm:mb-6">
+            <div className="relative w-[110px] sm:w-[130px] h-[110px] sm:h-[130px]">
               {/* Outer ring */}
               <svg
                 viewBox="0 0 200 200"
@@ -133,7 +166,7 @@ export default function KeyBenefits({ benefits = [] }) {
           </div>
 
           {/* Progress dots */}
-          <div className="flex justify-center gap-2 mb-6">
+          <div className="flex justify-center gap-2 mb-5 sm:mb-6">
             {benefits.map((_, i) => (
               <div
                 key={i}
@@ -175,7 +208,7 @@ export default function KeyBenefits({ benefits = [] }) {
           </div>
         </div>
 
-        {/* ── DESKTOP LAYOUT (unchanged, hidden below lg) ─────────── */}
+        {/* ── DESKTOP LAYOUT (unchanged below, hidden below lg) ───── */}
         {/* MOBILE PROGRESS BAR — desktop only (original) */}
         <div className="hidden lg:block absolute top-0 left-0 w-full h-1 bg-white/10 z-50">
           <motion.div
@@ -183,6 +216,22 @@ export default function KeyBenefits({ benefits = [] }) {
             style={{ scaleX: smoothProgress, transformOrigin: "0% 50%" }}
           />
         </div>
+
+        {/* TOP-RIGHT HEADER — title + description, desktop only, separate from the circle */}
+        {hasHeaderCopy && (
+          <div className="hidden lg:block absolute top-12 right-12 xl:right-20 z-30 max-w-xs xl:max-w-sm text-right pointer-events-none">
+            {headerContent.title && (
+              <h2 className="text-white font-medium text-2xl xl:text-3xl tracking-tight text-balance mb-2">
+                {headerContent.title}
+              </h2>
+            )}
+            {headerContent.description && (
+              <p className="text-white/50 text-sm xl:text-base font-light leading-relaxed">
+                {headerContent.description}
+              </p>
+            )}
+          </div>
+        )}
 
         {/* LEFT CIRCLE */}
         <div className="hidden lg:block absolute left-[-320px] top-1/2 -translate-y-1/2 z-0 pointer-events-none">
@@ -259,7 +308,7 @@ export default function KeyBenefits({ benefits = [] }) {
               <div className="flex items-center gap-3">
                 <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-white/40" />
                 <div className="text-[14px] tracking-[0.4em] uppercase text-white/50 font-medium">
-                  Key Benefits
+                  {headerContent.eyebrow}
                 </div>
               </div>
               <div className="flex items-start gap-4 ml-11">

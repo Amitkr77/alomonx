@@ -5,31 +5,40 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 
-export default function Banner({ details }) {
+export default function Banner({ details, contactInfo }) {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   // Safety check: Don't render if data hasn't loaded yet
   if (!details) return null;
+
+  // UPDATED: button text + click behavior are now configurable via contactInfo,
+  // defaulting to the original "Start a conversation" + modal flow
+  const buttonText = contactInfo?.buttonText || "Start a conversation";
+  const contactEmail = contactInfo?.email;
+
+  const handleCtaClick = () => {
+    if (contactEmail) {
+      const subject = details.title
+        ? `?subject=${encodeURIComponent(details.title)}`
+        : "";
+      window.location.href = `mailto:${contactEmail}${subject}`;
+    } else {
+      setIsContactOpen(true);
+    }
+  };
 
   return (
     <>
       {/* ─────────────────────────────────────────────
           MOBILE ONLY LAYOUT
       ───────────────────────────────────────────── */}
-      {/* 1. Removed 'w-full' to prevent horizontal scroll
-        2. Added 'mx-4' for side margins
-        3. Added 'rounded-3xl' for the rounded corners
-        4. Added 'overflow-hidden' to clip the image's top corners
-      */}
       <div className="flex flex-col md:hidden mx-4 rounded-3xl overflow-hidden bg-white relative z-10 -mb-[1px]">
-        {/* Standard image element instead of background to prevent cropping */}
         <img
           src={details.bannerImage}
           alt={details.title || "Banner Image"}
           className="w-full h-auto object-contain"
         />
 
-        {/* Content Section Below Image */}
         <div className="px-4 py-6 flex flex-col items-start w-full">
           <h1 className="text-2xl font-bold leading-tight text-gray-900 mb-3">
             {details.title}
@@ -40,23 +49,22 @@ export default function Banner({ details }) {
           </p>
 
           <button
-            onClick={() => setIsContactOpen(true)}
+            onClick={handleCtaClick}
             className="w-full inline-block rounded-full bg-blue-900 px-8 py-3.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-blue-800 active:scale-[0.97]"
           >
-            Start a conversation
+            {buttonText}
           </button>
         </div>
       </div>
 
       {/* ─────────────────────────────────────────────
-          PC ONLY LAYOUT (Unchanged)
+          PC ONLY LAYOUT
       ───────────────────────────────────────────── */}
       <div className="hidden md:block p-9">
         <header
           className="relative flex w-full min-h-[420px] items-center justify-start bg-cover bg-center bg-no-repeat px-4 md:px-[3%] rounded-3xl overflow-hidden"
           style={{ backgroundImage: `url('${details.bannerImage}')` }}
         >
-          {/* Text Container */}
           <div className="z-10 w-full max-w-full rounded-2xl p-4 backdrop-blur-md md:max-w-[65%] md:bg-transparent md:p-0 md:text-left md:backdrop-blur-none lg:max-w-[45%]">
             <h1 className="mb-2 text-2xl font-bold leading-tight text-white drop-shadow-md md:text-3xl lg:text-[2.25rem]">
               {details.title}
@@ -67,17 +75,18 @@ export default function Banner({ details }) {
             </p>
 
             <button
-              onClick={() => setIsContactOpen(true)}
+              onClick={handleCtaClick}
               className="inline-block rounded-full bg-white px-8 py-4 text-base font-semibold text-blue-900 shadow-md transition-all duration-300 hover:bg-blue-50 hover:-translate-y-1 hover:shadow-lg md:text-lg"
             >
-              Start a conversation
+              {buttonText}
             </button>
           </div>
         </header>
       </div>
 
       {/* ─────────────────────────────────────────────
-          Modal Overlay for Contact Form
+          Modal Overlay for Contact Form (only ever opens
+          when no contactEmail is supplied)
       ───────────────────────────────────────────── */}
       <AnimatePresence>
         {isContactOpen && (
@@ -93,7 +102,6 @@ export default function Banner({ details }) {
               exit={{ scale: 0.95, opacity: 0 }}
               className="relative w-full max-w-6xl max-h-[95vh] overflow-y-auto custom-scrollbar rounded-2xl shadow-2xl"
             >
-              {/* Close Button */}
               <button
                 onClick={() => setIsContactOpen(false)}
                 className="absolute top-4 right-4 z-50 p-2 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full text-white transition-colors"

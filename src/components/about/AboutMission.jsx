@@ -22,6 +22,14 @@ const cardVariantsReduced = {
   visible: { opacity: 1, transition: { duration: 0.4 } },
 };
 
+// ─── Default header content (module-level — preserves old "Four pillars" copy) ─
+const DEFAULT_HEADER = {
+  eyebrow: "Who We Are",
+  title: "Four pillars that define",
+  highlight: "our foundation.",
+  description: null,
+};
+
 // ─── Memoized card — only re-renders if its own props change ─────────────────
 const MissionCard = memo(function MissionCard({
   point,
@@ -38,15 +46,12 @@ const MissionCard = memo(function MissionCard({
       whileInView="visible"
       viewport={{ once: true, margin: "-10%" }}
       variants={reducedMotion ? cardVariantsReduced : cardVariants}
-      // UPDATED: Scaled down border-radius and margin for mobile/tablet
       className="sticky w-full border border-white/10 bg-[#0a0a0a] rounded-xl sm:rounded-2xl lg:rounded-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:flex-row mb-3 sm:mb-5"
       style={{ top: topOffset }}
     >
       {/* LEFT SIDE: Text Details */}
-      {/* UPDATED: Scaled down padding for smaller screens */}
       <div className="w-full md:w-[60%] lg:w-[75%] p-5 sm:p-8 lg:p-12 flex flex-col justify-center">
         <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-          {/* UPDATED: Font size adjustments */}
           <span className="text-blue-700 font-mono font-bold text-base lg:text-lg">
             {point.id || `0${index + 1}`}
           </span>
@@ -60,21 +65,17 @@ const MissionCard = memo(function MissionCard({
           )}
         </div>
 
-        {/* UPDATED: Title font size adjustments */}
         <h3 className="text-xl sm:text-2xl lg:text-3xl font-medium text-white mb-2 sm:mb-4 tracking-tight">
           {point.title}
         </h3>
 
-        {/* UPDATED: Description font size adjustments */}
         <p className="text-gray-400 leading-relaxed text-sm lg:text-base lg:text-md font-light max-w-xl">
           {point.desc}
         </p>
       </div>
 
       {/* RIGHT SIDE: Lazy-loaded Image */}
-      {/* UPDATED: Reduced minimum height of image on mobile */}
       <div className="w-full md:w-[40%] lg:w-[35%] min-h-[180px] sm:min-h-[250px] md:min-h-full relative border-t md:border-t-0 md:border-l border-white/10">
-        {/* UPDATED: Image padding and border radius adjustments */}
         <div className="absolute inset-0 p-3 sm:p-5 lg:p-6">
           <div className="w-full h-full relative rounded-lg sm:rounded-xl overflow-hidden bg-black group">
             <img
@@ -96,12 +97,16 @@ const MissionCard = memo(function MissionCard({
 });
 
 // ─── Main component ───────────────────────────────────────────────────────────
-export default function AboutMissionStacked({ missionPoints }) {
+export default function AboutMissionStacked({ missionPoints, header }) {
   const points = missionPoints || [];
   const reducedMotion = useReducedMotion();
 
-  // UPDATED: Pre-compute offsets using dynamic CSS variables instead of hard-coded pixels.
-  // This allows us to inject responsive spacing classes directly into the container.
+  // UPDATED: merge incoming header with defaults so old call sites need zero changes
+  const headerContent = useMemo(
+    () => ({ ...DEFAULT_HEADER, ...header }),
+    [header],
+  );
+
   const topOffsets = useMemo(
     () =>
       points.map(
@@ -113,22 +118,34 @@ export default function AboutMissionStacked({ missionPoints }) {
   if (points.length === 0) return null;
 
   return (
-    <section
-      // UPDATED: Section padding scaled, and CSS variables added for responsive sticky stacking
-      className="min-h-screen py-10 sm:py-14 lg:py-20 px-4 sm:px-6 relative [--stack-start:10vh] sm:[--stack-start:12vh] lg:[--stack-start:15vh] [--stack-gap:16px] sm:[--stack-gap:24px] lg:[--stack-gap:40px]"
-    >
+    <section className="min-h-screen py-10 sm:py-14 lg:py-20 px-4 sm:px-6 relative [--stack-start:10vh] sm:[--stack-start:12vh] lg:[--stack-start:15vh] [--stack-gap:16px] sm:[--stack-gap:24px] lg:[--stack-gap:40px]">
       {/* Header Section */}
       <div className="max-w-8xl mx-auto mb-8 sm:mb-10 md:mb-16 px-2 sm:px-8 lg:px-12">
-        <span className="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-gray-500 mb-3 sm:mb-4">
-          <span className="h-px w-4 sm:w-6 bg-blue-700" />
-          Who We Are
-        </span>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-light text-white leading-tight tracking-tight">
-          Four pillars that define <br className="hidden sm:block" />
-          <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-500">
-            our foundation.
+        {headerContent.eyebrow && (
+          <span className="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-gray-500 mb-3 sm:mb-4">
+            <span className="h-px w-4 sm:w-6 bg-blue-700" />
+            {headerContent.eyebrow}
           </span>
+        )}
+
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-light text-white leading-tight tracking-tight">
+          {headerContent.title}
+          {headerContent.highlight && (
+            <>
+              {" "}
+              <br className="hidden sm:block" />
+              <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-500">
+                {headerContent.highlight}
+              </span>
+            </>
+          )}
         </h2>
+
+        {headerContent.description && (
+          <p className="mt-4 sm:mt-5 text-gray-400 text-sm sm:text-base lg:text-lg font-light max-w-2xl">
+            {headerContent.description}
+          </p>
+        )}
       </div>
 
       {/* Stacked Cards Container */}

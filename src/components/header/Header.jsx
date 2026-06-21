@@ -45,6 +45,7 @@ const NAV_ITEMS = [
   { name: "Services" },
   { name: "Industries" },
   { name: "Portfolio" },
+  { name: "Careers", href: "/careers" },
   { name: "Contact", href: "/contact" },
 ];
 

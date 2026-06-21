@@ -55,6 +55,11 @@ const mobileNavItems = [
     icon: <Briefcase className="w-4 h-4" />,
     megaKey: "Portfolio",
   },
+  {
+    label: "Careers",
+    icon: <Briefcase className="w-4 h-4" />,
+    href: "/careers",
+  },
   { href: "/contact", label: "Contact", icon: <Phone className="w-4 h-4" /> },
 ];
 
