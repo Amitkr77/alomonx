@@ -1,7 +1,9 @@
+"use client";
+
 import AboutHero from "@/components/about/AboutHero";
-import AboutMissionStacked from "@/components/about/AboutMission";
 import FAQ from "@/components/globalComponents/FAQ";
 import KeyBenefits from "@/components/industries/KeyBenefits";
+import CareerApply from "@/components/careers/CareerApply";
 import Banner from "@/components/globalComponents/Banner";
 import {
   heroData,
@@ -12,19 +14,20 @@ import {
   contactInfo,
 } from "@/lib/career_data";
 
+const scrollToApply = () => {
+  document
+    .getElementById("career-apply")
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 export default function CareersPage() {
   return (
     <div className="bg-black min-h-screen font-sans selection:bg-violet-500/30 selection:text-white -mt-4 pt-7">
-      <AboutHero data={heroData} />
-      <AboutMissionStacked
-        missionPoints={opportunities}
-        header={{
-          eyebrow: "Join Our Team",
-          title: "Current Opportunities",
-          highlight: null,
-          description:
-            "We're always looking for passionate and talented individuals.",
-        }}
+      <AboutHero data={heroData} onCtaClick={scrollToApply} />
+      <CareerApply
+        opportunities={opportunities}
+        banner={banner}
+        contactInfo={contactInfo}
       />
       <KeyBenefits
         benefits={internshipBenefits}
@@ -36,7 +39,15 @@ export default function CareersPage() {
         }}
       />
       <FAQ faqs={faqs} />
-      <Banner details={banner} contactInfo={contactInfo} />
+      <Banner
+        details={banner}
+        buttonText="Apply Now"
+        onCtaClick={() =>
+          document
+            .getElementById("career-apply")
+            ?.scrollIntoView({ behavior: "smooth", block: "start" })
+        }
+      />
     </div>
   );
 }

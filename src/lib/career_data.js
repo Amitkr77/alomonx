@@ -10,65 +10,6 @@ export const heroData = {
     "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop",
 };
 
-export const opportunities = [
-  {
-    id: "01",
-    title: "Software Developer",
-    subtitle: "Build scalable software solutions.",
-    desc: "Work on cutting-edge applications, backend systems, and enterprise-grade software products that solve real business challenges.",
-    image:
-      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "02",
-    title: "Full Stack Developer",
-    subtitle: "Create seamless digital experiences.",
-    desc: "Develop modern web applications using the latest frontend and backend technologies while collaborating with cross-functional teams.",
-    image:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "03",
-    title: "UI/UX Designer",
-    subtitle: "Design experiences people love.",
-    desc: "Craft intuitive user interfaces and engaging digital experiences that enhance customer satisfaction and business outcomes.",
-    image:
-      "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "04",
-    title: "Digital Marketing Executive",
-    subtitle: "Drive growth through strategy.",
-    desc: "Plan and execute digital campaigns, SEO strategies, social media initiatives, and performance marketing programs.",
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "05",
-    title: "AI/ML Engineer",
-    subtitle: "Build intelligent solutions.",
-    desc: "Develop AI-powered products, machine learning models, automation systems, and next-generation intelligent applications.",
-    image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "06",
-    title: "Business Development Executive",
-    subtitle: "Create new business opportunities.",
-    desc: "Build relationships, identify growth opportunities, and help businesses discover the right technology solutions.",
-    image:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "07",
-    title: "Internship Programs",
-    subtitle: "Learn. Build. Grow.",
-    desc: "Gain practical experience by working alongside industry professionals on real-world projects and technologies.",
-    image:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop",
-  },
-];
-
 export const internshipBenefits = [
   "Real-World Projects",
   "Experienced Mentors",
@@ -107,8 +48,18 @@ export const faqs = [
   {
     question: "How can I apply?",
     answer:
-      "Simply send your resume and relevant details to info@alomonx.com or use the Apply Now button on the careers page.",
+      "Fill out the application form on our careers page with your name, email, phone number, preferred role, and employment type — then click 'Apply Now' to send your details directly to our team.",
   },
+];
+
+export const opportunities = [
+  "Software Developer",
+  "Full Stack Developer",
+  "UI/UX Designer",
+  "Digital Marketing Executive",
+  "AI/ML Engineer",
+  "Business Development Executive",
+  "Internship Programs",
 ];
 
 export const banner = {

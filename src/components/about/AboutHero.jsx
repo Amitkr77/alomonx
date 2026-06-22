@@ -16,7 +16,6 @@ const fadeUp = {
   },
 };
 
-// Reduced-motion safe version — only fades, no translate
 const fadeOnly = {
   hidden: { opacity: 0 },
   visible: {
@@ -33,25 +32,26 @@ const stagger = {
   },
 };
 
-// Static visible state — used when reduced motion is preferred so Framer
-// skips all animation work entirely and just renders the final state.
 const VISIBLE = "visible";
 const HIDDEN = "hidden";
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function AboutHero({ data }) {
-  const [isContactOpen, setIsContactOpen] = useState(false); // Modal state added
+export default function AboutHero({ data, onCtaClick }) {
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   if (!data) return null;
 
-  // Respect the OS-level "Reduce Motion" accessibility preference.
-  // When true, we skip translate animations and disable the ping/spin.
   const shouldReduceMotion = useReducedMotion();
-
   const { eyebrow, headline, accentLine, subtext, image } = data;
-
-  // Choose variant set based on motion preference
   const itemVariant = shouldReduceMotion ? fadeOnly : fadeUp;
+
+  const handleCtaClick = () => {
+    if (onCtaClick) {
+      onCtaClick();
+    } else {
+      setIsContactOpen(true);
+    }
+  };
 
   return (
     <>
@@ -120,7 +120,7 @@ export default function AboutHero({ data }) {
             {/* CTA Button */}
             <motion.div variants={itemVariant}>
               <Button
-                onClick={() => setIsContactOpen(true)}
+                onClick={handleCtaClick}
                 className="rounded-full px-6 py-5 sm:px-8 sm:py-6 lg:px-8 lg:py-6 font-medium bg-white text-black hover:bg-zinc-200 transition-all duration-300 flex items-center gap-2 sm:gap-3 lg:gap-3 text-xs sm:text-sm lg:text-base group w-fit lg:w-auto"
               >
                 Contact Us Today
@@ -162,7 +162,6 @@ export default function AboutHero({ data }) {
             transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="hidden lg:flex absolute left-[52%] top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-28 h-28 rounded-full bg-black border-[4px] border-[#050505] items-center justify-center shadow-2xl overflow-hidden group"
           >
-            {/* Spin animation disabled when reduced-motion is preferred */}
             <div
               className={`absolute inset-2 rounded-full border border-dashed border-white/20 ${
                 shouldReduceMotion ? "" : "animate-[spin_20s_linear_infinite]"
@@ -233,6 +232,7 @@ export default function AboutHero({ data }) {
 
       {/* ─────────────────────────────────────────────
           Modal Overlay for Contact Form
+          Only mounts when no onCtaClick is supplied
       ───────────────────────────────────────────── */}
       <AnimatePresence>
         {isContactOpen && (
@@ -248,7 +248,6 @@ export default function AboutHero({ data }) {
               exit={{ scale: 0.95, opacity: 0 }}
               className="relative w-full max-w-6xl max-h-[90dvh] lg:max-h-[95vh] overflow-y-auto custom-scrollbar rounded-xl sm:rounded-2xl lg:rounded-2xl shadow-2xl bg-[#050505]"
             >
-              {/* Close Button */}
               <button
                 onClick={() => setIsContactOpen(false)}
                 className="absolute top-3 right-3 sm:top-4 sm:right-4 lg:top-4 lg:right-4 z-50 p-2 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full text-white transition-colors"

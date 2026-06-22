@@ -5,23 +5,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 
-export default function Banner({ details, contactInfo }) {
+export default function Banner({
+  details,
+  onCtaClick,
+  buttonText = "Start a conversation",
+}) {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
-  // Safety check: Don't render if data hasn't loaded yet
   if (!details) return null;
 
-  // UPDATED: button text + click behavior are now configurable via contactInfo,
-  // defaulting to the original "Start a conversation" + modal flow
-  const buttonText = contactInfo?.buttonText || "Start a conversation";
-  const contactEmail = contactInfo?.email;
-
   const handleCtaClick = () => {
-    if (contactEmail) {
-      const subject = details.title
-        ? `?subject=${encodeURIComponent(details.title)}`
-        : "";
-      window.location.href = `mailto:${contactEmail}${subject}`;
+    if (onCtaClick) {
+      onCtaClick();
     } else {
       setIsContactOpen(true);
     }
@@ -85,8 +80,7 @@ export default function Banner({ details, contactInfo }) {
       </div>
 
       {/* ─────────────────────────────────────────────
-          Modal Overlay for Contact Form (only ever opens
-          when no contactEmail is supplied)
+          Modal Overlay — only opens when no onCtaClick supplied
       ───────────────────────────────────────────── */}
       <AnimatePresence>
         {isContactOpen && (
