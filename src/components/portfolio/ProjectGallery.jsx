@@ -382,6 +382,36 @@ export default function ProjectGallery({ gallery }) {
             Explore the Interface
           </h2>
 
+          {websiteUrl && (
+            <a
+              href={
+                websiteUrl.startsWith("http")
+                  ? websiteUrl
+                  : `https://${websiteUrl}`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mb-6 inline-flex items-center gap-2 rounded-lg bg-blue-900 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-black hover:shadow-md hover:-translate-y-0.5"
+            >
+              <span>View Project</span>
+
+              {/* Arrow Icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+              >
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          )}
+
           {tabs.length > 1 && (
             <div className="inline-flex p-1 bg-neutral-300 rounded-full border border-neutral-200 shadow-inner">
               {tabs.map(({ id, label, Icon }) => (

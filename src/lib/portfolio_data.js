@@ -492,7 +492,7 @@ Leveraging AI-powered analysis, intelligent document processing, and workflow au
         },
       ],
 
-      website_url: "#",
+      website_url: "",
     },
 
     outcomes: [
@@ -1045,7 +1045,7 @@ With intelligent meal planning, personalized recommendations, and real-time prog
         },
       ],
 
-      website_url: "#",
+      website_url: "",
     },
 
     outcomes: [
@@ -1172,7 +1172,7 @@ With intelligent workload distribution, automated routing, and role-based access
         },
       ],
 
-      website_url: "#",
+      website_url: "",
     },
 
     outcomes: [
